@@ -1,0 +1,46 @@
+# openspec/config.yaml
+schema: spec-driven
+
+context: |
+  Project: saberabierto (content/document project)
+  Stack: None — markdown content only (Spanish-language video guide transcript about active recall study methods)
+  Architecture: Single-file document project, no codebase
+  Testing: No test runner detected — strict_tdd disabled
+  Style: Spanish content, English technical artifacts (SDD specs/designs/tasks default to English)
+
+rules:
+  proposal:
+    - Include scope boundaries for content-only projects
+  specs:
+    - Use Given/When/Then for scenarios
+    - Use RFC 2119 keywords (MUST, SHALL, SHOULD, MAY)
+  design:
+    - Document structure decisions with rationale
+  tasks:
+    - Group by phase, use hierarchical numbering
+    - Keep tasks completable in one session
+  apply:
+    - Follow existing content structure and tone
+    tdd: false
+    test_command: ""
+  verify:
+    test_command: ""
+    build_command: ""
+    coverage_threshold: 0
+  archive:
+    - Warn before merging destructive deltas
+
+testing:
+  strict_tdd: false
+  detected: 2026-07-08
+  runner: none
+  reason: "No test runner or code framework detected — this is a content/document project."
+  layers:
+    unit: { available: false, tool: "--" }
+    integration: { available: false, tool: "--" }
+    e2e: { available: false, tool: "--" }
+  coverage: { available: false, command: "--" }
+  quality:
+    linter: { available: false, command: "--" }
+    type_checker: { available: false, command: "--" }
+    formatter: { available: false, command: "--" }
