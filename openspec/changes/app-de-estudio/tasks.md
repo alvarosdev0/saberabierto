@@ -51,30 +51,30 @@ Chain strategy: stacked-to-main
 
 ## Phase 3: Markdown & AI (PR 3)
 
-- [ ] 3.1 Implement `src/lib/markdown-converter.js`: auto-convert extracted text to MD (headings, paragraphs, lists)
-- [ ] 3.2 Build `MarkdownEditor` page: editable textarea with MD preview, "Aceptar" button, "Regenerar" re-extract option
-- [ ] 3.3 Define AI provider TypeScript interface (`AIProvider`, `GenerateOptions`, `GenerateResult`, `GeneratedQuestion`)
-- [ ] 3.4 Implement provider factory: `src/services/ai/index.js` maps `"deepseek"|"openai"|"anthropic"` → class; stateless instantiation per call
-- [ ] 3.5 Implement `OpenAIProvider`: native chat-completions endpoint, JSON response parsing, `apiKey` via constructor
-- [ ] 3.6 Implement `DeepSeekProvider`: same interface, DeepSeek chat endpoint
-- [ ] 3.7 Implement `AnthropicProvider`: same interface, Anthropic Messages endpoint
-- [ ] 3.8 Add error handling: 401 invalid key detection (blocks further requests), malformed JSON (retry once 1 s backoff), network errors, 5xx retry
-- [ ] 3.9 Implement maxInputTokens truncation + per-request cost estimation display in UI
-- [ ] 3.10 Add CSP `<meta>` tag: `script-src 'self'` minimum
-- [ ] 3.11 Build `Settings` page: provider selector, masked API key input, data export/import buttons (import/export logic deferred to Phase 6)
+- [x] 3.1 Implement `src/lib/markdown-converter.js`: auto-convert extracted text to MD (headings, paragraphs, lists)
+- [x] 3.2 Build `MarkdownEditor` page: editable textarea with MD preview, "Aceptar" button, "Regenerar" re-extract option
+- [x] 3.3 Define AI provider TypeScript interface (`AIProvider`, `GenerateOptions`, `GenerateResult`, `GeneratedQuestion`)
+- [x] 3.4 Implement provider factory: `src/services/ai/index.js` maps `"deepseek"|"openai"|"anthropic"` → class; stateless instantiation per call
+- [x] 3.5 Implement `OpenAIProvider`: native chat-completions endpoint, JSON response parsing, `apiKey` via constructor
+- [x] 3.6 Implement `DeepSeekProvider`: same interface, DeepSeek chat endpoint
+- [x] 3.7 Implement `AnthropicProvider`: same interface, Anthropic Messages endpoint
+- [x] 3.8 Add error handling: 401 invalid key detection (blocks further requests), malformed JSON (retry once 1 s backoff), network errors, 5xx retry
+- [x] 3.9 Implement maxInputTokens truncation + per-request cost estimation display in UI
+- [x] 3.10 Add CSP `<meta>` tag: `script-src 'self'` minimum
+- [x] 3.11 Build `Settings` page: provider selector, masked API key input, data export/import buttons (import/export logic deferred to Phase 6)
 
 ## Phase 4: Study Flow (PR 4)
 
-- [ ] 4.1 Implement session CRUD in `src/hooks/useSession.js`: create (only one active), update status, query with `[subject+updatedAt]` index
-- [ ] 4.2 Implement section management: `src/hooks/useSections.js` with sequential `order` auto-assignment, status tracking, duration write
-- [ ] 4.3 Build `SectionNavigator` component: next/previous buttons, "X/N" progress indicator, route navigation
-- [ ] 4.4 Build `InterrogativeReading` page: split pane (Markdown read-only left + QuestionForm right), 3 type tabs, auto-save draft with 2 s debounce
-- [ ] 4.5 Add `QuestionList` with answer checkbox + timestamp to InterrogativeReading
-- [ ] 4.6 Build `BrainDump` page: free-form text area, outline marker support, gap flagging with highlight, auto-save draft with 2 s debounce
-- [ ] 4.7 Add `GapHighlighter` component: select text → "Marcar como laguna" → persist `gaps: [...]` JSON array in `notes` table
-- [ ] 4.8 Build `Timer` component: count-up display, pause on navigation, write elapsed to `sections.duration`
-- [ ] 4.9 Implement `ModeSwitch` tab bar: "Lectura Interrogativa" ↔ "Brain Dump" per section
-- [ ] 4.10 Build `MarkdownEditor` route integration: post-extraction review → confirm → create session + sections
+- [x] 4.1 Implement session CRUD in `src/hooks/useSession.js`: create (only one active), update status, query with `[subject+updatedAt]` index
+- [x] 4.2 Implement section management: `src/hooks/useSections.js` with sequential `order` auto-assignment, status tracking, duration write
+- [x] 4.3 Build `SectionNavigator` component: next/previous buttons, "X/N" progress indicator, route navigation
+- [x] 4.4 Build `InterrogativeReading` page: split pane (Markdown read-only left + QuestionForm right), 3 type tabs, auto-save draft with 2 s debounce
+- [x] 4.5 Add `QuestionList` with answer checkbox + timestamp to InterrogativeReading
+- [x] 4.6 Build `BrainDump` page: free-form text area, outline marker support, gap flagging with highlight, auto-save draft with 2 s debounce
+- [x] 4.7 Add `GapHighlighter` component: select text → "Marcar como laguna" → persist `gaps: [...]` JSON array in `notes` table
+- [x] 4.8 Build `Timer` component: count-up display, pause on navigation, write elapsed to `sections.duration`
+- [x] 4.9 Implement `ModeSwitch` tab bar: "Lectura Interrogativa" ↔ "Brain Dump" per section
+- [x] 4.10 Build `MarkdownEditor` route integration: post-extraction review → confirm → create session + sections
 
 ## Phase 5: Questionnaire & Spaced Retrieval (PR 5)
 
