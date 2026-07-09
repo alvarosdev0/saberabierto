@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import FileDropzone from '../components/FileDropzone.jsx';
 import ThumbnailGrid from '../components/ThumbnailGrid.jsx';
 import ExtractionProgress from '../components/ExtractionProgress.jsx';
@@ -18,6 +19,8 @@ import db from '../services/db.js';
  *   5. "Aceptar" to confirm, "Regenerar" to restart
  */
 export default function PDFUpload() {
+  const navigate = useNavigate();
+
   // --- State machine ---
   const [stage, setStage] = useState('idle'); // idle | loaded | extracting | review
   const [pdfDoc, setPdfDoc] = useState(null);
@@ -230,11 +233,15 @@ export default function PDFUpload() {
 
   // --- Step 4: Accept / Regenerate ---
   const handleAccept = useCallback((md) => {
-    // For now, log and prepare for next phase (PR 4 will wire session creation)
-    // Store accepted markdown in state or navigate
-    console.log('Markdown accepted:', md.substring(0, 100) + '...');
-    alert('¡Texto extraído y revisado! En la siguiente fase podrás crear una sesión de estudio.');
-  }, []);
+    // Navigate to MarkdownEditor page for session creation
+    navigate('/session/new/section/0/review-md', {
+      state: {
+        markdown: md,
+        filename: extractionFile?.name || 'documento.pdf',
+      },
+      replace: true,
+    });
+  }, [navigate, extractionFile]);
 
   const handleRegenerate = useCallback(() => {
     // Clean up and go back to idle
