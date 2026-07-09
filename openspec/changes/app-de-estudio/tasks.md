@@ -40,14 +40,14 @@ Chain strategy: stacked-to-main
 
 ## Phase 2: PDF Processing Pipeline (PR 2)
 
-- [ ] 2.1 Create `src/services/pdf.js`: dynamic `import("pdfjs-dist")` with lazy-load guard (first-call detection)
-- [ ] 2.2 Build `FileDropzone` component: accept `.pdf` only, reject non-PDF with error message, display filename
-- [ ] 2.3 Build `ThumbnailGrid` with IntersectionObserver-based virtual scroll (8-10 visible thumbnails); ~150 px height per thumbnail
-- [ ] 2.4 Implement page selection: range input ("23-45") + individual tap toggles with selection count display
-- [ ] 2.5 Implement text extraction: iterate selected pages via pdfjs-dist, handle scanned-page empty-text notification, concatenate results
-- [ ] 2.6 After extraction: call `pdfDocument.destroy()` + `PDFWorker.destroy()` + `requestIdleCallback` for GC hint
-- [ ] 2.7 Cache extraction results in Dexie `pdfCache` with `[contentHash+pageRange]` compound index lookups before re-extracting
-- [ ] 2.8 Build `ExtractionProgress` component: progress bar during extraction, word count on completion
+- [x] 2.1 Create `src/services/pdf.js`: dynamic `import("pdfjs-dist")` with lazy-load guard (first-call detection)
+- [x] 2.2 Build `FileDropzone` component: accept `.pdf` only, reject non-PDF with error message, display filename
+- [x] 2.3 Build `ThumbnailGrid` with IntersectionObserver-based virtual scroll (8-10 visible thumbnails); ~150 px height per thumbnail
+- [x] 2.4 Implement page selection: range input ("23-45") + individual tap toggles with selection count display
+- [x] 2.5 Implement text extraction: iterate selected pages via pdfjs-dist, handle scanned-page empty-text notification, concatenate results
+- [x] 2.6 After extraction: call `pdfDocument.destroy()` + `PDFWorker.destroy()` + `requestIdleCallback` for GC hint
+- [x] 2.7 Cache extraction results in Dexie `pdfCache` with `[contentHash+pageRange]` compound index lookups before re-extracting
+- [x] 2.8 Build `ExtractionProgress` component: progress bar during extraction, word count on completion
 
 ## Phase 3: Markdown & AI (PR 3)
 
