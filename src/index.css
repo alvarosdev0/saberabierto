@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ── Design Tokens (CSS custom properties) ── */
+:root {
+  --color-primary: #7C3AED;
+  --color-accent: #059669;
+  --color-bg: #FAF5FF;
+  --color-fg: #0F172A;
+  --color-destructive: #DC2626;
+  --font-heading: 'Baloo 2', system-ui, sans-serif;
+  --font-body: system-ui, -apple-system, sans-serif;
+  --touch-target-min: 44px;
+}
+
+/* ── Base layer ── */
+html {
+  font-family: var(--font-body);
+  color: var(--color-fg);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* ── Touch target enforcement ── */
+button, a, input, select, textarea, [role="button"], [role="tab"] {
+  min-height: var(--touch-target-min);
+  min-width: var(--touch-target-min);
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--color-primary);
+}
