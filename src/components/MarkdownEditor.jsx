@@ -29,7 +29,7 @@ export default function MarkdownEditor({
 
   /**
    * Simple Markdown-to-HTML renderer for preview.
-   * Handles: headings (#), lists (-/*/1.), paragraphs, bold (**), italic (*)
+   * Handles: headings (#), lists (- or * or 1.), paragraphs, bold (**), italic (*)
    */
   const renderPreview = (md) => {
     if (!md) return '<p class="text-gray-400 italic">Sin contenido</p>';
