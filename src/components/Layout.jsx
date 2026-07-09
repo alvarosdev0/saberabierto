@@ -1,0 +1,99 @@
+import { Outlet, NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
+export default function Layout() {
+  const [updateReady, setUpdateReady] = useState(false);
+
+  useEffect(() => {
+    // Listen for PWA update events via Workbox broadcast channel
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then((registration) => {
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                setUpdateReady(true);
+              }
+            });
+          }
+        });
+      });
+    }
+  }, []);
+
+  const handleUpdate = () => {
+    if (navigator.serviceWorker.controller) {
+      navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+    }
+    window.location.reload();
+  };
+
+  return (
+    <div className="flex flex-col min-h-dvh">
+      {/* PWA update banner */}
+      {updateReady && (
+        <div className="bg-primary text-white px-4 py-2 flex items-center justify-between" role="alert">
+          <span className="text-sm">Nueva versión disponible</span>
+          <button
+            onClick={handleUpdate}
+            className="bg-white text-primary px-3 py-1 rounded text-sm font-medium"
+            style={{ minHeight: 'var(--touch-target-min)' }}
+          >
+            Actualizar
+          </button>
+        </div>
+      )}
+
+      {/* Main content area */}
+      <main className="flex-1">
+        <Outlet />
+      </main>
+
+      {/* Bottom navigation */}
+      <nav className="bg-white border-t border-gray-200 flex justify-around py-2 safe-area-bottom" role="navigation">
+        <NavLink
+          to="/"
+          end
+          className={({ isActive }) =>
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+          }
+          style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+        >
+          <span className="text-lg">📚</span>
+          <span>Inicio</span>
+        </NavLink>
+        <NavLink
+          to="/upload"
+          className={({ isActive }) =>
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+          }
+          style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+        >
+          <span className="text-lg">📄</span>
+          <span>Subir</span>
+        </NavLink>
+        <NavLink
+          to="/review"
+          className={({ isActive }) =>
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+          }
+          style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+        >
+          <span className="text-lg">🔄</span>
+          <span>Repaso</span>
+        </NavLink>
+        <NavLink
+          to="/settings"
+          className={({ isActive }) =>
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+          }
+          style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+        >
+          <span className="text-lg">⚙️</span>
+          <span>Ajustes</span>
+        </NavLink>
+      </nav>
+    </div>
+  );
+}
