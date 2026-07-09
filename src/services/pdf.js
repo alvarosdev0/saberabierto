@@ -19,8 +19,8 @@ async function ensurePDFJS() {
   if (pdfjsLib) return pdfjsLib;
 
   pdfjsLib = await import('pdfjs-dist');
-  pdfjsLib.GlobalWorkerOptions.workerSrc =
-    'https://unpkg.com/pdfjs-dist@6.1.200/build/pdf.worker.min.mjs';
+  // Worker served locally from /public for offline-first PWA
+  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
 
   return pdfjsLib;
 }
