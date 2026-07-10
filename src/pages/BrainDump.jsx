@@ -288,7 +288,7 @@ export default function BrainDump() {
         const isLast = idx >= sections.length - 1;
 
         return (
-          <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-2">
+          <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-100">
             <div className="flex gap-2">
               <button
                 type="button"
@@ -298,7 +298,7 @@ export default function BrainDump() {
                     { replace: true },
                   )
                 }
-                className="flex-1 px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-3 text-sm font-medium rounded-xl border-2 border-purple-300 text-purple-700 hover:bg-purple-50 transition-colors"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 Volver a Lectura
@@ -317,15 +317,15 @@ export default function BrainDump() {
                   } else {
                     const next = sections[idx + 1];
                     navigate(
-                      `/session/${sessionId}/section/${next.id}/brain-dump`,
+                      `/session/${sessionId}/section/${next.id}/read`,
                       { replace: true },
                     );
                   }
                 }}
-                className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm"
+                className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
-                {isLast ? 'Ir al cuestionario' : 'Completar y seguir'}
+                {isLast ? 'Ir al cuestionario' : 'Siguiente sección'}
               </button>
             </div>
           </div>

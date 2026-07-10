@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Key, FlaskConical, Swords, ChevronDown, ChevronUp } from 'lucide-react';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
 import ModeSwitch from '../components/ModeSwitch.jsx';
@@ -31,6 +32,7 @@ export default function InterrogativeReading() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState(null);
+  const [showMarkdown, setShowMarkdown] = useState(true);
 
   // Auto-save debounce ref
   const saveTimer = useRef(null);
@@ -215,9 +217,9 @@ export default function InterrogativeReading() {
 
   // ── Question type tab definitions ────────────────────────────────────────
   const tabs = [
-    { key: 'keyword', label: 'Conceptos', icon: '🔑' },
-    { key: 'methodological', label: 'Metodología', icon: '🔬' },
-    { key: 'combative', label: 'Combate', icon: '⚔️' },
+    { key: 'keyword', label: 'Conceptos', icon: Key },
+    { key: 'methodological', label: 'Metodología', icon: FlaskConical },
+    { key: 'combative', label: 'Combate', icon: Swords },
   ];
 
   // ── Render ───────────────────────────────────────────────────────────────
@@ -277,17 +279,49 @@ export default function InterrogativeReading() {
         </div>
       )}
 
-      {/* ── Body: split pane (desktop) / stacked (mobile) ──────────────── */}
+      {/* ── Body ───────────────────────────────────────────────────────── */}
       <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
-        {/* Left: MarkdownPane (read-only, scrollable) */}
+        {/* Left: MarkdownPane (read-only, collapsible) */}
         <div
-          className="flex-1 overflow-y-auto p-4 border-b md:border-b-0 md:border-r border-gray-100 bg-white"
+          className={`
+            ${showMarkdown ? 'flex' : 'hidden'}
+            md:flex md:w-1/2 flex-col overflow-hidden border-b md:border-b-0 md:border-r border-gray-100 bg-white
+          `}
         >
-          <div
-            className="prose prose-sm max-w-none font-sans text-gray-800 leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(markdown) }}
-          />
+          {/* Header with toggle button */}
+          <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 flex-shrink-0">
+            <span className="text-xs font-medium text-gray-500">Contenido</span>
+            <button
+              type="button"
+              onClick={() => setShowMarkdown(false)}
+              className="flex items-center gap-1 px-2 py-1 text-xs text-gray-400 hover:text-gray-600 transition-colors md:hidden"
+              style={{ minHeight: '44px', minWidth: '44px' }}
+              aria-label="Ocultar contenido"
+            >
+              <ChevronDown size={16} />
+              Ocultar
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4">
+            <div
+              className="prose prose-sm max-w-none font-sans text-gray-800 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: renderMarkdown(markdown) }}
+            />
+          </div>
         </div>
+
+        {/* Toggle button (when markdown is hidden, mobile) */}
+        {!showMarkdown && (
+          <button
+            type="button"
+            onClick={() => setShowMarkdown(true)}
+            className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-purple-600 bg-purple-50 border-b border-gray-100 md:hidden"
+            style={{ minHeight: '44px' }}
+          >
+            <ChevronUp size={16} />
+            Ver contenido
+          </button>
+        )}
 
         {/* Right: QuestionForm with type tabs */}
         <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
@@ -313,7 +347,7 @@ export default function InterrogativeReading() {
                 `}
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
-                <span className="text-sm">{tab.icon}</span>
+                <tab.icon size={16} />
                 <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
@@ -334,54 +368,21 @@ export default function InterrogativeReading() {
             />
           </div>
 
-          {/* Bottom actions */}
-          <div className="flex-shrink-0 p-3 bg-white border-t border-gray-100 flex flex-col gap-2">
-            {(() => {
-              const idx = sections.findIndex((s) => String(s.id) === String(sectionId));
-              const isLast = idx >= sections.length - 1;
-              return (
-                <>
-                  <div className="flex gap-2">
-                    <button
-                      type="button"
-                      onClick={() =>
-                        navigate(
-                          `/session/${sessionId}/section/${sectionId}/brain-dump`,
-                          { replace: true },
-                        )
-                      }
-                      className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm"
-                      style={{ minHeight: 'var(--touch-target-min)' }}
-                    >
-                      Continuar a Brain Dump
-                    </button>
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        try {
-                          await db.sections.update(Number(sectionId), {
-                            status: 'completed',
-                          });
-                        } catch {}
-                        if (isLast) {
-                          navigate(`/session/${sessionId}/questionnaire`, { replace: true });
-                        } else {
-                          const next = sections[idx + 1];
-                          navigate(
-                            `/session/${sessionId}/section/${next.id}/read`,
-                            { replace: true },
-                          );
-                        }
-                      }}
-                      className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-                      style={{ minHeight: 'var(--touch-target-min)' }}
-                    >
-                      {isLast ? 'Ir al cuestionario' : 'Completar y seguir'}
-                    </button>
-                  </div>
-                </>
-              );
-            })()}
+          {/* Bottom action: go to Brain Dump */}
+          <div className="flex-shrink-0 p-3 bg-white border-t border-gray-100">
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  `/session/${sessionId}/section/${sectionId}/brain-dump`,
+                  { replace: true },
+                )
+              }
+              className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
+              style={{ minHeight: 'var(--touch-target-min)' }}
+            >
+              Continuar a Brain Dump
+            </button>
           </div>
         </div>
       </div>
