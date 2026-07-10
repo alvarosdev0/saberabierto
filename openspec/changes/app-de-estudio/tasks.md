@@ -78,15 +78,15 @@ Chain strategy: stacked-to-main
 
 ## Phase 5: Questionnaire & Spaced Retrieval (PR 5)
 
-- [ ] 5.1 Build `QuestionnaireBuilder` page: manual question entry with "Forza la elaboración…" guidance text, section selector, empty-field validation
-- [ ] 5.2 Implement AI question import panel: list generated questions per section, select multi, import → `questionnaireItems` with `source: 'ai'`
-- [ ] 5.3 Implement reading question import panel: list interrogative-reading questions per section, select multi, import → `questionnaireItems` with `source: 'manual'`
-- [ ] 5.4 Implement `src/services/sm2.js`: `calculateNextReview(score, reps, interval)` with score 2 vs 3 differentiation, 6-month cap
-- [ ] 5.5 Build `SpacedRetrieval` page: due review queue (query `reviewAttempts` by `nextReview ≤ today`), flip-card UI
-- [ ] 5.6 Build `ScoreSelector` component: 0-1-2-3 with labels ("Olvidé", "Parcial", "Correcto con esfuerzo", "Perfecto"), write to `reviewAttempts`
-- [ ] 5.7 Implement `StaleSubjectBanner`: query `sessions` compound index for >90 days gap, show "Repasar notas" button before first question
-- [ ] 5.8 Build review history view: render past `reviewAttempts` with scores, dates, interval progression
-- [ ] 5.9 Implement `navigator.setAppBadge()` call on app open for due review count; fallback gracefully on unsupported browsers
+- [x] 5.1 Build `QuestionnaireBuilder` page: manual question entry with "Forza la elaboración…" guidance text, section selector, empty-field validation
+- [x] 5.2 Implement AI question import panel: list generated questions per section, select multi, import → `questionnaireItems` with `source: 'ai'`
+- [x] 5.3 Implement reading question import panel: list interrogative-reading questions per section, select multi, import → `questionnaireItems` with `source: 'manual'`
+- [x] 5.4 Implement `src/services/sm2.js`: `calculateNextReview(score, reps, interval)` with score 2 vs 3 differentiation, 6-month cap
+- [x] 5.5 Build `SpacedRetrieval` page: due review queue (query `reviewAttempts` by `nextReview ≤ today`), flip-card UI
+- [x] 5.6 Build `ScoreSelector` component: 0-1-2-3 with labels ("Olvidé", "Parcial", "Correcto con esfuerzo", "Perfecto"), write to `reviewAttempts`
+- [x] 5.7 Implement `StaleSubjectBanner`: query `sessions` compound index for >90 days gap, show "Repasar notas" button before first question
+- [x] 5.8 Build review history view: render past `reviewAttempts` with scores, dates, interval progression
+- [x] 5.9 Implement `navigator.setAppBadge()` call on app open for due review count; fallback gracefully on unsupported browsers
 
 ## Phase 6: Dashboard & Polish (PR 6)
 

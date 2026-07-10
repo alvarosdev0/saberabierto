@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import Layout from './components/Layout.jsx';
+import db from './services/db.js';
 
 // Code-split page components for smaller initial bundle (~50 KB)
 const Home = lazy(() => import('./pages/Home.jsx'));
@@ -20,7 +21,67 @@ function Loading() {
   );
 }
 
+/**
+ * Count due reviews for app badge.
+ *
+ * Per design §PWA Strategy:
+ *   On app open, check due reviews and display a badge/count via
+ *   navigator.setAppBadge() where supported (PWAs on desktop/mobile).
+ *   Graceful fallback on unsupported browsers.
+ *
+ * @returns {Promise<number>} Count of unique questionnaireItems due for review
+ */
+async function countDueReviews() {
+  try {
+    const items = await db.questionnaireItems.toArray();
+    if (items.length === 0) return 0;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let due = 0;
+    for (const item of items) {
+      const latest = await db.reviewAttempts
+        .where('questionnaireItemId')
+        .equals(item.id)
+        .reverse()
+        .sortBy('reviewedAt');
+
+      if (latest.length === 0) {
+        due++; // Never reviewed
+      } else {
+        const nextDate = new Date(latest[0].nextReview);
+        if (nextDate <= today) due++;
+      }
+    }
+
+    return due;
+  } catch {
+    return 0;
+  }
+}
+
 export default function App() {
+  // ── App badge (progressive enhancement) ──────────────────────────────────
+  useEffect(() => {
+    async function updateBadge() {
+      if (!('setAppBadge' in navigator)) return;
+
+      try {
+        const count = await countDueReviews();
+        if (count > 0) {
+          await navigator.setAppBadge(count);
+        } else if ('clearAppBadge' in navigator) {
+          await navigator.clearAppBadge();
+        }
+      } catch {
+        // Silently fail — badge is progressive enhancement
+      }
+    }
+
+    updateBadge();
+  }, []);
+
   return (
     <Suspense fallback={<Loading />}>
       <Routes>
