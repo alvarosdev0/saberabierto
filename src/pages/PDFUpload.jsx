@@ -35,6 +35,7 @@ export default function PDFUpload() {
   const [scannedPages, setScannedPages] = useState([]);
   const [extractionFile, setExtractionFile] = useState(null);
   const [contentHash, setContentHash] = useState(null);
+  const [language, setLanguage] = useState(() => localStorage.getItem('sa:language') || 'es');
 
   // Track rendered thumbnails to avoid re-rendering
   const renderedRef = useRef(/** @type {Set<number>} */ (new Set()));
@@ -260,9 +261,6 @@ export default function PDFUpload() {
     setContentHash(null);
     renderedRef.current.clear();
   }, [pdfDoc]);
-
-  // ── Language selector ──────────────────────────────────────────────────
-  const [language, setLanguage] = useState(() => localStorage.getItem('sa:language') || 'es');
 
   const handleLanguageChange = useCallback((e) => {
     const lang = e.target.value;
