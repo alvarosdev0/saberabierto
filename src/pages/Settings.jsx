@@ -21,7 +21,7 @@ const lsApiKey = (provider) => `sa:apiKey:${provider}`;
  * Route: /settings
  *
  * Per design §Settings:
- *   - Provider selector (dropdown: DeepSeek / OpenAI / Anthropic)
+ *   - Provider selector (dropdown: DeepSeek / OpenAI / Anthropic / Gemini)
  *   - Masked API key input per selected provider
  *   - Data export button (serialize all Dexie tables → downloadable JSON)
  *   - Data import button (parse JSON → validate → restore to Dexie)

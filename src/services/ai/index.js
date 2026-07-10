@@ -11,6 +11,7 @@
 import { DeepSeekProvider } from './deepseek.js';
 import { OpenAIProvider } from './openai.js';
 import { AnthropicProvider } from './anthropic.js';
+import { GeminiProvider } from './gemini.js';
 import { AIError } from './shared.js';
 
 /**
@@ -22,6 +23,7 @@ const PROVIDER_REGISTRY = {
   deepseek: DeepSeekProvider,
   openai: OpenAIProvider,
   anthropic: AnthropicProvider,
+  gemini: GeminiProvider,
 };
 
 /**
@@ -38,6 +40,7 @@ export const PROVIDER_META = {
   deepseek: { name: 'DeepSeek', model: 'deepseek-chat' },
   openai: { name: 'OpenAI', model: 'gpt-4o-mini' },
   anthropic: { name: 'Anthropic', model: 'claude-3-5-haiku' },
+  gemini: { name: 'Gemini', model: 'gemini-2.0-flash' },
 };
 
 /**
@@ -47,7 +50,7 @@ export const PROVIDER_META = {
  * for passing the API key. This ensures stale keys are never used
  * after the user updates their key in Settings.
  *
- * @param {'deepseek' | 'openai' | 'anthropic'} providerId — Provider identifier
+ * @param {'deepseek' | 'openai' | 'anthropic' | 'gemini'} providerId — Provider identifier
  * @param {string}                               apiKey      — API key for the provider
  * @returns {import('../../types/ai.js').AIProvider}
  * @throws {AIError} If providerId is unrecognized
@@ -68,4 +71,4 @@ export function createProvider(providerId, apiKey) {
   return new ProviderClass(apiKey);
 }
 
-export { DeepSeekProvider, OpenAIProvider, AnthropicProvider };
+export { DeepSeekProvider, OpenAIProvider, AnthropicProvider, GeminiProvider };
