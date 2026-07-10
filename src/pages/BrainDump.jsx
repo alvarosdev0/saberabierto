@@ -282,22 +282,55 @@ export default function BrainDump() {
         </details>
       </div>
 
-      {/* ── Bottom action: return to reading ────────────────────────────── */}
-      <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-100">
-        <button
-          type="button"
-          onClick={() =>
-            navigate(
-              `/session/${sessionId}/section/${sectionId}/read`,
-              { replace: true },
-            )
-          }
-          className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-          style={{ minHeight: 'var(--touch-target-min)' }}
-        >
-          Volver a Lectura Interrogativa
-        </button>
-      </div>
+      {/* ── Bottom actions ─────────────────────────────────────────────── */}
+      {(() => {
+        const idx = sections.findIndex((s) => String(s.id) === String(sectionId));
+        const isLast = idx >= sections.length - 1;
+
+        return (
+          <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-100 flex flex-col gap-2">
+            <div className="flex gap-2">
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(
+                    `/session/${sessionId}/section/${sectionId}/read`,
+                    { replace: true },
+                  )
+                }
+                className="flex-1 px-4 py-3 text-sm font-medium rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                style={{ minHeight: 'var(--touch-target-min)' }}
+              >
+                Volver a Lectura
+              </button>
+
+              <button
+                type="button"
+                onClick={async () => {
+                  try {
+                    await db.sections.update(Number(sectionId), {
+                      status: 'completed',
+                    });
+                  } catch {}
+                  if (isLast) {
+                    navigate(`/session/${sessionId}/questionnaire`, { replace: true });
+                  } else {
+                    const next = sections[idx + 1];
+                    navigate(
+                      `/session/${sessionId}/section/${next.id}/brain-dump`,
+                      { replace: true },
+                    );
+                  }
+                }}
+                className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors shadow-sm"
+                style={{ minHeight: 'var(--touch-target-min)' }}
+              >
+                {isLast ? 'Ir al cuestionario' : 'Completar y seguir'}
+              </button>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
