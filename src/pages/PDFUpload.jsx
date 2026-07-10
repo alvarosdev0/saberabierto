@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Languages } from 'lucide-react';
 import FileDropzone from '../components/FileDropzone.jsx';
@@ -36,6 +36,12 @@ export default function PDFUpload() {
   const [extractionFile, setExtractionFile] = useState(null);
   const [contentHash, setContentHash] = useState(null);
   const [language, setLanguage] = useState(() => localStorage.getItem('sa:language') || 'es');
+  const [jumpToPage, setJumpToPage] = useState(0);
+
+  // Reset jumpToPage after it's been consumed by ThumbnailGrid
+  useEffect(() => {
+    if (jumpToPage > 0) setJumpToPage(0);
+  }, [jumpToPage]);
 
   // Track rendered thumbnails to avoid re-rendering
   const renderedRef = useRef(/** @type {Set<number>} */ (new Set()));
@@ -120,6 +126,8 @@ export default function PDFUpload() {
       }
       return next;
     });
+    // Auto-jump when tapping a page beyond visible range
+    setJumpToPage(pageNumber);
   }, []);
 
   const handleSelectRange = useCallback((start, end) => {
@@ -130,6 +138,8 @@ export default function PDFUpload() {
       }
       return next;
     });
+    // Auto-jump to make the end of the range visible
+    setJumpToPage(end);
   }, []);
 
   const handleRangeInputApply = () => {
@@ -341,6 +351,7 @@ export default function PDFUpload() {
             onTogglePage={handleTogglePage}
             onSelectRange={handleSelectRange}
             onNeedRender={handleNeedRender}
+            jumpToPage={jumpToPage}
           />
 
           {/* Extract button */}

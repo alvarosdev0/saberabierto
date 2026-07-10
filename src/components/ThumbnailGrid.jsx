@@ -14,6 +14,7 @@ const BATCH_SIZE = 20;
  * @param {(pageNumber: number) => void} props.onTogglePage
  * @param {(start: number, end: number) => void} props.onSelectRange
  * @param {(pageNumber: number) => void} [props.onNeedRender] - Called when a thumbnail enters viewport
+ * @param {number} [props.jumpToPage] - When set, loads enough batches to make this page visible
  */
 export default function ThumbnailGrid({
   pages,
@@ -21,8 +22,19 @@ export default function ThumbnailGrid({
   onTogglePage,
   onSelectRange,
   onNeedRender,
+  jumpToPage,
 }) {
   const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
+
+  // When jumpToPage changes, auto-load enough batches to make it visible
+  useEffect(() => {
+    if (jumpToPage && jumpToPage > 0 && jumpToPage <= pages.length) {
+      setVisibleCount((prev) => {
+        const needed = Math.ceil(jumpToPage / BATCH_SIZE) * BATCH_SIZE;
+        return Math.max(prev, Math.min(needed, pages.length));
+      });
+    }
+  }, [jumpToPage, pages.length]);
   const [rangeMode, setRangeMode] = useState(false);
   const [rangeStart, setRangeStart] = useState(null);
   const renderedRef = useRef(/** @type {Set<number>} */ (new Set()));
