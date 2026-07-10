@@ -73,13 +73,13 @@ export default function Layout() {
         </div>
       )}
 
-      {/* Main content area */}
-      <main className="flex-1">
+      {/* Main content area — scrollable, padded for the fixed nav */}
+      <main className="flex-1 pb-16 overflow-y-auto">
         <Outlet />
       </main>
 
-      {/* Bottom navigation */}
-      <nav className="bg-white border-t border-gray-200 flex justify-around py-2 safe-area-bottom" role="navigation">
+      {/* Bottom navigation — fixed, always visible */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around py-2 safe-area-bottom" role="navigation">
         <NavLink
           to="/"
           end
