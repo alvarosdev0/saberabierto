@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import Layout from './components/Layout.jsx';
+import useKeyboardAvoidance from './hooks/useKeyboardAvoidance.js';
 import db from './services/db.js';
 
 // Code-split page components for smaller initial bundle (~50 KB)
@@ -62,6 +63,9 @@ async function countDueReviews() {
 }
 
 export default function App() {
+  // ── Keyboard avoidance (mobile) ──────────────────────────────────────────
+  useKeyboardAvoidance();
+
   // ── App badge (progressive enhancement) ──────────────────────────────────
   useEffect(() => {
     async function updateBadge() {

@@ -3,9 +3,12 @@ import { useState, useEffect } from 'react';
 
 export default function Layout() {
   const [updateReady, setUpdateReady] = useState(false);
+  const [isOnline, setIsOnline] = useState(
+    typeof navigator !== 'undefined' ? navigator.onLine : true,
+  );
 
+  // ── PWA update listener ──────────────────────────────────────────────────
   useEffect(() => {
-    // Listen for PWA update events via Workbox broadcast channel
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.ready.then((registration) => {
         registration.addEventListener('updatefound', () => {
@@ -22,6 +25,24 @@ export default function Layout() {
     }
   }, []);
 
+  // ── Online / offline listener ────────────────────────────────────────────
+  useEffect(() => {
+    function handleOnline() {
+      setIsOnline(true);
+    }
+    function handleOffline() {
+      setIsOnline(false);
+    }
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const handleUpdate = () => {
     if (navigator.serviceWorker.controller) {
       navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
@@ -31,6 +52,13 @@ export default function Layout() {
 
   return (
     <div className="flex flex-col min-h-dvh">
+      {/* Offline indicator */}
+      {!isOnline && (
+        <div className="bg-amber-500 text-white px-4 py-2 text-center text-sm font-medium" role="alert">
+          Sin conexión — los cambios se guardarán localmente
+        </div>
+      )}
+
       {/* PWA update banner */}
       {updateReady && (
         <div className="bg-primary text-white px-4 py-2 flex items-center justify-between" role="alert">

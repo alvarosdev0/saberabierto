@@ -90,17 +90,17 @@ Chain strategy: stacked-to-main
 
 ## Phase 6: Dashboard & Polish (PR 6)
 
-- [ ] 6.1 Build `HomeDashboard`: active session card with "Continuar" + section progress, "Nueva sesión" button when none active
-- [ ] 6.2 Add `QuickStats` component: total answered, reviews done, streak (consecutive study days), due-review badge count
-- [ ] 6.3 Add `ReviewCountdown`: relative time display ("hoy", "en 2 días"), query next `reviewAttempts.nextReview`
-- [ ] 6.4 Add `ReviewsDueBanner` + `GapsToRevisit` section: list flagged gaps from `notes.hasGaps` index, link to brain dump notes
-- [ ] 6.5 Build session history page: list past sessions with subject, dates, completion status
-- [ ] 6.6 Implement data export: serialize all Dexie tables → downloadable JSON file
-- [ ] 6.7 Implement data import: parse JSON → validate structure → restore to Dexie
-- [ ] 6.8 Add keyboard avoidance: `visualViewport` API listener, scroll active input into view
-- [ ] 6.9 Audit touch targets: ensure all buttons/checkboxes/tabs ≥44 px in at least one dimension
-- [ ] 6.10 Implement SW update banner: `updatefound` → "Nueva versión disponible" banner → `skipWaiting()` + reload
-- [ ] 6.11 Add offline indicator via `navigator.onLine` listener + visual banner
+- [x] 6.1 Build `HomeDashboard`: active session card with "Continuar" + section progress, "Nueva sesión" button when none active
+- [x] 6.2 Add `QuickStats` component: total answered, reviews done, streak (consecutive study days), due-review badge count
+- [x] 6.3 Add `ReviewCountdown`: relative time display ("hoy", "en 2 días"), query next `reviewAttempts.nextReview`
+- [x] 6.4 Add `ReviewsDueBanner` + `GapsToRevisit` section: list flagged gaps from `notes.hasGaps` index, link to brain dump notes
+- [x] 6.5 Build session history page: list past sessions with subject, dates, completion status
+- [x] 6.6 Implement data export: serialize all Dexie tables → downloadable JSON file
+- [x] 6.7 Implement data import: parse JSON → validate structure → restore to Dexie
+- [x] 6.8 Add keyboard avoidance: `visualViewport` API listener, scroll active input into view
+- [x] 6.9 Audit touch targets: ensure all buttons/checkboxes/tabs ≥44 px in at least one dimension
+- [x] 6.10 Implement SW update banner: `updatefound` → "Nueva versión disponible" banner → `skipWaiting()` + reload
+- [x] 6.11 Add offline indicator via `navigator.onLine` listener + visual banner
 
 ## Phase 7: Testing (PR 6)
 
