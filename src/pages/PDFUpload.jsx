@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Languages } from 'lucide-react';
 import FileDropzone from '../components/FileDropzone.jsx';
 import ThumbnailGrid from '../components/ThumbnailGrid.jsx';
 import ExtractionProgress from '../components/ExtractionProgress.jsx';
@@ -238,10 +239,11 @@ export default function PDFUpload() {
       state: {
         markdown: md,
         filename: extractionFile?.name || 'documento.pdf',
+        language,
       },
       replace: true,
     });
-  }, [navigate, extractionFile]);
+  }, [navigate, extractionFile, language]);
 
   const handleRegenerate = useCallback(() => {
     // Clean up and go back to idle
@@ -259,6 +261,15 @@ export default function PDFUpload() {
     renderedRef.current.clear();
   }, [pdfDoc]);
 
+  // ── Language selector ──────────────────────────────────────────────────
+  const [language, setLanguage] = useState(() => localStorage.getItem('sa:language') || 'es');
+
+  const handleLanguageChange = useCallback((e) => {
+    const lang = e.target.value;
+    setLanguage(lang);
+    localStorage.setItem('sa:language', lang);
+  }, []);
+
   // --- Render ---
   return (
     <div className="flex flex-col gap-6 p-4 max-w-3xl mx-auto">
@@ -268,6 +279,21 @@ export default function PDFUpload() {
         <p className="text-gray-600 mt-1">
           Selecciona un archivo PDF y elige las páginas que quieres estudiar
         </p>
+      </div>
+
+      {/* Language selector — always visible */}
+      <div className="flex items-center gap-2">
+        <Languages size={18} className="text-gray-400" />
+        <select
+          value={language}
+          onChange={handleLanguageChange}
+          className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+          style={{ minHeight: '44px' }}
+          aria-label="Idioma de las preguntas"
+        >
+          <option value="es">Español — preguntas en español</option>
+          <option value="en">English — questions in English</option>
+        </select>
       </div>
 
       {/* FileDropzone — always visible in idle/loaded/extracting */}

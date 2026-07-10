@@ -16,7 +16,7 @@ import {
   normalizeQuestions,
   classifyError,
   AIError,
-  QUESTION_SYSTEM_PROMPT,
+  buildSystemPrompt,
 } from './shared.js';
 
 /** @type {import('../../types/ai.js').ProviderConfig} */
@@ -59,7 +59,7 @@ export class AnthropicProvider {
    * @returns {Promise<import('../../types/ai.js').GenerateResult>}
    */
   async generateQuestions(markdown, options = {}) {
-    const { count = 5, maxInputTokens } = options;
+    const { count = 5, maxInputTokens, language = 'es' } = options;
 
     if (!markdown || !markdown.trim()) {
       return { questions: [], error: 'No hay texto para generar preguntas.' };
@@ -70,7 +70,7 @@ export class AnthropicProvider {
     const { text: truncated, truncated: wasTruncated, originalTokens, finalTokens } =
       truncateToMaxTokens(markdown, tokenLimit);
 
-    const buildRequest = () => this.#makeRequest(truncated, count);
+    const buildRequest = () => this.#makeRequest(truncated, count, language);
 
     try {
       const parsed = await callWithRetry(buildRequest, { maxRetries: 1, backoffMs: 1000 });
@@ -103,7 +103,12 @@ export class AnthropicProvider {
    *
    * @private
    */
-  async #makeRequest(markdown, count) {
+  async #makeRequest(markdown, count, language = 'es') {
+    const systemPrompt = buildSystemPrompt(language);
+    const userPrompt = language === 'en'
+      ? `Generate ${count} study questions based on this text:\n\n${markdown}\n\nRespond ONLY with the JSON array. No explanations.`
+      : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}\n\nResponde ÚNICAMENTE con el array JSON. Sin explicaciones.`;
+
     const response = await fetch(CONFIG.endpoint, {
       method: 'POST',
       headers: {
@@ -114,11 +119,11 @@ export class AnthropicProvider {
       body: JSON.stringify({
         model: CONFIG.model,
         max_tokens: 2000,
-        system: QUESTION_SYSTEM_PROMPT,
+        system: systemPrompt,
         messages: [
           {
             role: 'user',
-            content: `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}\n\nResponde ÚNICAMENTE con el array JSON. Sin explicaciones.`,
+            content: userPrompt,
           },
         ],
       }),

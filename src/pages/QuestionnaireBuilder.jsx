@@ -46,11 +46,15 @@ export default function QuestionnaireBuilder() {
 
   // ── AI tab state ────────────────────────────────────────────────────────
   const [aiSectionId, setAiSectionId] = useState('');
+  const [aiLanguage, setAiLanguage] = useState(() => localStorage.getItem('sa:language') || 'es');
   const [aiGenerating, setAiGenerating] = useState(false);
   const [aiQuestions, setAiQuestions] = useState([]);
   const [aiSelected, setAiSelected] = useState(new Set());
   const [aiError, setAiError] = useState(null);
   const [aiCost, setAiCost] = useState(null);
+  const [aiEstimatedCost, setAiEstimatedCost] = useState(null);
+  const [aiConfirming, setAiConfirming] = useState(false);
+  const [aiContentPreview, setAiContentPreview] = useState('');
 
   // ── Reading tab state ───────────────────────────────────────────────────
   const [readingQuestions, setReadingQuestions] = useState([]);
@@ -161,8 +165,8 @@ export default function QuestionnaireBuilder() {
     [handleManualAdd],
   );
 
-  // ── AI: generate questions ──────────────────────────────────────────────
-  const handleAIGenerate = useCallback(async () => {
+  // ── AI: estimate cost & show confirmation ─────────────────────────────
+  const handleAIEstimate = useCallback(async () => {
     const sectionIdNum = Number(aiSectionId);
     if (!sectionIdNum || isNaN(sectionIdNum)) return;
 
@@ -174,14 +178,61 @@ export default function QuestionnaireBuilder() {
       return;
     }
 
-    setAiGenerating(true);
     setAiError(null);
     setAiQuestions([]);
     setAiSelected(new Set());
     setAiCost(null);
+    setAiEstimatedCost(null);
+    setAiConfirming(false);
 
     try {
       // Load markdown for the selected section
+      const note = await db.notes
+        .where('sectionId')
+        .equals(sectionIdNum)
+        .first();
+
+      if (!note || !note.text) {
+        setAiError('Esta sección no tiene contenido. Extrae el PDF primero.');
+        return;
+      }
+
+      const provider = createProvider(providerId, apiKey);
+
+      // Show preview + cost estimate before generating
+      const preview = note.text.length > 300
+        ? note.text.substring(0, 300) + '...'
+        : note.text;
+
+      let estimated = null;
+      if (typeof provider.estimateRequestCost === 'function') {
+        estimated = provider.estimateRequestCost(note.text);
+      }
+
+      setAiContentPreview(preview);
+      setAiEstimatedCost(estimated);
+      setAiConfirming(true);
+    } catch (err) {
+      console.error('Error estimating cost:', err);
+      setAiError(
+        err.message || 'Error al preparar la generación. Verifica tu clave API.',
+      );
+    }
+  }, [aiSectionId]);
+
+  // ── AI: generate questions (after confirmation) ────────────────────────
+  const handleAIConfirmGenerate = useCallback(async () => {
+    const sectionIdNum = Number(aiSectionId);
+    if (!sectionIdNum || isNaN(sectionIdNum)) return;
+
+    const providerId = localStorage.getItem(LS_PROVIDER_KEY) || 'deepseek';
+    const apiKey = localStorage.getItem(lsApiKey(providerId));
+
+    setAiGenerating(true);
+    setAiConfirming(false);
+    setAiError(null);
+
+    try {
       const note = await db.notes
         .where('sectionId')
         .equals(sectionIdNum)
@@ -193,9 +244,11 @@ export default function QuestionnaireBuilder() {
         return;
       }
 
-      // Create provider and generate
       const provider = createProvider(providerId, apiKey);
-      const result = await provider.generateQuestions(note.text, { count: 5 });
+      const result = await provider.generateQuestions(note.text, {
+        count: 5,
+        language: aiLanguage,
+      });
 
       if (result.error) {
         setAiError(result.error);
@@ -203,11 +256,6 @@ export default function QuestionnaireBuilder() {
         setAiQuestions(result.questions);
       } else {
         setAiError('No se generaron preguntas. Intenta con otra sección.');
-      }
-
-      // Show cost if available
-      if (result.cost) {
-        setAiCost(result.cost);
       }
     } catch (err) {
       console.error('AI generation error:', err);
@@ -217,7 +265,13 @@ export default function QuestionnaireBuilder() {
     } finally {
       setAiGenerating(false);
     }
-  }, [aiSectionId]);
+  }, [aiSectionId, aiLanguage]);
+
+  const cancelAIConfirm = useCallback(() => {
+    setAiConfirming(false);
+    setAiEstimatedCost(null);
+    setAiContentPreview('');
+  }, []);
 
   const toggleAISelected = useCallback((index) => {
     setAiSelected((prev) => {
@@ -562,32 +616,111 @@ export default function QuestionnaireBuilder() {
               </select>
             </div>
 
-            {/* Generate button */}
-            <button
-              type="button"
-              onClick={handleAIGenerate}
-              disabled={aiGenerating || sections.length === 0}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all shadow-sm"
-              style={{ minHeight: 'var(--touch-target-min)' }}
-            >
-              {aiGenerating ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  Generando preguntas...
-                </>
-              ) : (
-                <>
-                  <span>🤖</span>
-                  Generar preguntas con IA
-                </>
-              )}
-            </button>
+            {/* Language selector */}
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor="ai-language" className="text-xs font-medium text-gray-600">
+                Idioma de las preguntas
+              </label>
+              <select
+                id="ai-language"
+                value={aiLanguage}
+                onChange={(e) => {
+                  setAiLanguage(e.target.value);
+                  localStorage.setItem('sa:language', e.target.value);
+                }}
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                style={{ minHeight: 'var(--touch-target-min)' }}
+              >
+                <option value="es">Español — las preguntas se generan en español</option>
+                <option value="en">English — questions will be generated in English</option>
+              </select>
+            </div>
 
-            {/* Cost estimate */}
-            {aiCost && (
-              <p className="text-xs text-gray-400 text-center">
-                Costo estimado: ${aiCost.totalCost?.toFixed?.(4) ?? '≈0.01'} USD
-              </p>
+            {/* Confirmation step: show cost + preview before generating */}
+            {aiConfirming ? (
+              <div className="flex flex-col gap-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+                <div className="flex items-start gap-2">
+                  <span className="text-amber-600 text-lg mt-0.5">⚠️</span>
+                  <div>
+                    <p className="text-sm font-semibold text-amber-900">
+                      ¿Confirmas la generación?
+                    </p>
+                    <p className="text-xs text-amber-700 mt-1">
+                      Se usarán tokens de tu API key para generar preguntas.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Content preview */}
+                <div className="bg-white rounded-lg p-3 max-h-24 overflow-y-auto">
+                  <p className="text-xs text-gray-400 font-medium mb-1">Vista previa del texto:</p>
+                  <p className="text-xs text-gray-600 leading-relaxed">{aiContentPreview}</p>
+                </div>
+
+                {/* Cost estimate */}
+                {aiEstimatedCost && (
+                  <div className="bg-white rounded-lg p-3 flex flex-col gap-1">
+                    <p className="text-xs text-gray-400 font-medium">Costo estimado:</p>
+                    <div className="flex items-center gap-4 text-sm">
+                      <span className="text-gray-600">
+                        ~{aiEstimatedCost.inputTokens.toLocaleString()} tokens de entrada
+                      </span>
+                      <span className="font-semibold text-amber-700">
+                        ${aiEstimatedCost.totalCost < 0.0001
+                          ? '< 0.0001'
+                          : aiEstimatedCost.totalCost.toFixed(5)}
+                        {' '}USD
+                      </span>
+                    </div>
+                    <p className="text-xs text-gray-400 mt-1">
+                      {aiLanguage === 'en'
+                        ? 'The actual cost depends on the length of the AI response.'
+                        : 'El costo real depende de la longitud de la respuesta de la IA.'}
+                    </p>
+                  </div>
+                )}
+
+                {/* Confirm / Cancel */}
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={cancelAIConfirm}
+                    className="flex-1 px-4 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                    style={{ minHeight: 'var(--touch-target-min)' }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleAIConfirmGenerate}
+                    className="flex-1 px-4 py-2.5 text-sm font-semibold rounded-xl bg-amber-600 text-white hover:bg-amber-700 transition-colors shadow-sm"
+                    style={{ minHeight: 'var(--touch-target-min)' }}
+                  >
+                    Sí, generar preguntas
+                  </button>
+                </div>
+              </div>
+            ) : (
+              /* Estimate cost button (not confirming, not generating) */
+              <button
+                type="button"
+                onClick={handleAIEstimate}
+                disabled={aiGenerating || sections.length === 0}
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all shadow-sm"
+                style={{ minHeight: 'var(--touch-target-min)' }}
+              >
+                {aiGenerating ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    Generando preguntas...
+                  </>
+                ) : (
+                  <>
+                    <span>🤖</span>
+                    Generar preguntas con IA
+                  </>
+                )}
+              </button>
             )}
 
             {/* AI error */}

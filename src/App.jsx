@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import Layout from './components/Layout.jsx';
+import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import useKeyboardAvoidance from './hooks/useKeyboardAvoidance.js';
 import db from './services/db.js';
 
@@ -88,6 +89,7 @@ export default function App() {
 
   return (
     <Suspense fallback={<Loading />}>
+      <OnboardingTutorial />
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />

@@ -16,7 +16,7 @@ import {
   normalizeQuestions,
   classifyError,
   AIError,
-  QUESTION_SYSTEM_PROMPT,
+  buildSystemPrompt,
 } from './shared.js';
 
 /** @type {import('../../types/ai.js').ProviderConfig} */
@@ -59,7 +59,7 @@ export class OpenAIProvider {
    * @returns {Promise<import('../../types/ai.js').GenerateResult>}
    */
   async generateQuestions(markdown, options = {}) {
-    const { count = 5, maxInputTokens } = options;
+    const { count = 5, maxInputTokens, language = 'es' } = options;
 
     if (!markdown || !markdown.trim()) {
       return { questions: [], error: 'No hay texto para generar preguntas.' };
@@ -70,8 +70,8 @@ export class OpenAIProvider {
     const { text: truncated, truncated: wasTruncated, originalTokens, finalTokens } =
       truncateToMaxTokens(markdown, tokenLimit);
 
-    // Build the request
-    const buildRequest = () => this.#makeRequest(truncated, count);
+    // Build the request with language-aware prompt
+    const buildRequest = () => this.#makeRequest(truncated, count, language);
 
     try {
       const parsed = await callWithRetry(buildRequest, { maxRetries: 1, backoffMs: 1000 });
@@ -98,7 +98,12 @@ export class OpenAIProvider {
    * Make the actual API call.
    * @private
    */
-  async #makeRequest(markdown, count) {
+  async #makeRequest(markdown, count, language = 'es') {
+    const systemPrompt = buildSystemPrompt(language);
+    const userPrompt = language === 'en'
+      ? `Generate ${count} study questions based on this text:\n\n${markdown}`
+      : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}`;
+
     const response = await fetch(CONFIG.endpoint, {
       method: 'POST',
       headers: {
@@ -108,8 +113,8 @@ export class OpenAIProvider {
       body: JSON.stringify({
         model: CONFIG.model,
         messages: [
-          { role: 'system', content: QUESTION_SYSTEM_PROMPT },
-          { role: 'user', content: `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}` },
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt },
         ],
         temperature: 0.7,
         max_tokens: 2000,

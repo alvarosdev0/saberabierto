@@ -1,5 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Home, Upload, RefreshCw, Settings } from 'lucide-react';
 
 export default function Layout() {
   const [updateReady, setUpdateReady] = useState(false);
@@ -88,7 +89,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">📚</span>
+          <Home size={22} />
           <span>Inicio</span>
         </NavLink>
         <NavLink
@@ -98,7 +99,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">📄</span>
+          <Upload size={22} />
           <span>Subir</span>
         </NavLink>
         <NavLink
@@ -108,7 +109,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">🔄</span>
+          <RefreshCw size={22} />
           <span>Repaso</span>
         </NavLink>
         <NavLink
@@ -118,7 +119,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">⚙️</span>
+          <Settings size={22} />
           <span>Ajustes</span>
         </NavLink>
       </nav>

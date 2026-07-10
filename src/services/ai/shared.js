@@ -320,15 +320,37 @@ export function normalizeQuestions(parsed, maxCount) {
   return maxCount ? questions.slice(0, maxCount) : questions;
 }
 
-// ── System Prompt ──────────────────────────────────────────────────────────
+// ── System Prompt Builder ──────────────────────────────────────────────────
 
 /**
- * System prompt for question generation (Spanish).
+ * Build the system prompt for AI question generation in the specified language.
  *
- * Instructs the AI to generate study questions in three categories
- * from the provided Markdown content.
+ * @param {'es'|'en'} [language='es'] — Language for the prompt and questions
+ * @returns {string} System prompt text
  */
-export const QUESTION_SYSTEM_PROMPT = `Eres un tutor experto en metodología de estudio. Tu tarea es generar preguntas de estudio basadas en el texto proporcionado.
+export function buildSystemPrompt(language = 'es') {
+  if (language === 'en') {
+    return `You are an expert study methodology tutor. Your task is to generate study questions based on the provided text.
+
+Generate questions of the following types:
+- "keyword": Questions about key concepts, definitions, and important terms.
+- "methodological": Questions about procedures, methodologies, steps, and processes.
+- "combative": Challenging questions that force connecting ideas, inferring implications, or applying concepts to new contexts.
+
+Rules:
+1. Questions must be in English.
+2. Each question must be clear, specific, and based on the provided text.
+3. Do NOT invent information not present in the text.
+4. Generate a balanced mix of all three types.
+
+Respond ONLY with a JSON array of objects with this structure:
+[{"text": "Question?", "type": "keyword"}]
+
+Do not include explanations, comments, or additional text. Only the JSON array.`;
+  }
+
+  // Default: Spanish
+  return `Eres un tutor experto en metodología de estudio. Tu tarea es generar preguntas de estudio basadas en el texto proporcionado.
 
 Genera preguntas de los siguientes tipos:
 - "keyword": Preguntas sobre conceptos clave, definiciones y términos importantes.
@@ -345,3 +367,4 @@ Responde ÚNICAMENTE con un array JSON de objetos con esta estructura:
 [{"text": "¿Pregunta?", "type": "keyword"}]
 
 No incluyas explicaciones, comentarios ni texto adicional. Solo el array JSON.`;
+}

@@ -21,7 +21,7 @@ import {
   normalizeQuestions,
   classifyError,
   AIError,
-  QUESTION_SYSTEM_PROMPT,
+  buildSystemPrompt,
 } from './shared.js';
 
 /** @type {import('../../types/ai.js').ProviderConfig} */
@@ -65,7 +65,7 @@ export class GeminiProvider {
    * @returns {Promise<import('../../types/ai.js').GenerateResult>}
    */
   async generateQuestions(markdown, options = {}) {
-    const { count = 5, maxInputTokens } = options;
+    const { count = 5, maxInputTokens, language = 'es' } = options;
 
     if (!markdown || !markdown.trim()) {
       return { questions: [], error: 'No hay texto para generar preguntas.' };
@@ -77,7 +77,7 @@ export class GeminiProvider {
       truncateToMaxTokens(markdown, tokenLimit);
 
     // Build the request
-    const buildRequest = () => this.#makeRequest(truncated, count);
+    const buildRequest = () => this.#makeRequest(truncated, count, language);
 
     try {
       const parsed = await callWithRetry(buildRequest, { maxRetries: 1, backoffMs: 1000 });
@@ -111,7 +111,12 @@ export class GeminiProvider {
    *
    * @private
    */
-  async #makeRequest(markdown, count) {
+  async #makeRequest(markdown, count, language = 'es') {
+    const systemPrompt = buildSystemPrompt(language);
+    const userPrompt = language === 'en'
+      ? `Generate ${count} study questions based on this text:\n\n${markdown}`
+      : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}`;
+
     const url = `${CONFIG.endpoint}/${CONFIG.model}:generateContent?key=${encodeURIComponent(this.#apiKey)}`;
 
     const response = await fetch(url, {
@@ -121,12 +126,12 @@ export class GeminiProvider {
       },
       body: JSON.stringify({
         systemInstruction: {
-          parts: [{ text: QUESTION_SYSTEM_PROMPT }],
+          parts: [{ text: systemPrompt }],
         },
         contents: [
           {
             parts: [
-              { text: `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}` },
+              { text: userPrompt },
             ],
           },
         ],

@@ -122,12 +122,14 @@ export default function MarkdownEditor() {
           ),
         );
 
+        const language = location.state?.language || localStorage.getItem('sa:language') || 'es';
         const newSessionId = await db.sessions.add({
           subject,
           status: 'active',
           createdAt: new Date(),
           updatedAt: new Date(),
           sourceFile: filename,
+          language,
         });
 
         // 2. Split markdown into sections

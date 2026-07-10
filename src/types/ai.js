@@ -25,6 +25,7 @@
  * @typedef {object} GenerateOptions
  * @property {number} [count=5]           — Número de preguntas a generar
  * @property {number} [maxInputTokens=6000] — Máximo de tokens de entrada antes de truncar
+ * @property {'es'|'en'} [language='es']  — Idioma de las preguntas generadas
  */
 
 /**
