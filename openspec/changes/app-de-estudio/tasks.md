@@ -104,11 +104,11 @@ Chain strategy: stacked-to-main
 
 ## Phase 7: Testing (PR 6)
 
-- [ ] 7.1 Write unit tests for `calculateNextReview`: all SM-2 score paths, edge cases (0 reps, 6-month cap, reset)
-- [ ] 7.2 Write unit tests for `markdown-converter`: headings, paragraphs, lists, plain text input
-- [ ] 7.3 Write unit tests for AI provider parsers: valid JSON, malformed JSON, empty response, error paths
-- [ ] 7.4 Write unit tests for Dexie query helpers: session filtering, due reviews, gap queries
-- [ ] 7.5 Write integration tests (React Testing Library): upload→extract→convert→generate→session→review flow
-- [ ] 7.6 Write integration tests: offline state → error messages, re-connection recovery
-- [ ] 7.7 Configure Lighthouse CI check for PWA audit score ≥90
-- [ ] 7.8 Test edge cases: empty PDF, scanned-only PDF, API 401/5xx, zero questions generated, concurrent Dexie writes
+- [x] 7.1 Write unit tests for `calculateNextReview`: all SM-2 score paths, edge cases (0 reps, 6-month cap, reset)
+- [x] 7.2 Write unit tests for `markdown-converter`: headings, paragraphs, lists, plain text input
+- [x] 7.3 Write unit tests for AI provider parsers: valid JSON, malformed JSON, empty response, error paths
+- [x] 7.4 Write unit tests for Dexie query helpers: session filtering, due reviews, gap queries
+- [x] 7.5 Write integration tests (React Testing Library): upload→extract→convert→generate→session→review flow
+- [x] 7.6 Write integration tests: offline state → error messages, re-connection recovery
+- [x] 7.7 Configure Lighthouse CI check for PWA audit score ≥90
+- [x] 7.8 Test edge cases: empty PDF, scanned-only PDF, API 401/5xx, zero questions generated, concurrent Dexie writes
