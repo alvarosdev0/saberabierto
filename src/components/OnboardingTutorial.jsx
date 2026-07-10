@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BookOpen, Upload, RefreshCw, Settings, ChevronRight, ChevronLeft, X, Check } from 'lucide-react';
+import { BookOpen, Upload, RefreshCw, Sparkles, ChevronRight, ChevronLeft, X, Check } from 'lucide-react';
 
 const LS_TUTORIAL_DONE = 'sa:tutorial:done';
 
@@ -33,11 +33,11 @@ const STEPS = [
     color: 'bg-amber-500',
   },
   {
-    icon: Settings,
+    icon: Sparkles,
     title: 'IA opcional',
     description:
-      'Conecta tu API key de Gemini, OpenAI, DeepSeek o Anthropic para generar preguntas automáticamente desde tus textos. Sin tarjeta, hay opciones gratuitas.',
-    color: 'bg-primary',
+      'Conecta tu API key de Gemini, OpenAI, DeepSeek o Anthropic para acelerar la creación de preguntas. La app funciona completa sin IA — tú decides.',
+    color: 'bg-pink-500',
   },
 ];
 
