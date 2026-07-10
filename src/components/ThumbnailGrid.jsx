@@ -1,21 +1,19 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+
+const BATCH_SIZE = 20;
 
 /**
- * Virtual-scroll thumbnail grid for PDF page selection.
+ * Thumbnail grid with "Ver más" pagination.
  *
- * Uses scroll-based visibility calculation to render only ~8-10 visible
- * thumbnails regardless of total page count. Each thumbnail is ~150 px tall.
- *
- * Selection modes:
- *   - Individual tap: toggles a single page
- *   - Range mode: tap start → tap end → all pages in between selected
+ * Shows thumbnails in batches of {BATCH_SIZE}. Click "Ver más"
+ * to load the next batch. No infinite scroll — you control the load.
  *
  * @param {object} props
  * @param {Array<{ pageNumber: number, url?: string }>} props.pages
  * @param {Set<number>} props.selectedPages
  * @param {(pageNumber: number) => void} props.onTogglePage
  * @param {(start: number, end: number) => void} props.onSelectRange
- * @param {(pageNumber: number) => void} [props.onNeedRender] - Called when a thumbnail enters viewport and needs rendering
+ * @param {(pageNumber: number) => void} [props.onNeedRender] - Called when a thumbnail enters viewport
  */
 export default function ThumbnailGrid({
   pages,
@@ -24,61 +22,32 @@ export default function ThumbnailGrid({
   onSelectRange,
   onNeedRender,
 }) {
-  const containerRef = useRef(null);
-
-  const THUMBNAIL_HEIGHT = 150;
-  const VISIBLE_COUNT = 10;
-
-  const [visibleStart, setVisibleStart] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(BATCH_SIZE);
   const [rangeMode, setRangeMode] = useState(false);
   const [rangeStart, setRangeStart] = useState(null);
+  const renderedRef = useRef(/** @type {Set<number>} */ (new Set()));
+  const containerRef = useRef(null);
 
-  // Notify parent of pages that need rendering
-  const notifiedRef = useRef(/** @type {Set<number>} */ (new Set()));
+  const loadedPages = pages.slice(0, visibleCount);
+  const hasMore = visibleCount < pages.length;
+  const selectedCount = selectedPages.size;
 
-  // --- Scroll handler: compute visible range ---
-  const handleScroll = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const itemHeight = THUMBNAIL_HEIGHT;
-    const scrollTop = container.scrollTop;
-    const startIdx = Math.max(0, Math.floor(scrollTop / itemHeight) - 2);
-    setVisibleStart(startIdx);
-
-    // Notify parent of newly visible pages that don't have URLs yet
-    if (onNeedRender) {
-      const visibleCount = Math.ceil(container.clientHeight / itemHeight) + 4;
-      const endIdx = Math.min(pages.length, startIdx + visibleCount);
-
-      for (let i = startIdx; i < endIdx; i++) {
-        const pn = pages[i]?.pageNumber;
-        if (pn && !notifiedRef.current.has(pn)) {
-          notifiedRef.current.add(pn);
-          onNeedRender(pn);
-        }
+  // Notify parent of pages that need thumbnail rendering
+  useEffect(() => {
+    loadedPages.forEach((p) => {
+      if (p && !renderedRef.current.has(p.pageNumber)) {
+        renderedRef.current.add(p.pageNumber);
+        onNeedRender?.(p.pageNumber);
       }
-    }
-  }, [pages, onNeedRender]);
+    });
+  }, [loadedPages, onNeedRender]);
 
-  // Attach scroll listener
+  // Reset rendered set when pages change (new PDF loaded)
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    container.addEventListener('scroll', handleScroll, { passive: true });
-    // Initial calculation on next tick so layout is settled
-    requestAnimationFrame(handleScroll);
-
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [handleScroll]);
-
-  // Reset notified set when pages change (new PDF loaded)
-  useEffect(() => {
-    notifiedRef.current.clear();
+    renderedRef.current.clear();
   }, [pages]);
 
-  // --- Range selection: tap first page, then second ---
+  // --- Range selection ---
   const handlePageTap = useCallback(
     (pageNumber) => {
       if (rangeMode) {
@@ -108,16 +77,9 @@ export default function ThumbnailGrid({
     setRangeStart(null);
   };
 
-  // --- Visible range ---
-  const visibleEnd = Math.min(visibleStart + VISIBLE_COUNT + 4, pages.length);
-  const visiblePages = pages.slice(visibleStart, visibleEnd);
-
-  // Spacer heights for virtual scroll
-  const topSpacerHeight = visibleStart * THUMBNAIL_HEIGHT;
-  const bottomSpacerHeight =
-    Math.max(0, pages.length - visibleEnd) * THUMBNAIL_HEIGHT;
-
-  const selectedCount = selectedPages.size;
+  const loadMore = () => {
+    setVisibleCount((prev) => Math.min(prev + BATCH_SIZE, pages.length));
+  };
 
   return (
     <div className="flex flex-col gap-3">
@@ -182,17 +144,13 @@ export default function ThumbnailGrid({
         </div>
       )}
 
-      {/* Virtual scroll container */}
+      {/* Thumbnail grid */}
       <div
         ref={containerRef}
-        className="overflow-y-auto rounded-lg border border-gray-200 bg-white"
-        style={{ height: `${VISIBLE_COUNT * THUMBNAIL_HEIGHT}px` }}
+        className="rounded-lg border border-gray-200 bg-white p-2"
       >
-        {/* Top spacer */}
-        <div style={{ height: `${topSpacerHeight}px` }} />
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-2">
-          {visiblePages.map((page) => {
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+          {loadedPages.map((page) => {
             const isSelected = selectedPages.has(page.pageNumber);
             const isRangePending =
               rangeMode && rangeStart !== null && page.pageNumber === rangeStart;
@@ -208,10 +166,21 @@ export default function ThumbnailGrid({
             );
           })}
         </div>
-
-        {/* Bottom spacer */}
-        <div style={{ height: `${bottomSpacerHeight}px` }} />
       </div>
+
+      {/* Ver más button */}
+      {hasMore && (
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={loadMore}
+            className="w-full max-w-xs px-4 py-3 text-sm font-medium rounded-lg border-2 border-dashed border-purple-300 text-purple-600 hover:bg-purple-50 hover:border-purple-400 transition-colors"
+            style={{ minHeight: '44px' }}
+          >
+            Ver más ({visibleCount} de {pages.length})
+          </button>
+        </div>
+      )}
     </div>
   );
 }
