@@ -180,7 +180,7 @@ export default function Home() {
               </div>
               <div className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-purple-500 rounded-full transition-all duration-500"
+                  className="h-full bg-purple-500 rounded-full transition-[width] duration-500"
                   style={{ width: `${progressPct}%` }}
                 />
               </div>
@@ -244,7 +244,7 @@ export default function Home() {
           <button
             type="button"
             onClick={() => navigate('/review')}
-            className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-left hover:border-purple-200 hover:shadow-sm transition-all"
+            className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-left hover:border-purple-200 hover:shadow-sm transition-[border-color,box-shadow]"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
             <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">

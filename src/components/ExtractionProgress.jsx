@@ -79,7 +79,7 @@ export default function ExtractionProgress({ progress, wordCount }) {
       {/* Progress bar */}
       <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <div
-          className={`h-full rounded-full transition-all duration-300 ease-out ${
+          className={`h-full rounded-full transition-[width] duration-300 ease-out ${
             isDone ? 'bg-green-500' : 'bg-purple-500'
           }`}
           style={{ width: `${isDone ? 100 : percent}%` }}

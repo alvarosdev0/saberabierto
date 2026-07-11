@@ -360,7 +360,7 @@ export default function PDFUpload() {
             onClick={handleExtract}
             disabled={selectedPages.size === 0}
             className={`
-              w-full py-3 rounded-xl font-bold text-lg transition-all duration-150
+              w-full py-3 rounded-xl font-bold text-lg transition-colors duration-150
               ${selectedPages.size > 0
                 ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-md'
                 : 'bg-gray-200 text-gray-400 cursor-not-allowed'

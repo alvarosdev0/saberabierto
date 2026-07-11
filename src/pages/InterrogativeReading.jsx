@@ -294,7 +294,7 @@ export default function InterrogativeReading() {
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando sección...</p>
+          <p className="text-gray-500 text-sm">Cargando sección…</p>
         </div>
       </div>
     );
@@ -321,6 +321,7 @@ export default function InterrogativeReading() {
 
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
+      <h1 className="sr-only">Lectura Interrogativa</h1>
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
       <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <SectionNavigator
@@ -363,7 +364,7 @@ export default function InterrogativeReading() {
                 `}
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
-                <OptIcon size={14} />
+                <OptIcon size={14} aria-hidden="true" />
                 {opt.label}
               </button>
             );
@@ -374,8 +375,8 @@ export default function InterrogativeReading() {
       {/* ── Generating indicator ────────────────────────────────────────── */}
       {generating && (
         <div className="px-4 py-2 bg-purple-50 border-b border-purple-100 flex items-center gap-2 text-xs text-purple-700">
-          <Loader2 size={14} className="animate-spin" />
-          Generando preguntas con IA...
+          <Loader2 size={14} className="animate-spin" aria-hidden="true" />
+          Generando preguntas con IA…
         </div>
       )}
 
@@ -406,7 +407,7 @@ export default function InterrogativeReading() {
               style={{ minHeight: '44px', minWidth: '44px' }}
               aria-label="Ocultar contenido"
             >
-              <ChevronDown size={16} />
+              <ChevronDown size={16} aria-hidden="true" />
               Ocultar
             </button>
           </div>
@@ -425,7 +426,7 @@ export default function InterrogativeReading() {
             className="flex items-center justify-center gap-1 px-3 py-2 text-xs text-purple-600 bg-purple-50 border-b border-gray-100 md:hidden"
             style={{ minHeight: '44px' }}
           >
-            <ChevronUp size={16} />
+            <ChevronUp size={16} aria-hidden="true" />
             Ver contenido
           </button>
         )}
@@ -451,7 +452,7 @@ export default function InterrogativeReading() {
                     }`}
                     style={{ minHeight: 'var(--touch-target-min)' }}
                   >
-                    <tab.icon size={16} />
+                    <tab.icon size={16} aria-hidden="true" />
                     <span className="hidden sm:inline">{tab.label}</span>
                   </button>
                 ))}
@@ -461,7 +462,7 @@ export default function InterrogativeReading() {
               <div className="flex-1 overflow-y-auto p-3">
                 {filteredQuestions.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-center gap-2">
-                    <Sparkles size={32} className="text-gray-300" />
+                    <Sparkles size={32} className="text-gray-300" aria-hidden="true" />
                     <p className="text-sm text-gray-500">
                       No hay preguntas generadas de este tipo.
                     </p>
@@ -570,7 +571,7 @@ export default function InterrogativeReading() {
                     }`}
                     style={{ minHeight: 'var(--touch-target-min)' }}
                   >
-                    <tab.icon size={16} />
+                    <tab.icon size={16} aria-hidden="true" />
                     <span className="hidden sm:inline">{tab.label}</span>
                   </button>
                 ))}

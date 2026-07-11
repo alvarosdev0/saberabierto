@@ -59,7 +59,7 @@ export default function SectionNavigator({
         style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         aria-label="Sección anterior"
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
       </button>
@@ -78,7 +78,7 @@ export default function SectionNavigator({
         style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         aria-label="Sección siguiente"
       >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
         </svg>
       </button>

@@ -105,7 +105,7 @@ export default function OnboardingTutorial() {
             {STEPS.map((_, i) => (
               <div
                 key={i}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   i === step
                     ? 'bg-purple-600 w-6'
                     : i < step

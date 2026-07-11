@@ -99,7 +99,7 @@ export default function FileDropzone({ onFileSelected }) {
         className={`
           relative flex flex-col items-center justify-center gap-3 p-8
           border-2 border-dashed rounded-xl cursor-pointer
-          transition-all duration-150 text-center
+          transition-[border-color,background-color,transform] duration-150 text-center
           ${dragOver
             ? 'border-purple-400 bg-purple-50 scale-[1.02]'
             : selectedFile
@@ -127,6 +127,7 @@ export default function FileDropzone({ onFileSelected }) {
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={2}
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -151,6 +152,7 @@ export default function FileDropzone({ onFileSelected }) {
               viewBox="0 0 24 24"
               stroke="currentColor"
               strokeWidth={1.5}
+              aria-hidden="true"
             >
               <path
                 strokeLinecap="round"
@@ -180,6 +182,7 @@ export default function FileDropzone({ onFileSelected }) {
             viewBox="0 0 24 24"
             stroke="currentColor"
             strokeWidth={2}
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"

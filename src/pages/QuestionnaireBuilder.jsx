@@ -706,7 +706,7 @@ export default function QuestionnaireBuilder() {
                 type="button"
                 onClick={handleAIEstimate}
                 disabled={aiGenerating || sections.length === 0}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all shadow-sm"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-semibold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-[background,box-shadow] shadow-sm"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 {aiGenerating ? (
@@ -763,7 +763,7 @@ export default function QuestionnaireBuilder() {
                         type="button"
                         onClick={() => toggleAISelected(idx)}
                         className={`
-                          w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-all
+                          w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-[border-color,background-color]
                           ${aiSelected.has(idx)
                             ? 'border-purple-300 bg-purple-50'
                             : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
@@ -869,7 +869,7 @@ export default function QuestionnaireBuilder() {
                         type="button"
                         onClick={() => toggleReadingSelected(q.id)}
                         className={`
-                          w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-all
+                          w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-[border-color,background-color]
                           ${readingSelected.has(q.id)
                             ? 'border-purple-300 bg-purple-50'
                             : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
@@ -987,7 +987,7 @@ function ItemList({ items, sections, onDelete }) {
           <button
             type="button"
             onClick={() => onDelete(item.id)}
-            className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all"
+            className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
             style={{ minHeight: '24px', minWidth: '24px' }}
             aria-label={`Eliminar "${item.questionText?.substring(0, 30)}..."`}
           >

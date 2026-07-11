@@ -36,7 +36,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(0)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <span className="text-lg">😕</span>
@@ -51,7 +51,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(1)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 active:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 active:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <span className="text-lg">🤔</span>
@@ -66,7 +66,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(2)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 active:bg-purple-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 active:bg-purple-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <span className="text-lg">💪</span>
@@ -81,7 +81,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(3)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 active:bg-emerald-200 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 active:bg-emerald-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <span className="text-lg">✨</span>

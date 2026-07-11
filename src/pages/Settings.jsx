@@ -124,6 +124,7 @@ export default function Settings() {
   const fileInputRef = useRef(null);
   const [importStatus, setImportStatus] = useState(null);
   const [importing, setImporting] = useState(false);
+  const [confirmImport, setConfirmImport] = useState(null);
 
   const handleImportClick = useCallback(() => {
     fileInputRef.current?.click();
@@ -134,16 +135,33 @@ export default function Settings() {
     if (!file) return;
 
     setImportStatus(null);
-    setImporting(true);
 
     try {
       const text = await file.text();
       const parsed = JSON.parse(text);
 
-      // Validate structure
       if (!parsed.version || !parsed.app || !parsed.data) {
         throw new Error('El archivo no tiene el formato esperado de SaberAbierto.');
       }
+
+      const totalRecords = Object.values(parsed.data).reduce((sum, arr) => sum + (Array.isArray(arr) ? arr.length : 0), 0);
+      setConfirmImport({ parsed, text, totalRecords, fileName: file.name });
+    } catch (err) {
+      setImportStatus({
+        type: 'error',
+        message: `Error al leer el archivo: ${err.message || 'Formato no válido'}`,
+      });
+    }
+  }, []);
+
+  const handleConfirmImport = useCallback(async () => {
+    if (!confirmImport) return;
+    const { parsed } = confirmImport;
+    setConfirmImport(null);
+    setImporting(true);
+
+    try {
+      const parsed = confirmImport.parsed;
 
       const tables = [
         'sessions',
@@ -278,7 +296,7 @@ export default function Settings() {
             <button
               type="button"
               onClick={handleSaveKey}
-              className={`px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-150 ${
+              className={`px-6 py-3 rounded-lg text-sm font-semibold transition-colors duration-150 ${
                 keySaved
                   ? 'bg-green-100 text-green-700'
                   : 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm'
@@ -388,33 +406,68 @@ export default function Settings() {
             className="hidden"
             aria-hidden="true"
           />
-          <button
-            type="button"
-            onClick={handleImportClick}
-            disabled={importing}
-            className={`self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default transition-colors ${
-              importing
-                ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
-                : 'text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700'
-            }`}
-            style={{ minHeight: '44px', minWidth: '44px' }}
-          >
-            <span className="flex items-center gap-2">
-              {importing ? (
-                <>
-                  <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                  Importando...
-                </>
-              ) : (
-                <>
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                  </svg>
-                  Importar datos
-                </>
-              )}
-            </span>
-          </button>
+
+          {/* Confirmation dialog */}
+          {confirmImport && (
+            <div className="p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
+              <p className="text-sm font-semibold text-red-800 dark:text-red-300 mb-2">
+                ⚠️ ¿Estás seguro?
+              </p>
+              <p className="text-xs text-red-700 dark:text-red-400 mb-3">
+                Se reemplazarán todos tus datos actuales con los del archivo{' '}
+                <strong>{confirmImport.fileName}</strong> ({confirmImport.totalRecords} registros).
+                Esta acción no se puede deshacer.
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setConfirmImport(null)}
+                  className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                  style={{ minHeight: '44px' }}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmImport}
+                  className="flex-1 px-3 py-2 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
+                  style={{ minHeight: '44px' }}
+                >
+                  Sí, reemplazar datos
+                </button>
+              </div>
+            </div>
+          )}
+
+          {!confirmImport && (
+            <button
+              type="button"
+              onClick={handleImportClick}
+              disabled={importing}
+              className={`self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default transition-colors ${
+                importing
+                  ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
+                  : 'text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+              style={{ minHeight: '44px', minWidth: '44px' }}
+            >
+              <span className="flex items-center gap-2">
+                {importing ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
+                    Importando…
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                    </svg>
+                    Importar datos
+                  </>
+                )}
+              </span>
+            </button>
+          )}
           {importStatus && (
             <p
               className={`text-xs px-3 py-2 rounded-md ${

@@ -89,7 +89,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <Home size={22} />
+          <Home size={22} aria-hidden="true" />
           <span>Inicio</span>
         </NavLink>
         <NavLink
@@ -99,7 +99,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <Upload size={22} />
+          <Upload size={22} aria-hidden="true" />
           <span>Subir</span>
         </NavLink>
         <NavLink
@@ -109,7 +109,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <RefreshCw size={22} />
+          <RefreshCw size={22} aria-hidden="true" />
           <span>Repaso</span>
         </NavLink>
         <NavLink
@@ -119,7 +119,7 @@ export default function Layout() {
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <Settings size={22} />
+          <Settings size={22} aria-hidden="true" />
           <span>Ajustes</span>
         </NavLink>
       </nav>

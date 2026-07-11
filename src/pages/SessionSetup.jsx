@@ -179,7 +179,7 @@ export default function SessionSetup() {
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando sesión...</p>
+          <p className="text-gray-500 text-sm">Cargando sesión…</p>
         </div>
       </div>
     );
@@ -209,7 +209,7 @@ export default function SessionSetup() {
       {/* ── Sections list ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
         <h2 className="text-sm font-semibold text-gray-700 dark:text-foreground flex items-center gap-2">
-          <BookOpen size={16} />
+          <BookOpen size={16} aria-hidden="true" />
           Secciones detectadas ({sections.length})
         </h2>
 
@@ -265,7 +265,7 @@ export default function SessionSetup() {
           <button
             type="button"
             onClick={() => { setMode('manual'); setGenDone(false); }}
-            className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-all ${
+            className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-[border-color,background-color,box-shadow] ${
               mode === 'manual'
                 ? 'border-purple-500 bg-purple-50 shadow-md'
                 : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
@@ -274,7 +274,7 @@ export default function SessionSetup() {
           >
             <div className="flex items-center gap-2">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'manual' ? 'bg-purple-600' : 'bg-gray-100'}`}>
-                <Brain size={22} className={mode === 'manual' ? 'text-white' : 'text-gray-500'} />
+                <Brain size={22} aria-hidden="true" className={mode === 'manual' ? 'text-white' : 'text-gray-500'} />
               </div>
               <span className={`font-bold ${mode === 'manual' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
                 ✍️ Yo mismo
@@ -295,7 +295,7 @@ export default function SessionSetup() {
           <button
             type="button"
             onClick={() => { setMode('ai'); setGenDone(false); }}
-            className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-all ${
+            className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-[border-color,background-color,box-shadow] ${
               mode === 'ai'
                 ? 'border-purple-500 bg-purple-50 shadow-md'
                 : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
@@ -304,7 +304,7 @@ export default function SessionSetup() {
           >
             <div className="flex items-center gap-2">
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'ai' ? 'bg-purple-600' : 'bg-gray-100'}`}>
-                <Sparkles size={22} className={mode === 'ai' ? 'text-white' : 'text-gray-500'} />
+                <Sparkles size={22} aria-hidden="true" className={mode === 'ai' ? 'text-white' : 'text-gray-500'} />
               </div>
               <span className={`font-bold ${mode === 'ai' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
                 🤖 Asistido por IA
@@ -380,17 +380,17 @@ export default function SessionSetup() {
           type="button"
           onClick={handleGenerateAll}
           disabled={generating || notes.length === 0}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-all shadow-lg"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-[background,box-shadow] shadow-lg"
           style={{ minHeight: 'var(--touch-target-min)' }}
         >
           {generating ? (
             <>
-              <Loader2 size={18} className="animate-spin" />
-              Generando preguntas... {genProgress.current}/{genProgress.total}
+              <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+              Generando preguntas… {genProgress.current}/{genProgress.total}
             </>
           ) : (
             <>
-              <Sparkles size={18} />
+              <Sparkles size={18} aria-hidden="true" />
               Generar preguntas con IA ({notes.length} secciones)
             </>
           )}
@@ -401,12 +401,12 @@ export default function SessionSetup() {
       {generating && (
         <div className="bg-purple-50 border border-purple-200 rounded-xl p-3">
           <div className="flex items-center justify-between text-xs text-purple-700 mb-2">
-            <span>Generando preguntas...</span>
+            <span>Generando preguntas…</span>
             <span>{genProgress.current}/{genProgress.total}</span>
           </div>
           <div className="w-full h-2 bg-purple-200 rounded-full overflow-hidden">
             <div
-              className="h-full bg-purple-600 rounded-full transition-all duration-300"
+              className="h-full bg-purple-600 rounded-full transition-[width] duration-300"
               style={{ width: `${(genProgress.current / (genProgress.total || 1)) * 100}%` }}
             />
           </div>
@@ -416,7 +416,7 @@ export default function SessionSetup() {
       {/* ── Generation done ──────────────────────────────────────────────── */}
       {genDone && (
         <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-2">
-          <Check size={18} className="text-emerald-600" />
+          <Check size={18} aria-hidden="true" className="text-emerald-600" />
           <span className="text-sm text-emerald-800 font-medium">
             Preguntas generadas para todas las secciones. ¡Ya puedes empezar!
           </span>
@@ -430,11 +430,11 @@ export default function SessionSetup() {
             type="button"
             onClick={handleStart}
             disabled={sections.length === 0}
-            className="w-full max-w-3xl mx-auto flex items-center justify-center gap-2 px-4 py-4 text-base font-bold rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-xl"
+            className="w-full max-w-3xl mx-auto flex items-center justify-center gap-2 px-4 py-4 text-base font-bold rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-[background-color,box-shadow] shadow-xl"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
             {mode === 'ai' ? '▶ Revisar preguntas y empezar' : '▶ Empezar a estudiar'}
-            <ChevronRight size={20} />
+            <ChevronRight size={20} aria-hidden="true" />
           </button>
         </div>
       )}

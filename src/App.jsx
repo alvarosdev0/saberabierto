@@ -19,7 +19,7 @@ const SessionSetup = lazy(() => import('./pages/SessionSetup.jsx'));
 function Loading() {
   return (
     <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
-      <p className="text-gray-400">Cargando...</p>
+      <p className="text-gray-400">Cargando…</p>
     </div>
   );
 }

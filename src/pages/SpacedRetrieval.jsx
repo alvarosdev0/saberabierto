@@ -333,7 +333,7 @@ export default function SpacedRetrieval() {
           </div>
           <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
-              className="h-full bg-purple-500 rounded-full transition-all duration-300"
+              className="h-full bg-purple-500 rounded-full transition-[width] duration-300"
               style={{ width: `${((currentIndex) / dueQueue.length) * 100}%` }}
             />
           </div>
@@ -443,7 +443,7 @@ export default function SpacedRetrieval() {
             {/* Card */}
             <div
               className={`
-                relative w-full rounded-2xl border-2 transition-all duration-300
+                relative w-full rounded-2xl border-2 transition-[border-color,background-color,box-shadow] duration-300
                 ${flipped
                   ? 'border-emerald-300 bg-emerald-50'
                   : 'border-purple-200 bg-white dark:bg-surface cursor-pointer hover:border-purple-300 hover:shadow-md'

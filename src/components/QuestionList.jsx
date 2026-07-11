@@ -125,7 +125,7 @@ export default function QuestionList({
               <button
                 type="button"
                 onClick={() => onDelete(q.id)}
-                className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all"
+                className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
                 style={{ minHeight: '24px', minWidth: '24px' }}
                 aria-label="Eliminar pregunta"
               >

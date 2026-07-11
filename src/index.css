@@ -25,6 +25,7 @@
 
 /* ── Dark theme ── */
 :root.dark {
+  color-scheme: dark;
   --color-primary: #A78BFA;
   --color-on-primary: #0F172A;
   --color-secondary: #8B5CF6;
@@ -107,6 +108,17 @@ body {
 button, a, input, select, textarea, [role="button"], [role="tab"] {
   min-height: var(--touch-target-min);
   min-width: var(--touch-target-min);
+  touch-action: manipulation;
+}
+
+/* ── Respect reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* ── Headings ── */

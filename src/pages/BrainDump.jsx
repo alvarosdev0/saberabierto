@@ -188,7 +188,7 @@ export default function BrainDump() {
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando notas...</p>
+          <p className="text-gray-500 text-sm">Cargando notas…</p>
         </div>
       </div>
     );
@@ -215,6 +215,7 @@ export default function BrainDump() {
 
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
+      <h1 className="sr-only">Brain Dump</h1>
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
       <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <SectionNavigator
@@ -236,6 +237,7 @@ export default function BrainDump() {
           {currentSection?.title || 'Brain Dump'}
         </h2>
         <span
+          aria-live="polite"
           className={`text-xs transition-opacity duration-300 ${
             saved ? 'opacity-100 text-emerald-600' : 'opacity-0'
           }`}
@@ -337,7 +339,7 @@ export default function BrainDump() {
 
 /** Rich placeholder encouraging free-form notes. */
 function getPlaceholder() {
-  return `Escribe todo lo que recuerdes de esta sección...
+  return `Escribe todo lo que recuerdes de esta sección…
 
 Consejos:
 • No mires el texto — escribe de memoria
