@@ -121,6 +121,7 @@ export default function SessionSetup() {
 
     const language = session?.language || localStorage.getItem('sa:language') || 'es';
     const provider = createProvider(providerId, apiKey);
+    let lastErr = null;
 
     for (let i = 0; i < notes.length; i++) {
       const note = notes[i];
@@ -135,8 +136,9 @@ export default function SessionSetup() {
           language,
         });
 
-        if (result.questions && result.questions.length > 0) {
-          // Save generated questions to the questions table
+        if (result.error) {
+          lastErr = result.error;
+        } else if (result.questions && result.questions.length > 0) {
           for (const q of result.questions) {
             await db.questions.add({
               sectionId: note.sectionId,
@@ -148,6 +150,7 @@ export default function SessionSetup() {
           }
         }
       } catch (err) {
+        lastErr = err.message || 'Error desconocido al generar preguntas.';
         console.warn(`Error generating questions for section ${i + 1}:`, err);
       }
 
@@ -156,6 +159,10 @@ export default function SessionSetup() {
 
     setGenerating(false);
     setGenDone(true);
+
+    if (lastErr) {
+      setError(lastErr);
+    }
   }, [notes, session?.language]);
 
   // ── Start studying ─────────────────────────────────────────────────────
