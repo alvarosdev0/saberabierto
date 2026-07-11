@@ -29,15 +29,45 @@
   --color-on-primary: #0F172A;
   --color-secondary: #8B5CF6;
   --color-accent: #34D399;
-  --color-background: #0F172A;
+  --color-background: #020617;
   --color-foreground: #F1F5F9;
   --color-destructive: #F87171;
-  --color-surface: #1E293B;
-  --color-muted-bg: #1E293B;
+  --color-surface: #0F172A;
+  --color-surface-2: #1E293B;
+  --color-muted-bg: #0F172A;
   --color-muted-text: #94A3B8;
-  --color-border: #334155;
+  --color-border: #1E293B;
   --color-ring: #A78BFA;
 }
+
+/* ── Dark mode overrides for hardcoded Tailwind classes ── */
+.dark .bg-white { background-color: var(--color-surface) !important; }
+.dark .bg-gray-50 { background-color: var(--color-surface-2) !important; }
+.dark .bg-gray-100 { background-color: var(--color-surface-2) !important; }
+.dark .bg-amber-50 { background-color: #451a03 !important; }
+.dark .bg-red-50 { background-color: #450a0a !important; }
+.dark .bg-emerald-50 { background-color: #052e16 !important; }
+.dark .bg-purple-50 { background-color: #2e1065 !important; }
+.dark .bg-purple-100 { background-color: #3b0764 !important; }
+.dark .bg-amber-100 { background-color: #451a03 !important; }
+.dark .bg-gray-200 { background-color: #1e293b !important; }
+
+.dark .text-gray-500 { color: #94a3b8 !important; }
+.dark .text-gray-600 { color: #cbd5e1 !important; }
+.dark .text-gray-700 { color: #e2e8f0 !important; }
+.dark .text-gray-800 { color: #f1f5f9 !important; }
+.dark .text-gray-400 { color: #64748b !important; }
+.dark .text-amber-800 { color: #fbbf24 !important; }
+.dark .text-amber-900 { color: #f59e0b !important; }
+
+.dark .border-gray-100 { border-color: #1e293b !important; }
+.dark .border-gray-200 { border-color: #1e293b !important; }
+.dark .border-gray-300 { border-color: #334155 !important; }
+.dark .border-amber-200 { border-color: #78350f !important; }
+.dark .border-red-200 { border-color: #7f1d1d !important; }
+.dark .border-purple-200 { border-color: #3b0764 !important; }
+.dark .border-purple-300 { border-color: #581c87 !important; }
+.dark .border-amber-50 { border-color: #451a03 !important; }
 
 /* ── Backward-compatible aliases ── */
 :root {
