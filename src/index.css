@@ -1,6 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --color-emerald-600: #047857;
+}
+
 /* ── Class-based dark mode (toggle .dark on <html>) ── */
 @variant dark (&:where(.dark, .dark *));
 
@@ -9,7 +13,7 @@
   --color-primary: #7C3AED;
   --color-on-primary: #FFFFFF;
   --color-secondary: #8B5CF6;
-  --color-accent: #059669;
+  --color-accent: #047857;
   --color-background: #FAF5FF;
   --color-foreground: #0F172A;
   --color-destructive: #DC2626;
