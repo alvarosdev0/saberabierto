@@ -40,7 +40,7 @@ export const PROVIDER_META = {
   deepseek: { name: 'DeepSeek', model: 'deepseek-chat' },
   openai: { name: 'OpenAI', model: 'gpt-4o-mini' },
   anthropic: { name: 'Anthropic', model: 'claude-3-5-haiku' },
-  gemini: { name: 'Gemini', model: 'gemini-2.5-flash-lite' },
+  gemini: { name: 'Gemini', model: 'gemini-3.1-flash-lite' },
 };
 
 /**

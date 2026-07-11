@@ -28,9 +28,9 @@ import {
 const CONFIG = {
   name: 'Gemini',
   endpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
-  model: 'gemini-2.5-flash-lite',
-  // You can also use: gemini-2.0-flash, gemini-flash-latest, gemini-2.5-flash, gemini-2.5-flash-lite
-  // Paid tier pricing (free tier has daily rate limits)
+  model: 'gemini-3.1-flash-lite',
+  // También: gemini-3.5-flash, gemini-flash-latest, gemini-2.0-flash
+  // Pricing free tier (1,500 req/dia gratis, sin tarjeta)
   costPer1MInputTokens: 0.075,
   costPer1MOutputTokens: 0.30,
 };
