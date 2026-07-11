@@ -7,13 +7,17 @@
 /* ── Light theme (default) ── */
 :root {
   --color-primary: #7C3AED;
+  --color-on-primary: #FFFFFF;
+  --color-secondary: #8B5CF6;
   --color-accent: #059669;
-  --color-bg: #FAF5FF;
-  --color-fg: #0F172A;
+  --color-background: #FAF5FF;
+  --color-foreground: #0F172A;
   --color-destructive: #DC2626;
   --color-surface: #FFFFFF;
-  --color-muted: #6B7280;
-  --color-border: #E5E7EB;
+  --color-muted-bg: #F7F3FD;
+  --color-muted-text: #6B7280;
+  --color-border: #EFE7FC;
+  --color-ring: #7C3AED;
   --font-heading: 'Baloo 2', system-ui, sans-serif;
   --font-body: system-ui, -apple-system, sans-serif;
   --touch-target-min: 44px;
@@ -22,18 +26,30 @@
 /* ── Dark theme ── */
 :root.dark {
   --color-primary: #A78BFA;
+  --color-on-primary: #0F172A;
+  --color-secondary: #8B5CF6;
   --color-accent: #34D399;
-  --color-bg: #0F172A;
-  --color-fg: #F1F5F9;
+  --color-background: #0F172A;
+  --color-foreground: #F1F5F9;
   --color-destructive: #F87171;
   --color-surface: #1E293B;
-  --color-muted: #94A3B8;
+  --color-muted-bg: #1E293B;
+  --color-muted-text: #94A3B8;
   --color-border: #334155;
+  --color-ring: #A78BFA;
+}
+
+/* ── Backward-compatible aliases ── */
+:root {
+  --color-bg: var(--color-background);
+  --color-fg: var(--color-foreground);
+  --color-muted: var(--color-muted-text);
 }
 
 /* ── Utility classes using CSS variables ── */
 .bg-surface { background-color: var(--color-surface); }
-.text-muted { color: var(--color-muted); }
+.bg-muted { background-color: var(--color-muted-bg); }
+.text-muted { color: var(--color-muted-text); }
 .border-default { border-color: var(--color-border); }
 
 /* ── Base layer ── */
