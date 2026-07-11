@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { Suspense, lazy, useEffect } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import Layout from './components/Layout.jsx';
 import OnboardingTutorial from './components/OnboardingTutorial.jsx';
 import useKeyboardAvoidance from './hooks/useKeyboardAvoidance.js';
@@ -65,6 +65,20 @@ async function countDueReviews() {
 }
 
 export default function App() {
+  // ── Dark mode initialization ─────────────────────────────────────────────
+  useEffect(() => {
+    const saved = localStorage.getItem('sa:dark-mode');
+    if (saved === '1') {
+      document.documentElement.classList.add('dark');
+    } else if (saved === '0') {
+      document.documentElement.classList.remove('dark');
+    }
+    // If not set, respect system preference
+    else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
   // ── Keyboard avoidance (mobile) ──────────────────────────────────────────
   useKeyboardAvoidance();
 

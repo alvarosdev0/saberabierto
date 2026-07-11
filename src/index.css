@@ -1,17 +1,40 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* ── Design Tokens (CSS custom properties) ── */
+/* ── Class-based dark mode (toggle .dark on <html>) ── */
+@variant dark (&:where(.dark, .dark *));
+
+/* ── Light theme (default) ── */
 :root {
   --color-primary: #7C3AED;
   --color-accent: #059669;
   --color-bg: #FAF5FF;
   --color-fg: #0F172A;
   --color-destructive: #DC2626;
+  --color-surface: #FFFFFF;
+  --color-muted: #6B7280;
+  --color-border: #E5E7EB;
   --font-heading: 'Baloo 2', system-ui, sans-serif;
   --font-body: system-ui, -apple-system, sans-serif;
   --touch-target-min: 44px;
 }
+
+/* ── Dark theme ── */
+:root.dark {
+  --color-primary: #A78BFA;
+  --color-accent: #34D399;
+  --color-bg: #0F172A;
+  --color-fg: #F1F5F9;
+  --color-destructive: #F87171;
+  --color-surface: #1E293B;
+  --color-muted: #94A3B8;
+  --color-border: #334155;
+}
+
+/* ── Utility classes using CSS variables ── */
+.bg-surface { background-color: var(--color-surface); }
+.text-muted { color: var(--color-muted); }
+.border-default { border-color: var(--color-border); }
 
 /* ── Base layer ── */
 html {
@@ -20,6 +43,7 @@ html {
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 body {

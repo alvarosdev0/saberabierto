@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import { PROVIDER_IDS, PROVIDER_META } from '../services/ai/index.js';
 import db from '../services/db.js';
 
@@ -34,6 +35,9 @@ export default function Settings() {
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
   const [keySaved, setKeySaved] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    return document.documentElement.classList.contains('dark');
+  });
 
   // Load saved API key for the selected provider
   useEffect(() => {
@@ -288,6 +292,43 @@ export default function Settings() {
             Tu clave se almacena solo en este dispositivo (localStorage).
             Nunca se envía a nuestros servidores.
           </p>
+        </div>
+      </section>
+
+      {/* ── Dark Mode ──────────────────────────────────────────────────────── */}
+      <section className="flex flex-col gap-4">
+        <h2 className="text-lg font-bold text-gray-800">Apariencia</h2>
+        <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl">
+          <div>
+            <h3 className="text-sm font-semibold text-gray-700">Modo oscuro</h3>
+            <p className="text-xs text-gray-500 mt-1">
+              Cambia entre tema claro y oscuro
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const isDark = document.documentElement.classList.toggle('dark');
+              localStorage.setItem('sa:dark-mode', isDark ? '1' : '0');
+              // Force re-render
+              setDarkMode(isDark);
+            }}
+            className={`relative w-14 h-7 rounded-full transition-colors ${
+              darkMode ? 'bg-purple-600' : 'bg-gray-300'
+            }`}
+            style={{ minHeight: 'auto', minWidth: 'auto' }}
+            aria-label="Alternar modo oscuro"
+            role="switch"
+            aria-checked={darkMode}
+          >
+            <span
+              className={`absolute top-0.5 left-0.5 w-6 h-6 bg-white rounded-full shadow-sm flex items-center justify-center transition-transform ${
+                darkMode ? 'translate-x-7' : ''
+              }`}
+            >
+              {darkMode ? <Moon size={12} className="text-purple-600" /> : <Sun size={12} className="text-amber-500" />}
+            </span>
+          </button>
         </div>
       </section>
 
