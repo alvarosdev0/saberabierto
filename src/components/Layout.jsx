@@ -66,7 +66,7 @@ export default function Layout() {
           <span className="text-sm">Nueva versión disponible</span>
           <button
             onClick={handleUpdate}
-            className="bg-white text-primary px-3 py-1 rounded text-sm font-medium"
+            className="bg-white dark:bg-surface text-primary px-3 py-1 rounded text-sm font-medium"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
             Actualizar
@@ -85,7 +85,7 @@ export default function Layout() {
           to="/"
           end
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -95,7 +95,7 @@ export default function Layout() {
         <NavLink
           to="/upload"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -105,7 +105,7 @@ export default function Layout() {
         <NavLink
           to="/review"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -115,7 +115,7 @@ export default function Layout() {
         <NavLink
           to="/settings"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
