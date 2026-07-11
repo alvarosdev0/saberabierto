@@ -14,6 +14,7 @@ const BrainDump = lazy(() => import('./pages/BrainDump.jsx'));
 const QuestionnaireBuilder = lazy(() => import('./pages/QuestionnaireBuilder.jsx'));
 const SpacedRetrieval = lazy(() => import('./pages/SpacedRetrieval.jsx'));
 const Settings = lazy(() => import('./pages/Settings.jsx'));
+const SessionSetup = lazy(() => import('./pages/SessionSetup.jsx'));
 
 function Loading() {
   return (
@@ -94,6 +95,7 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<PDFUpload />} />
+          <Route path="/session/:id/setup" element={<SessionSetup />} />
           <Route path="/session/:id/section/:sectionId/review-md" element={<MarkdownEditor />} />
           <Route path="/session/:id/section/:sectionId/read" element={<InterrogativeReading />} />
           <Route path="/session/:id/section/:sectionId/brain-dump" element={<BrainDump />} />

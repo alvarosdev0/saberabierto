@@ -181,9 +181,9 @@ export default function MarkdownEditor() {
 
         setAccepted(true);
 
-        // 6. Navigate to first section's interrogative reading
+        // 6. Navigate to session setup to choose study mode
         navigate(
-          `/session/${newSessionId}/section/${sectionIds[0]}/read`,
+          `/session/${newSessionId}/setup`,
           { replace: true },
         );
       } catch (err) {
