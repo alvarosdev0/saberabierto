@@ -456,18 +456,18 @@ export default function QuestionnaireBuilder() {
   return (
     <div className="flex flex-col min-h-[calc(100dvh-64px)]">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="flex-shrink-0 px-4 py-4 bg-white border-b border-gray-100">
+      <header className="flex-shrink-0 px-4 py-4 bg-white dark:bg-surface border-b border-gray-100 dark:border-default">
         <h1 className="text-xl font-bold text-purple-900 font-heading">
           Cuestionario
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 dark:text-muted mt-1">
           Crea preguntas de examen para repaso espaciado
         </p>
       </header>
 
       {/* ── Tab bar ─────────────────────────────────────────────────────── */}
       <div
-        className="flex bg-white border-b border-gray-100 flex-shrink-0"
+        className="flex bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0"
         role="tablist"
         aria-label="Origen de preguntas"
       >
@@ -482,7 +482,7 @@ export default function QuestionnaireBuilder() {
               flex-1 flex items-center justify-center gap-1 px-2 py-3 text-xs font-medium transition-colors border-b-2
               ${tab.key === activeTab
                 ? 'border-purple-600 text-purple-700 bg-purple-50'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
+                : 'border-transparent text-gray-500 dark:text-muted hover:text-gray-700 dark:hover:text-foreground'
               }
             `}
             style={{ minHeight: 'var(--touch-target-min)' }}
@@ -524,14 +524,14 @@ export default function QuestionnaireBuilder() {
 
             {/* Section selector */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="manual-section" className="text-xs font-medium text-gray-600">
+              <label htmlFor="manual-section" className="text-xs font-medium text-gray-600 dark:text-muted">
                 Sección
               </label>
               <select
                 id="manual-section"
                 value={manualSectionId}
                 onChange={(e) => setManualSectionId(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 {sections.length === 0 ? (
@@ -558,7 +558,7 @@ export default function QuestionnaireBuilder() {
                 onKeyDown={handleManualKeyDown}
                 placeholder="Escribe tu pregunta de examen..."
                 rows={3}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none resize-y"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none resize-y"
               />
             </div>
 
@@ -576,7 +576,7 @@ export default function QuestionnaireBuilder() {
             {/* Existing items */}
             {items.length > 0 && (
               <div className="mt-2">
-                <p className="text-xs font-medium text-gray-500 mb-2">
+                <p className="text-xs font-medium text-gray-500 dark:text-muted mb-2">
                   {items.length} pregunta{items.length !== 1 ? 's' : ''} en el cuestionario
                 </p>
                 <ItemList
@@ -594,14 +594,14 @@ export default function QuestionnaireBuilder() {
           <div className="flex flex-col gap-4">
             {/* Section selector */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="ai-section" className="text-xs font-medium text-gray-600">
+              <label htmlFor="ai-section" className="text-xs font-medium text-gray-600 dark:text-muted">
                 Sección para generar preguntas
               </label>
               <select
                 id="ai-section"
                 value={aiSectionId}
                 onChange={(e) => setAiSectionId(e.target.value)}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 {sections.length === 0 ? (
@@ -618,7 +618,7 @@ export default function QuestionnaireBuilder() {
 
             {/* Language selector */}
             <div className="flex flex-col gap-1.5">
-              <label htmlFor="ai-language" className="text-xs font-medium text-gray-600">
+              <label htmlFor="ai-language" className="text-xs font-medium text-gray-600 dark:text-muted">
                 Idioma de las preguntas
               </label>
               <select
@@ -628,7 +628,7 @@ export default function QuestionnaireBuilder() {
                   setAiLanguage(e.target.value);
                   localStorage.setItem('sa:language', e.target.value);
                 }}
-                className="w-full px-3 py-2.5 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                className="w-full px-3 py-2.5 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 <option value="es">Español — las preguntas se generan en español</option>
@@ -685,7 +685,7 @@ export default function QuestionnaireBuilder() {
                   <button
                     type="button"
                     onClick={cancelAIConfirm}
-                    className="flex-1 px-4 py-2.5 text-sm font-medium rounded-xl border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                    className="flex-1 px-4 py-2.5 text-sm font-medium rounded-xl border border-gray-300 dark:border-default text-gray-600 dark:text-muted hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     style={{ minHeight: 'var(--touch-target-min)' }}
                   >
                     Cancelar
@@ -737,7 +737,7 @@ export default function QuestionnaireBuilder() {
             {aiQuestions.length > 0 && (
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-foreground">
                     {aiQuestions.length} pregunta{aiQuestions.length !== 1 ? 's' : ''} generada{aiQuestions.length !== 1 ? 's' : ''}
                   </p>
                   <button
@@ -766,7 +766,7 @@ export default function QuestionnaireBuilder() {
                           w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-all
                           ${aiSelected.has(idx)
                             ? 'border-purple-300 bg-purple-50'
-                            : 'border-gray-200 bg-white hover:border-gray-300'
+                            : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
                           }
                         `}
                         style={{ minHeight: 'var(--touch-target-min)' }}
@@ -785,7 +785,7 @@ export default function QuestionnaireBuilder() {
                           )}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-gray-800">{q.text}</p>
+                          <p className="text-sm text-gray-800 dark:text-foreground">{q.text}</p>
                           <p className="text-xs text-gray-400 mt-1 capitalize">{q.type}</p>
                         </div>
                       </button>
@@ -809,7 +809,7 @@ export default function QuestionnaireBuilder() {
             {/* Existing items */}
             {items.length > 0 && (
               <div className="mt-2">
-                <p className="text-xs font-medium text-gray-500 mb-2">
+                <p className="text-xs font-medium text-gray-500 dark:text-muted mb-2">
                   {items.length} pregunta{items.length !== 1 ? 's' : ''} en el cuestionario
                 </p>
                 <ItemList
@@ -841,7 +841,7 @@ export default function QuestionnaireBuilder() {
             ) : (
               <>
                 <div className="flex items-center justify-between">
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 dark:text-foreground">
                     {readingQuestions.length} pregunta{readingQuestions.length !== 1 ? 's' : ''} de lectura
                   </p>
                   <button
@@ -872,7 +872,7 @@ export default function QuestionnaireBuilder() {
                           w-full flex items-start gap-3 p-3 rounded-lg border text-left transition-all
                           ${readingSelected.has(q.id)
                             ? 'border-purple-300 bg-purple-50'
-                            : 'border-gray-200 bg-white hover:border-gray-300'
+                            : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
                           }
                         `}
                         style={{ minHeight: 'var(--touch-target-min)' }}
@@ -891,7 +891,7 @@ export default function QuestionnaireBuilder() {
                           )}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm text-gray-800">{q.text}</p>
+                          <p className="text-sm text-gray-800 dark:text-foreground">{q.text}</p>
                           <p className="text-xs text-gray-400 mt-1">
                             {getSectionLabel(q.sectionId)} · {q.type}
                           </p>
@@ -917,7 +917,7 @@ export default function QuestionnaireBuilder() {
             {/* Existing items */}
             {items.length > 0 && (
               <div className="mt-2">
-                <p className="text-xs font-medium text-gray-500 mb-2">
+                <p className="text-xs font-medium text-gray-500 dark:text-muted mb-2">
                   {items.length} pregunta{items.length !== 1 ? 's' : ''} en el cuestionario
                 </p>
                 <ItemList
@@ -932,7 +932,7 @@ export default function QuestionnaireBuilder() {
       </div>
 
       {/* ── Bottom action: go to review ───────────────────────────────── */}
-      <div className="flex-shrink-0 p-4 bg-white border-t border-gray-100">
+      <div className="flex-shrink-0 p-4 bg-white dark:bg-surface border-t border-gray-100 dark:border-default">
         <button
           type="button"
           onClick={handleGoReview}
@@ -970,13 +970,13 @@ function ItemList({ items, sections, onDelete }) {
       {items.map((item) => (
         <li
           key={item.id}
-          className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100 group"
+          className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-muted border border-gray-100 dark:border-default group"
         >
           <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">
             {item.source === 'ai' ? '🤖' : '✍️'}
           </span>
           <div className="flex-1 min-w-0">
-            <p className="text-sm text-gray-800">{item.questionText}</p>
+            <p className="text-sm text-gray-800 dark:text-foreground">{item.questionText}</p>
             <p className="text-xs text-gray-400 mt-0.5">
               {getSectionLabel(item.sectionId)}
               {item.source === 'ai' && item.sourceProvider && (

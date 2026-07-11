@@ -140,7 +140,7 @@ export default function ThumbnailGrid({
             </button>
           )}
 
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-muted">
             {selectedCount} de {pages.length} páginas
             {selectedCount > 0 && ' seleccionadas'}
           </span>
@@ -159,7 +159,7 @@ export default function ThumbnailGrid({
       {/* Thumbnail grid */}
       <div
         ref={containerRef}
-        className="rounded-lg border border-gray-200 bg-white p-2"
+        className="rounded-lg border border-gray-200 dark:border-default bg-white dark:bg-surface p-2"
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
           {loadedPages.map((page) => {
@@ -221,7 +221,7 @@ function ThumbnailItem({ page, isSelected, isRangeStart, onTap }) {
     >
       {/* Thumbnail image */}
       <div
-        className="w-full bg-gray-100 flex items-center justify-center overflow-hidden"
+        className="w-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center overflow-hidden"
         style={{ height: '100px' }}
       >
         {page.url ? (
@@ -252,7 +252,7 @@ function ThumbnailItem({ page, isSelected, isRangeStart, onTap }) {
       </div>
 
       {/* Page number label */}
-      <div className="w-full py-1 text-center text-xs font-medium text-gray-600 bg-gray-50">
+      <div className="w-full py-1 text-center text-xs font-medium text-gray-600 dark:text-muted bg-gray-50 dark:bg-muted">
         Pág. {page.pageNumber}
       </div>
 

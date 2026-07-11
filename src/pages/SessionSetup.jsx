@@ -201,14 +201,14 @@ export default function SessionSetup() {
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div>
         <h1 className="text-2xl font-bold text-purple-900">Configurar estudio</h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-muted mt-1">
           {session?.subject || 'Sesión de estudio'}
         </p>
       </div>
 
       {/* ── Sections list ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-foreground flex items-center gap-2">
           <BookOpen size={16} />
           Secciones detectadas ({sections.length})
         </h2>
@@ -221,18 +221,18 @@ export default function SessionSetup() {
           return (
             <div
               key={sec.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 flex flex-col gap-2"
+              className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 flex flex-col gap-2"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
                   <span className="text-xs text-gray-400 font-medium">Sección {i + 1}</span>
-                  <h3 className="font-semibold text-gray-800">{sec.title}</h3>
+                  <h3 className="font-semibold text-gray-800 dark:text-foreground">{sec.title}</h3>
                 </div>
                 <span className="text-xs text-gray-400 whitespace-nowrap">
                   {chars.toLocaleString()} chars · ~{tokens} tokens
                 </span>
               </div>
-              <p className="text-xs text-gray-500 leading-relaxed">
+              <p className="text-xs text-gray-500 dark:text-muted leading-relaxed">
                 {sec.title === 'Introducción'
                   ? 'Lee y comprende los fundamentos del tema para construir una base sólida antes de las preguntas.'
                   : 'Analiza los conceptos presentados y prepárate para formular preguntas que refuercen tu comprensión.'}
@@ -258,7 +258,7 @@ export default function SessionSetup() {
 
       {/* ── Mode selector ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold text-gray-700">Modo de estudio</h2>
+        <h2 className="text-sm font-semibold text-gray-700 dark:text-foreground">Modo de estudio</h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Manual mode */}
@@ -268,7 +268,7 @@ export default function SessionSetup() {
             className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-all ${
               mode === 'manual'
                 ? 'border-purple-500 bg-purple-50 shadow-md'
-                : 'border-gray-200 bg-white hover:border-gray-300'
+                : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
             }`}
             style={{ minHeight: '44px' }}
           >
@@ -276,12 +276,12 @@ export default function SessionSetup() {
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'manual' ? 'bg-purple-600' : 'bg-gray-100'}`}>
                 <Brain size={22} className={mode === 'manual' ? 'text-white' : 'text-gray-500'} />
               </div>
-              <span className={`font-bold ${mode === 'manual' ? 'text-purple-900' : 'text-gray-800'}`}>
+              <span className={`font-bold ${mode === 'manual' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
                 ✍️ Yo mismo
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 text-xs text-gray-600 leading-relaxed">
+            <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
               <p><strong>Tú</strong> lees el texto y escribes tus propias preguntas. El acto de formular preguntas refuerza la comprensión y la retención a largo plazo.</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Mayor retención</span>
@@ -298,7 +298,7 @@ export default function SessionSetup() {
             className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-all ${
               mode === 'ai'
                 ? 'border-purple-500 bg-purple-50 shadow-md'
-                : 'border-gray-200 bg-white hover:border-gray-300'
+                : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
             }`}
             style={{ minHeight: '44px' }}
           >
@@ -306,12 +306,12 @@ export default function SessionSetup() {
               <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'ai' ? 'bg-purple-600' : 'bg-gray-100'}`}>
                 <Sparkles size={22} className={mode === 'ai' ? 'text-white' : 'text-gray-500'} />
               </div>
-              <span className={`font-bold ${mode === 'ai' ? 'text-purple-900' : 'text-gray-800'}`}>
+              <span className={`font-bold ${mode === 'ai' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
                 🤖 Asistido por IA
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 text-xs text-gray-600 leading-relaxed">
+            <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
               <p>La IA analiza el texto y genera preguntas balanceadas de los 3 tipos. Luego puedes <strong>editarlas</strong>, descartarlas o mezclarlas con las tuyas.</p>
               <div className="flex flex-wrap gap-2 mt-1">
                 <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Más rápido</span>
@@ -321,17 +321,17 @@ export default function SessionSetup() {
 
               {/* Cost summary */}
               {costs && (
-                <div className="mt-2 p-2 bg-white rounded-lg border border-gray-100">
+                <div className="mt-2 p-2 bg-white dark:bg-surface rounded-lg border border-gray-100 dark:border-default">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500">Tokens totales:</span>
-                    <span className="font-medium text-gray-700">~{costs.totalTokens.toLocaleString()}</span>
+                    <span className="text-gray-500 dark:text-muted">Tokens totales:</span>
+                    <span className="font-medium text-gray-700 dark:text-foreground">~{costs.totalTokens.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs mt-1">
-                    <span className="text-gray-500">Proveedor:</span>
-                    <span className="font-medium text-gray-700">{costs.provider}</span>
+                    <span className="text-gray-500 dark:text-muted">Proveedor:</span>
+                    <span className="font-medium text-gray-700 dark:text-foreground">{costs.provider}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs mt-1 pt-1 border-t border-gray-100">
-                    <span className="text-gray-500">Costo estimado:</span>
+                  <div className="flex items-center justify-between text-xs mt-1 pt-1 border-t border-gray-100 dark:border-default">
+                    <span className="text-gray-500 dark:text-muted">Costo estimado:</span>
                     <span className={`font-bold ${costs.freeTier ? 'text-emerald-600' : 'text-amber-700'}`}>
                       {costs.freeTier
                         ? '🆓 Gratis (tier free)'
@@ -357,20 +357,20 @@ export default function SessionSetup() {
       </div>
 
       {/* ── Extra: Tooltip explaining modes further ──────────────────────── */}
-      <details className="text-xs text-gray-500 bg-gray-50 rounded-xl p-3">
-        <summary className="cursor-pointer font-medium text-gray-700 hover:text-purple-700">
+      <details className="text-xs text-gray-500 dark:text-muted bg-gray-50 dark:bg-muted rounded-xl p-3">
+        <summary className="cursor-pointer font-medium text-gray-700 dark:text-foreground hover:text-purple-700">
           ¿Cuál es la diferencia entre ambos modos?
         </summary>
         <div className="mt-3 flex flex-col gap-3">
-          <div className="bg-white rounded-lg p-3 border border-gray-100">
-            <p className="font-semibold text-gray-800 mb-1">✍️ Manual</p>
-            <p className="text-gray-600">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Brain Dump para consolidar.</p>
+          <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
+            <p className="font-semibold text-gray-800 dark:text-foreground mb-1">✍️ Manual</p>
+            <p className="text-gray-600 dark:text-muted">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Brain Dump para consolidar.</p>
           </div>
-          <div className="bg-white rounded-lg p-3 border border-gray-100">
-            <p className="font-semibold text-gray-800 mb-1">🤖 Asistido por IA</p>
-            <p className="text-gray-600">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</p>
+          <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
+            <p className="font-semibold text-gray-800 dark:text-foreground mb-1">🤖 Asistido por IA</p>
+            <p className="text-gray-600 dark:text-muted">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</p>
           </div>
-          <p className="text-gray-500 text-center text-xs">Ambos modos terminan en Brain Dump y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
+          <p className="text-gray-500 dark:text-muted text-center text-xs">Ambos modos terminan en Brain Dump y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
         </div>
       </details>
 
@@ -425,7 +425,7 @@ export default function SessionSetup() {
 
       {/* ── Start button ─────────────────────────────────────────────────── */}
       {(mode === 'manual' || genDone) && (
-        <div className="fixed bottom-16 left-0 right-0 p-4 bg-gradient-to-t from-white via-white to-transparent">
+        <div className="fixed bottom-16 left-0 right-0 p-4 bg-gradient-to-t from-white dark:from-surface via-white dark:via-surface to-transparent">
           <button
             type="button"
             onClick={handleStart}

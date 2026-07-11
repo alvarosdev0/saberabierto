@@ -51,9 +51,9 @@ export default function QuickStats() {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
-            <div className="h-3 w-16 bg-gray-200 rounded mb-2" />
-            <div className="h-6 w-10 bg-gray-200 rounded" />
+          <div key={i} className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
+            <div className="h-3 w-16 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+            <div className="h-6 w-10 bg-gray-200 dark:bg-gray-700 rounded" />
           </div>
         ))}
       </div>
@@ -78,12 +78,12 @@ export default function QuickStats() {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white rounded-xl border border-gray-200 p-3 transition-shadow hover:shadow-sm"
+          className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-3 transition-shadow hover:shadow-sm"
         >
-          <p className="text-[11px] text-gray-500 font-medium uppercase tracking-wide mb-1">
+          <p className="text-[11px] text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
             {card.label}
           </p>
-          <p className="text-lg font-bold text-gray-800 flex items-center gap-1.5">
+          <p className="text-lg font-bold text-gray-800 dark:text-foreground flex items-center gap-1.5">
             <span className="text-sm">{card.emoji}</span>
             {card.value}
           </p>

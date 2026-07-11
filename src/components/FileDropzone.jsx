@@ -104,7 +104,7 @@ export default function FileDropzone({ onFileSelected }) {
             ? 'border-purple-400 bg-purple-50 scale-[1.02]'
             : selectedFile
               ? 'border-green-300 bg-green-50'
-              : 'border-gray-300 bg-gray-50 hover:border-purple-300 hover:bg-purple-50/50'
+              : 'border-gray-300 bg-gray-50 dark:bg-muted hover:border-purple-300 hover:bg-purple-50/50'
           }
         `}
         style={{ minHeight: '160px' }}
@@ -135,8 +135,8 @@ export default function FileDropzone({ onFileSelected }) {
               />
             </svg>
             <div>
-              <p className="font-semibold text-gray-800">{selectedFile.name}</p>
-              <p className="text-sm text-gray-500">{formatSize(selectedFile.size)}</p>
+              <p className="font-semibold text-gray-800 dark:text-foreground">{selectedFile.name}</p>
+              <p className="text-sm text-gray-500 dark:text-muted">{formatSize(selectedFile.size)}</p>
             </div>
             <p className="text-xs text-gray-400">
               Haz clic o arrastra otro archivo para cambiar
@@ -159,10 +159,10 @@ export default function FileDropzone({ onFileSelected }) {
               />
             </svg>
             <div>
-              <p className="font-semibold text-gray-700">
+              <p className="font-semibold text-gray-700 dark:text-foreground">
                 Arrastra un PDF aquí
               </p>
-              <p className="text-sm text-gray-500">o haz clic para seleccionar</p>
+              <p className="text-sm text-gray-500 dark:text-muted">o haz clic para seleccionar</p>
             </div>
           </>
         )}

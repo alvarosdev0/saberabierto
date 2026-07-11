@@ -80,7 +80,7 @@ export default function Layout() {
       </main>
 
       {/* Bottom navigation — fixed, always visible */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-sm border-t border-gray-200 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around py-2 safe-area-bottom" role="navigation">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-surface/95 backdrop-blur-sm border-t border-gray-200 dark:border-default shadow-[0_-2px_10px_rgba(0,0,0,0.08)] flex justify-around py-2 safe-area-bottom" role="navigation">
         <NavLink
           to="/"
           end

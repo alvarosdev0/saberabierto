@@ -150,7 +150,7 @@ export default function Home() {
 
       {/* ── Active Session Card ───────────────────────────────────────── */}
       {!sessionLoading && activeSession && (
-        <section className="bg-white rounded-2xl border border-purple-200 p-5 shadow-sm">
+        <section className="bg-white dark:bg-surface rounded-2xl border border-purple-200 dark:border-default p-5 shadow-sm">
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="min-w-0">
               <p className="text-xs text-purple-500 font-medium uppercase tracking-wide mb-1">
@@ -178,7 +178,7 @@ export default function Home() {
                 <span>Progreso</span>
                 <span>{progressPct}%</span>
               </div>
-              <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-purple-500 rounded-full transition-all duration-500"
                   style={{ width: `${progressPct}%` }}
@@ -206,12 +206,12 @@ export default function Home() {
 
       {/* Empty state — no active session */}
       {!sessionLoading && !activeSession && (
-        <section className="bg-white rounded-2xl border border-gray-200 p-6 text-center shadow-sm">
+        <section className="bg-white dark:bg-surface rounded-2xl border border-gray-200 dark:border-default p-6 text-center shadow-sm">
           <span className="text-4xl mb-3 block">📚</span>
-          <h2 className="text-lg font-bold text-gray-700 mb-2 font-heading">
+          <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2 font-heading">
             Sin sesión activa
           </h2>
-          <p className="text-sm text-gray-500 mb-5">
+          <p className="text-sm text-gray-500 dark:text-muted mb-5">
             Sube un PDF para comenzar una nueva sesión de estudio con lectura
             interrogativa, brain dump y repaso espaciado.
           </p>
@@ -228,7 +228,7 @@ export default function Home() {
 
       {/* ── Quick Stats ────────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
           Estadísticas
         </h2>
         <QuickStats />
@@ -236,7 +236,7 @@ export default function Home() {
 
       {/* ── Next Review Countdown ──────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
           Repasos
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -244,10 +244,10 @@ export default function Home() {
           <button
             type="button"
             onClick={() => navigate('/review')}
-            className="bg-white rounded-xl border border-gray-200 p-4 text-left hover:border-purple-200 hover:shadow-sm transition-all"
+            className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-left hover:border-purple-200 hover:shadow-sm transition-all"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
-            <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+            <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
               Repaso espaciado
             </p>
             <p className="text-sm font-semibold text-purple-600">
@@ -259,7 +259,7 @@ export default function Home() {
 
       {/* ── Gaps to Revisit ────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
           Lagunas de conocimiento
         </h2>
         <GapsToRevisit />
@@ -267,19 +267,19 @@ export default function Home() {
 
       {/* ── Session History ────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
           Historial de sesiones
         </h2>
 
         {historyLoading && (
-          <div className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
-            <div className="h-4 w-full bg-gray-200 rounded mb-2" />
-            <div className="h-4 w-3/4 bg-gray-200 rounded" />
+          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
+            <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+            <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-700 rounded" />
           </div>
         )}
 
         {!historyLoading && pastSessions.length === 0 && (
-          <div className="bg-white rounded-xl border border-gray-200 p-4 text-center">
+          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-center">
             <p className="text-sm text-gray-400 italic">
               No hay sesiones anteriores. ¡Comienza tu primera sesión!
             </p>
@@ -287,14 +287,14 @@ export default function Home() {
         )}
 
         {!historyLoading && pastSessions.length > 0 && (
-          <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
+          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default divide-y divide-gray-100">
             {pastSessions.map((session) => (
               <div
                 key={session.id}
                 className="flex items-center justify-between px-4 py-3"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-800 truncate">
+                  <p className="text-sm font-medium text-gray-800 dark:text-foreground truncate">
                     {session.subject}
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5">

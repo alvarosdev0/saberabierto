@@ -211,7 +211,7 @@ export default function MarkdownEditor() {
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando contenido...</p>
+          <p className="text-gray-500 dark:text-muted text-sm">Cargando contenido...</p>
         </div>
       </div>
     );
@@ -225,8 +225,8 @@ export default function MarkdownEditor() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800">¡Sesión creada!</h2>
-        <p className="text-gray-600 text-center max-w-md">
+        <h2 className="text-xl font-bold text-gray-800 dark:text-foreground">¡Sesión creada!</h2>
+        <p className="text-gray-600 dark:text-muted text-center max-w-md">
           Tu sesión de estudio está lista. Redirigiendo a la primera sección...
         </p>
       </div>
@@ -238,7 +238,7 @@ export default function MarkdownEditor() {
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-600 text-sm">Creando sesión de estudio...</p>
+          <p className="text-gray-600 dark:text-muted text-sm">Creando sesión de estudio...</p>
           <p className="text-xs text-gray-400">
             Dividiendo {splitMarkdownIntoSections(markdown).length} secciones
           </p>
@@ -252,12 +252,12 @@ export default function MarkdownEditor() {
       {/* Page header */}
       <div>
         <h1 className="text-2xl font-bold text-purple-900">Revisar contenido</h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-muted mt-1">
           Revisa y edita el texto extraído antes de crear tu sesión de estudio.{' '}
           Corrige errores de formato y elimina el contenido irrelevante.
         </p>
         {filename && (
-          <div className="flex items-center gap-2 mt-2 text-sm text-gray-500">
+          <div className="flex items-center gap-2 mt-2 text-sm text-gray-500 dark:text-muted">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -300,7 +300,7 @@ export default function MarkdownEditor() {
 
       {/* Section info */}
       {sectionId && sectionId !== '0' && (
-        <div className="flex items-center gap-2 text-sm text-gray-500 bg-gray-50 px-3 py-2 rounded-lg">
+        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-muted bg-gray-50 dark:bg-muted px-3 py-2 rounded-lg">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>

@@ -78,14 +78,14 @@ export default function MarkdownEditor({
     <div className="flex flex-col gap-3">
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex items-center gap-1 bg-gray-100 dark:bg-muted rounded-lg p-1">
           <button
             type="button"
             onClick={() => setPreviewMode(false)}
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               !previewMode
                 ? 'bg-white text-purple-700 shadow-sm'
-                : 'text-gray-600 hover:text-gray-800'
+                : 'text-gray-600 dark:text-muted hover:text-gray-800 dark:hover:text-foreground'
             }`}
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
@@ -97,7 +97,7 @@ export default function MarkdownEditor({
             className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
               previewMode
                 ? 'bg-white text-purple-700 shadow-sm'
-                : 'text-gray-600 hover:text-gray-800'
+                : 'text-gray-600 dark:text-muted hover:text-gray-800 dark:hover:text-foreground'
             }`}
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
@@ -109,7 +109,7 @@ export default function MarkdownEditor({
           <button
             type="button"
             onClick={onRegenerate}
-            className="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
+            className="px-4 py-2 text-sm font-medium rounded-md border border-gray-300 dark:border-default text-gray-600 dark:text-muted hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
             style={{ minWidth: '44px', minHeight: '44px' }}
           >
             Regenerar desde PDF
@@ -128,14 +128,14 @@ export default function MarkdownEditor({
       {/* Editor / Preview */}
       {previewMode ? (
         <div
-          className="w-full min-h-[300px] p-4 rounded-lg border border-gray-200 bg-white overflow-auto font-sans text-gray-800 leading-relaxed"
+          className="w-full min-h-[300px] p-4 rounded-lg border border-gray-200 dark:border-default bg-white dark:bg-surface overflow-auto font-sans text-gray-800 dark:text-foreground leading-relaxed"
           dangerouslySetInnerHTML={{ __html: renderPreview(markdown) }}
         />
       ) : (
         <textarea
           value={markdown}
           onChange={handleChange}
-          className="w-full min-h-[300px] p-4 rounded-lg border border-gray-200 bg-white font-mono text-sm text-gray-800 resize-y focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+          className="w-full min-h-[300px] p-4 rounded-lg border border-gray-200 dark:border-default bg-white font-mono text-sm text-gray-800 dark:text-foreground resize-y focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
           style={{ fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace' }}
           placeholder="El texto extraído aparecerá aquí..."
           aria-label="Editor de Markdown"

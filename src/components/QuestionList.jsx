@@ -66,7 +66,7 @@ export default function QuestionList({
             onChange={(e) => setNewText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder={getPlaceholder(activeType)}
-            className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+            className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
             style={{ minHeight: 'var(--touch-target-min)' }}
             aria-label="Nueva pregunta"
           />
@@ -91,7 +91,7 @@ export default function QuestionList({
           {filtered.map((q) => (
             <li
               key={q.id || q.text}
-              className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 border border-gray-100 group"
+              className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 dark:bg-muted border border-gray-100 dark:border-default group"
             >
               {/* Answer checkbox */}
               <button
@@ -115,7 +115,7 @@ export default function QuestionList({
               {/* Question text */}
               <span
                 className={`flex-1 text-sm leading-relaxed ${
-                  q.answered ? 'text-gray-400 line-through' : 'text-gray-800'
+                  q.answered ? 'text-gray-400 line-through' : 'text-gray-800 dark:text-foreground'
                 }`}
               >
                 {q.text}

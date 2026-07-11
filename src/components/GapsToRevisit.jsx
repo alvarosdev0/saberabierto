@@ -94,10 +94,10 @@ export default function GapsToRevisit() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
-        <div className="h-3 w-24 bg-gray-200 rounded mb-3" />
-        <div className="h-4 w-full bg-gray-200 rounded mb-2" />
-        <div className="h-4 w-3/4 bg-gray-200 rounded" />
+      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
+        <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-3" />
+        <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+        <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-700 rounded" />
       </div>
     );
   }
@@ -105,9 +105,9 @@ export default function GapsToRevisit() {
   if (gaps.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
-      <div className="px-4 py-3 bg-gray-50 rounded-t-xl">
-        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">
+    <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default divide-y divide-gray-100">
+      <div className="px-4 py-3 bg-gray-50 dark:bg-muted rounded-t-xl">
+        <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide">
           Lagunas por revisar ({gaps.length})
         </p>
       </div>
@@ -125,7 +125,7 @@ export default function GapsToRevisit() {
         >
           <span className="text-sm mt-0.5 flex-shrink-0">🔍</span>
           <div className="min-w-0">
-            <p className="text-sm text-gray-800 leading-snug line-clamp-2">
+            <p className="text-sm text-gray-800 dark:text-foreground leading-snug line-clamp-2">
               {gap.gapText}
             </p>
             <p className="text-xs text-gray-400 mt-1 truncate">

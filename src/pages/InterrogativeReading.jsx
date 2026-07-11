@@ -322,7 +322,7 @@ export default function InterrogativeReading() {
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white border-b border-gray-100 flex-shrink-0">
+      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <SectionNavigator
           sections={sections}
           currentSectionId={sectionId}
@@ -332,13 +332,13 @@ export default function InterrogativeReading() {
       </header>
 
       {/* ── Mode switch + IA/Manual toggle ──────────────────────────────── */}
-      <div className="px-4 py-2 bg-white border-b border-gray-100 flex-shrink-0 flex items-center gap-2">
+      <div className="px-4 py-2 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0 flex items-center gap-2">
         <div className="flex-1">
           <ModeSwitch activeMode="read" />
         </div>
 
         {/* IA / Manual toggle chips */}
-        <div className="flex rounded-lg bg-gray-100 p-0.5" role="tablist" aria-label="Modo de generación">
+        <div className="flex rounded-lg bg-gray-100 dark:bg-muted p-0.5" role="tablist" aria-label="Modo de generación">
           {[
             { key: 'manual', label: '✍️ Manual', icon: Brain },
             { key: 'ai', label: '🤖 IA', icon: Sparkles },
@@ -357,7 +357,7 @@ export default function InterrogativeReading() {
                   flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors
                   ${isActive
                     ? 'bg-white text-purple-700 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
+                    : 'text-gray-500 dark:text-muted hover:text-gray-700 dark:hover:text-foreground'
                   }
                   ${generating ? 'opacity-50 cursor-not-allowed' : ''}
                 `}
@@ -394,7 +394,7 @@ export default function InterrogativeReading() {
         <div
           className={`
             ${showMarkdown ? 'flex' : 'hidden'}
-            md:flex md:w-1/2 flex-col overflow-hidden border-b md:border-b-0 md:border-r border-gray-100 bg-white
+            md:flex md:w-1/2 flex-col overflow-hidden border-b md:border-b-0 md:border-r border-gray-100 dark:border-default bg-white dark:bg-surface
           `}
         >
           <div className="flex items-center justify-between px-4 py-2 border-b border-gray-100 flex-shrink-0">
@@ -431,12 +431,12 @@ export default function InterrogativeReading() {
         )}
 
         {/* Right: Questions panel */}
-        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50">
+        <div className="flex-1 flex flex-col overflow-hidden bg-gray-50 dark:bg-muted">
           {effectiveMode === 'ai' ? (
             /* ── AI MODE: show generated questions with inline editing ── */
             <>
               {/* Type filter tabs */}
-              <div className="flex bg-white border-b border-gray-100 flex-shrink-0" role="tablist" aria-label="Tipos de pregunta">
+              <div className="flex bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0" role="tablist" aria-label="Tipos de pregunta">
                 {tabs.map((tab) => (
                   <button
                     key={tab.key}
@@ -479,7 +479,7 @@ export default function InterrogativeReading() {
                     {filteredQuestions.map((q) => (
                       <div
                         key={q.id}
-                        className="bg-white rounded-lg border border-gray-200 p-3 flex flex-col gap-2"
+                        className="bg-white dark:bg-surface rounded-lg border border-gray-200 dark:border-default p-3 flex flex-col gap-2"
                       >
                         {editingId === q.id ? (
                           /* Inline edit mode */
@@ -495,7 +495,7 @@ export default function InterrogativeReading() {
                               <button
                                 type="button"
                                 onClick={cancelEdit}
-                                className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                                className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 dark:border-default text-gray-600 dark:text-muted hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                                 style={{ minHeight: '44px' }}
                               >
                                 <X size={14} />
@@ -516,7 +516,7 @@ export default function InterrogativeReading() {
                           /* Display mode */
                           <>
                             <div className="flex items-start justify-between gap-2">
-                              <p className="text-sm text-gray-800 leading-relaxed flex-1">
+                              <p className="text-sm text-gray-800 dark:text-foreground leading-relaxed flex-1">
                                 {q.text}
                               </p>
                               <div className="flex gap-1 flex-shrink-0">
@@ -555,7 +555,7 @@ export default function InterrogativeReading() {
             /* ── MANUAL MODE: show question form ── */
             <>
               {/* Type tabs */}
-              <div className="flex bg-white border-b border-gray-100 flex-shrink-0" role="tablist" aria-label="Tipos de pregunta">
+              <div className="flex bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0" role="tablist" aria-label="Tipos de pregunta">
                 {tabs.map((tab) => (
                   <button
                     key={tab.key}
@@ -577,7 +577,7 @@ export default function InterrogativeReading() {
               </div>
 
               <div className="flex-1 overflow-y-auto p-3">
-                <p className="text-xs text-gray-500 mb-3">{getTypeDescription(activeType)}</p>
+                <p className="text-xs text-gray-500 dark:text-muted mb-3">{getTypeDescription(activeType)}</p>
                 <QuestionList
                   questions={questions}
                   activeType={activeType}
@@ -590,7 +590,7 @@ export default function InterrogativeReading() {
           )}
 
           {/* Bottom action */}
-          <div className="flex-shrink-0 p-3 bg-white border-t border-gray-100">
+          <div className="flex-shrink-0 p-3 bg-white dark:bg-surface border-t border-gray-100 dark:border-default">
             <button
               type="button"
               onClick={() =>

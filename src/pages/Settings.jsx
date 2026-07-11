@@ -198,24 +198,24 @@ export default function Settings() {
       {/* Page header */}
       <div>
         <h1 className="text-2xl font-bold text-purple-900">Ajustes</h1>
-        <p className="text-gray-600 mt-1">
+        <p className="text-gray-600 dark:text-muted mt-1">
           Configura tu proveedor de IA y gestiona tus datos de estudio
         </p>
       </div>
 
       {/* ── Provider Selection ──────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-bold text-gray-800">Proveedor de IA</h2>
+        <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Proveedor de IA</h2>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="provider-select" className="text-sm font-medium text-gray-700">
+          <label htmlFor="provider-select" className="text-sm font-medium text-gray-700 dark:text-foreground">
             Selecciona el proveedor para generar preguntas
           </label>
           <select
             id="provider-select"
             value={provider}
             onChange={handleProviderChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none appearance-none"
+            className="w-full px-4 py-3 border border-gray-300 dark:border-default rounded-lg text-sm bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none appearance-none"
             style={{
               minHeight: '44px',
               backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
@@ -237,7 +237,7 @@ export default function Settings() {
 
         {/* API Key Input */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="api-key-input" className="text-sm font-medium text-gray-700">
+          <label htmlFor="api-key-input" className="text-sm font-medium text-gray-700 dark:text-foreground">
             Clave API de {meta.name}
           </label>
           <div className="flex gap-2">
@@ -251,7 +251,7 @@ export default function Settings() {
                   setKeySaved(false);
                 }}
                 placeholder={`Ingresa tu clave API de ${meta.name}...`}
-                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg text-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none font-mono"
+                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-default rounded-lg text-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none font-mono"
                 style={{ minHeight: '44px' }}
                 autoComplete="off"
               />
@@ -298,10 +298,10 @@ export default function Settings() {
       {/* ── Dark Mode ──────────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
         <h2 className="text-lg font-bold text-gray-800">Apariencia</h2>
-        <div className="flex items-center justify-between p-4 bg-white border border-gray-200 rounded-xl">
+        <div className="flex items-center justify-between p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700">Modo oscuro</h3>
-            <p className="text-xs text-gray-500 mt-1">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Modo oscuro</h3>
+            <p className="text-xs text-gray-500 dark:text-muted mt-1">
               Cambia entre tema claro y oscuro
             </p>
           </div>
@@ -337,17 +337,17 @@ export default function Settings() {
         <h2 className="text-lg font-bold text-gray-800">Gestión de datos</h2>
 
         {/* Export */}
-        <div className="flex flex-col gap-3 p-4 bg-white border border-gray-200 rounded-xl">
+        <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700">Exportar datos</h3>
-            <p className="text-xs text-gray-500 mt-1">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Exportar datos</h3>
+            <p className="text-xs text-gray-500 dark:text-muted mt-1">
               Descarga todas tus sesiones, preguntas, repasos y configuraciones en un archivo JSON.
             </p>
           </div>
           <button
             type="button"
             onClick={handleExport}
-            className="self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+            className="self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             style={{ minHeight: '44px', minWidth: '44px' }}
           >
             <span className="flex items-center gap-2">
@@ -372,10 +372,10 @@ export default function Settings() {
         </div>
 
         {/* Import */}
-        <div className="flex flex-col gap-3 p-4 bg-white border border-gray-200 rounded-xl">
+        <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700">Importar datos</h3>
-            <p className="text-xs text-gray-500 mt-1">
+            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Importar datos</h3>
+            <p className="text-xs text-gray-500 dark:text-muted mt-1">
               Restaura tus datos desde un archivo JSON exportado previamente.
               <strong className="text-amber-700"> Los datos actuales serán reemplazados.</strong>
             </p>
@@ -392,10 +392,10 @@ export default function Settings() {
             type="button"
             onClick={handleImportClick}
             disabled={importing}
-            className={`self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 transition-colors ${
+            className={`self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default transition-colors ${
               importing
                 ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
-                : 'text-gray-700 hover:bg-gray-50'
+                : 'text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
             style={{ minHeight: '44px', minWidth: '44px' }}
           >
@@ -431,9 +431,9 @@ export default function Settings() {
       </section>
 
       {/* ── App Info ──────────────────────────────────────────────────────── */}
-      <section className="flex flex-col gap-2 pt-4 border-t border-gray-200">
-        <h2 className="text-lg font-bold text-gray-800">Acerca de</h2>
-        <div className="text-sm text-gray-500 leading-relaxed">
+      <section className="flex flex-col gap-2 pt-4 border-t border-gray-200 dark:border-default">
+        <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Acerca de</h2>
+        <div className="text-sm text-gray-500 dark:text-muted leading-relaxed">
           <p><strong>SaberAbierto</strong> v1.0.0</p>
           <p className="mt-1">
             Metodología de estudio con lectura interrogativa, brain dump,

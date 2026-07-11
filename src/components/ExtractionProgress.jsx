@@ -25,7 +25,7 @@ export default function ExtractionProgress({ progress, wordCount }) {
   const percent = total > 0 ? Math.round((current / total) * 100) : 0;
 
   return (
-    <div className="flex flex-col gap-3 p-4 bg-white rounded-lg border border-gray-200">
+    <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface rounded-lg border border-gray-200 dark:border-default">
       {/* Stage label + percentage */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -64,20 +64,20 @@ export default function ExtractionProgress({ progress, wordCount }) {
               />
             </svg>
           )}
-          <span className="font-medium text-gray-700">
+          <span className="font-medium text-gray-700 dark:text-foreground">
             {stageLabels[stage] || stage}
           </span>
         </div>
 
         {!isDone && (
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-muted">
             {current} / {total}
           </span>
         )}
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-300 ease-out ${
             isDone ? 'bg-green-500' : 'bg-purple-500'
@@ -93,7 +93,7 @@ export default function ExtractionProgress({ progress, wordCount }) {
 
       {/* Word count on completion */}
       {isDone && wordCount != null && (
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-muted">
           {wordCount.toLocaleString()} palabras extraídas
         </p>
       )}

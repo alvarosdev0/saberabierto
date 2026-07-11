@@ -304,11 +304,11 @@ export default function SpacedRetrieval() {
   return (
     <div className="flex flex-col min-h-[calc(100dvh-64px)]">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="flex-shrink-0 px-4 py-4 bg-white border-b border-gray-100">
+      <header className="flex-shrink-0 px-4 py-4 bg-white dark:bg-surface border-b border-gray-100 dark:border-default">
         <h1 className="text-xl font-bold text-purple-900 font-heading">
           Repaso Espaciado
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-gray-500 dark:text-muted mt-1">
           {questionnaireId
             ? 'Repaso enfocado de un cuestionario'
             : 'Cola de repaso de todos los cuestionarios'}
@@ -331,7 +331,7 @@ export default function SpacedRetrieval() {
             </span>
             <span>{Math.round(((currentIndex) / dueQueue.length) * 100)}%</span>
           </div>
-          <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
             <div
               className="h-full bg-purple-500 rounded-full transition-all duration-300"
               style={{ width: `${((currentIndex) / dueQueue.length) * 100}%` }}
@@ -346,10 +346,10 @@ export default function SpacedRetrieval() {
         {dueQueue.length === 0 && !questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <span className="text-5xl mb-4">📚</span>
-            <h2 className="text-lg font-bold text-gray-700 mb-2">
+            <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
               ¡Todo al día!
             </h2>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-gray-500 dark:text-muted mb-6">
               No tienes repasos pendientes. Crea cuestionarios desde tus sesiones de estudio para comenzar.
             </p>
             <button
@@ -367,10 +367,10 @@ export default function SpacedRetrieval() {
         {dueQueue.length === 0 && questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <span className="text-5xl mb-4">✅</span>
-            <h2 className="text-lg font-bold text-gray-700 mb-2">
+            <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
               Sin repasos pendientes
             </h2>
-            <p className="text-sm text-gray-500 mb-6">
+            <p className="text-sm text-gray-500 dark:text-muted mb-6">
               Todas las preguntas de este cuestionario están al día.
             </p>
             <button
@@ -391,7 +391,7 @@ export default function SpacedRetrieval() {
             <h2 className="text-lg font-bold text-emerald-700 mb-2">
               ¡Repaso completado!
             </h2>
-            <p className="text-sm text-gray-500 mb-1">
+            <p className="text-sm text-gray-500 dark:text-muted mb-1">
               Has repasado {dueQueue.length} pregunta{dueQueue.length !== 1 ? 's' : ''}.
             </p>
             <p className="text-xs text-gray-400 mb-6">
@@ -401,7 +401,7 @@ export default function SpacedRetrieval() {
               <button
                 type="button"
                 onClick={() => navigate('/')}
-                className="px-5 py-2.5 text-sm font-semibold rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+                className="px-5 py-2.5 text-sm font-semibold rounded-xl border border-gray-300 dark:border-default text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 Inicio
@@ -446,7 +446,7 @@ export default function SpacedRetrieval() {
                 relative w-full rounded-2xl border-2 transition-all duration-300
                 ${flipped
                   ? 'border-emerald-300 bg-emerald-50'
-                  : 'border-purple-200 bg-white cursor-pointer hover:border-purple-300 hover:shadow-md'
+                  : 'border-purple-200 bg-white dark:bg-surface cursor-pointer hover:border-purple-300 hover:shadow-md'
                 }
               `}
               style={{ minHeight: '200px' }}
@@ -454,7 +454,7 @@ export default function SpacedRetrieval() {
               {/* Front: question */}
               {!flipped && (
                 <div className="flex flex-col items-center justify-center p-6 min-h-[200px] gap-4">
-                  <p className="text-lg font-medium text-gray-800 text-center leading-relaxed">
+                  <p className="text-lg font-medium text-gray-800 dark:text-foreground text-center leading-relaxed">
                     {currentItem.questionText}
                   </p>
                   <button
@@ -477,7 +477,7 @@ export default function SpacedRetrieval() {
               {/* Back: question + score selector */}
               {flipped && (
                 <div className="flex flex-col p-6 gap-4">
-                  <p className="text-lg font-medium text-gray-800 text-center leading-relaxed">
+                  <p className="text-lg font-medium text-gray-800 dark:text-foreground text-center leading-relaxed">
                     {currentItem.questionText}
                   </p>
                   <ScoreSelector
@@ -553,9 +553,9 @@ function HistoryList({ history }) {
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-      <div className="px-4 py-2 bg-gray-50 border-b border-gray-100">
-        <p className="text-xs font-semibold text-gray-600">
+    <div className="bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl overflow-hidden">
+      <div className="px-4 py-2 bg-gray-50 dark:bg-muted border-b border-gray-100 dark:border-default">
+        <p className="text-xs font-semibold text-gray-600 dark:text-muted">
           Historial ({history.length} repaso{history.length !== 1 ? 's' : ''})
         </p>
       </div>
@@ -569,7 +569,7 @@ function HistoryList({ history }) {
               {scoreEmoji(attempt.score)}
             </span>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-gray-700">
+              <p className="text-xs font-medium text-gray-700 dark:text-foreground">
                 {scoreLabel(attempt.score)}
               </p>
               <p className="text-[11px] text-gray-400">

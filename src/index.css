@@ -79,6 +79,8 @@
 /* ── Utility classes using CSS variables ── */
 .bg-surface { background-color: var(--color-surface); }
 .bg-muted { background-color: var(--color-muted-bg); }
+.bg-base { background-color: var(--color-background); }
+.text-foreground { color: var(--color-foreground); }
 .text-muted { color: var(--color-muted-text); }
 .border-default { border-color: var(--color-border); }
 

@@ -62,17 +62,17 @@ export default function ReviewCountdown() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-4 animate-pulse">
-        <div className="h-3 w-32 bg-gray-200 rounded mb-2" />
-        <div className="h-5 w-40 bg-gray-200 rounded" />
+      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
+        <div className="h-3 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
+        <div className="h-5 w-40 bg-gray-200 dark:bg-gray-700 rounded" />
       </div>
     );
   }
 
   if (!nextReview) {
     return (
-      <div className="bg-white rounded-xl border border-gray-200 p-4">
-        <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4">
+        <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
           Próximo repaso
         </p>
         <p className="text-sm text-gray-400 italic">
@@ -116,8 +116,8 @@ export default function ReviewCountdown() {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
-      <p className="text-xs text-gray-500 font-medium uppercase tracking-wide mb-1">
+    <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4">
+      <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
         Próximo repaso
       </p>
       <p className={`text-base font-bold ${accentClass}`}>

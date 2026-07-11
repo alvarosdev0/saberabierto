@@ -216,7 +216,7 @@ export default function BrainDump() {
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white border-b border-gray-100 flex-shrink-0">
+      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <SectionNavigator
           sections={sections}
           currentSectionId={sectionId}
@@ -226,7 +226,7 @@ export default function BrainDump() {
       </header>
 
       {/* ── Mode switch ─────────────────────────────────────────────────── */}
-      <div className="px-4 py-2 bg-white border-b border-gray-100 flex-shrink-0">
+      <div className="px-4 py-2 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <ModeSwitch activeMode="brain-dump" />
       </div>
 
@@ -258,7 +258,7 @@ export default function BrainDump() {
             ref={textareaRef}
             value={text}
             onChange={handleTextChange}
-            className="flex-1 w-full p-4 rounded-lg border border-gray-200 bg-white font-sans text-sm text-gray-800 leading-relaxed resize-none focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+            className="flex-1 w-full p-4 rounded-lg border border-gray-200 dark:border-default bg-white font-sans text-sm text-gray-800 dark:text-foreground leading-relaxed resize-none focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
             style={{ minHeight: '200px' }}
             placeholder={getPlaceholder()}
             aria-label="Área de notas"
@@ -271,12 +271,12 @@ export default function BrainDump() {
             Marcadores de esquema
           </summary>
           <p className="mt-1 pl-4">
-            Usa <code className="bg-gray-100 px-1 rounded">I.</code>,{' '}
-            <code className="bg-gray-100 px-1 rounded">II.</code>,{' '}
-            <code className="bg-gray-100 px-1 rounded">A.</code>,{' '}
-            <code className="bg-gray-100 px-1 rounded">B.</code>,{' '}
-            <code className="bg-gray-100 px-1 rounded">i.</code>,{' '}
-            <code className="bg-gray-100 px-1 rounded">ii.</code>{' '}
+            Usa <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">I.</code>,{' '}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">II.</code>,{' '}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">A.</code>,{' '}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">B.</code>,{' '}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">i.</code>,{' '}
+            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">ii.</code>{' '}
             para estructurar tus notas con un esquema.
           </p>
         </details>
@@ -288,7 +288,7 @@ export default function BrainDump() {
         const isLast = idx >= sections.length - 1;
 
         return (
-          <div className="flex-shrink-0 px-4 py-3 bg-white border-t border-gray-100">
+          <div className="flex-shrink-0 px-4 py-3 bg-white dark:bg-surface border-t border-gray-100 dark:border-default">
             <div className="flex gap-2">
               <button
                 type="button"
