@@ -28,10 +28,11 @@ import {
 const CONFIG = {
   name: 'Gemini',
   endpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
-  model: 'gemini-2.0-flash',
+  model: 'gemini-2.5-flash-lite',
+  // You can also use: gemini-2.0-flash, gemini-flash-latest, gemini-2.5-flash, gemini-2.5-flash-lite
   // Paid tier pricing (free tier has daily rate limits)
-  costPer1MInputTokens: 0.10,
-  costPer1MOutputTokens: 0.40,
+  costPer1MInputTokens: 0.075,
+  costPer1MOutputTokens: 0.30,
 };
 
 /**
@@ -117,12 +118,13 @@ export class GeminiProvider {
       ? `Generate ${count} study questions based on this text:\n\n${markdown}`
       : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}`;
 
-    const url = `${CONFIG.endpoint}/${CONFIG.model}:generateContent?key=${encodeURIComponent(this.#apiKey)}`;
+    const url = `${CONFIG.endpoint}/${CONFIG.model}:generateContent`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'X-goog-api-key': this.#apiKey,
       },
       body: JSON.stringify({
         systemInstruction: {
