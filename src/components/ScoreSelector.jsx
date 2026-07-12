@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { Frown, Meh, ThumbsUp, Sparkles } from 'lucide-react';
 
 /**
  * ScoreSelector — 4-button SM-2 recall quality selector.
@@ -39,7 +40,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">😕</span>
+          <Frown size={22} aria-hidden="true" />
           <span className="text-xs font-semibold">Olvidé</span>
           <span className="text-[10px] opacity-60">0</span>
         </button>
@@ -54,7 +55,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 active:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">🤔</span>
+          <Meh size={22} aria-hidden="true" />
           <span className="text-xs font-semibold">Parcial</span>
           <span className="text-[10px] opacity-60">1</span>
         </button>
@@ -69,7 +70,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 active:bg-purple-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">💪</span>
+          <ThumbsUp size={22} aria-hidden="true" />
           <span className="text-xs font-semibold">Correcto con esfuerzo</span>
           <span className="text-[10px] opacity-60">2</span>
         </button>
@@ -84,7 +85,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 active:bg-emerald-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
-          <span className="text-lg">✨</span>
+          <Sparkles size={22} aria-hidden="true" />
           <span className="text-xs font-semibold">Perfecto</span>
           <span className="text-[10px] opacity-60">3</span>
         </button>

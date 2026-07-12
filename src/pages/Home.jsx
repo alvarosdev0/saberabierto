@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Play, BookOpen } from 'lucide-react';
 import db from '../services/db.js';
 import QuickStats from '../components/QuickStats.jsx';
 import ReviewCountdown from '../components/ReviewCountdown.jsx';
@@ -194,7 +195,7 @@ export default function Home() {
             className="w-full py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm flex items-center justify-center gap-2"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
-            <span>▶</span>
+            <Play size={18} aria-hidden="true" />
             <span>
               {sessionSections.some((s) => s.status === 'pending')
                 ? 'Continuar'
@@ -207,7 +208,7 @@ export default function Home() {
       {/* Empty state — no active session */}
       {!sessionLoading && !activeSession && (
         <section className="bg-white dark:bg-surface rounded-2xl border border-gray-200 dark:border-default p-6 text-center shadow-sm">
-          <span className="text-4xl mb-3 block">📚</span>
+          <BookOpen size={40} aria-hidden="true" className="text-gray-300 mb-3" />
           <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2 font-heading">
             Sin sesión activa
           </h2>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Brain, Sparkles, ChevronRight, ChevronLeft, Check, Loader2, BookOpen } from 'lucide-react';
+import { Brain, Sparkles, ChevronRight, ChevronLeft, Check, Loader2, BookOpen, PenSquare, Bot, Clock, DollarSign, BadgePercent, Lightbulb, Play } from 'lucide-react';
 import db from '../services/db.js';
 import { createProvider, PROVIDER_META } from '../services/ai/index.js';
 
@@ -252,7 +252,7 @@ export default function SessionSetup() {
                   <span className="text-gray-300">·</span>
                   <span className="text-gray-500">
                     {costs.freeTier
-                      ? '🆓 Gratis'
+                      ? <><BadgePercent size={12} aria-hidden="true" className="inline mr-0.5" /> Gratis</>
                       : `~$${((tokens / 1_000_000) * (costs.cost / costs.totalTokens || 0.15)).toFixed(6)} USD`
                     }
                   </span>
@@ -284,16 +284,17 @@ export default function SessionSetup() {
                 <Brain size={22} aria-hidden="true" className={mode === 'manual' ? 'text-white' : 'text-gray-500'} />
               </div>
               <span className={`font-bold ${mode === 'manual' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
-                ✍️ Yo mismo
+                <PenSquare size={18} aria-hidden="true" className="mr-1 inline" />
+                Yo mismo
               </span>
             </div>
 
             <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
               <p><strong>Tú</strong> lees el texto y escribes tus propias preguntas. El acto de formular preguntas refuerza la comprensión y la retención a largo plazo.</p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Mayor retención</span>
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Sin costo</span>
-                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded">⏱ Más lento</span>
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Mayor retención</span>
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Sin costo</span>
+                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded"><Clock size={12} aria-hidden="true" className="inline mr-0.5" />Más lento</span>
               </div>
             </div>
           </button>
@@ -314,16 +315,17 @@ export default function SessionSetup() {
                 <Sparkles size={22} aria-hidden="true" className={mode === 'ai' ? 'text-white' : 'text-gray-500'} />
               </div>
               <span className={`font-bold ${mode === 'ai' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
-                🤖 Asistido por IA
+                <Bot size={18} aria-hidden="true" className="mr-1 inline" />
+                Asistido por IA
               </span>
             </div>
 
             <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
               <p>La IA analiza el texto y genera preguntas balanceadas de los 3 tipos. Luego puedes <strong>editarlas</strong>, descartarlas o mezclarlas con las tuyas.</p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Más rápido</span>
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded">✅ Editable</span>
-                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded">💰 Con costo</span>
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Más rápido</span>
+                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Editable</span>
+                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded"><DollarSign size={12} aria-hidden="true" className="inline mr-0.5" />Con costo</span>
               </div>
 
               {/* Cost summary */}
@@ -341,7 +343,7 @@ export default function SessionSetup() {
                     <span className="text-gray-500 dark:text-muted">Costo estimado:</span>
                     <span className={`font-bold ${costs.freeTier ? 'text-emerald-600' : 'text-amber-700'}`}>
                       {costs.freeTier
-                        ? '🆓 Gratis (tier free)'
+                        ? <><BadgePercent size={12} aria-hidden="true" className="inline mr-0.5" /> Gratis (tier free)</>
                         : `~$${costs.cost.toFixed(4)} USD`
                       }
                     </span>
@@ -355,9 +357,10 @@ export default function SessionSetup() {
         {/* Toggle hint */}
         {mode && (
           <p className="text-xs text-gray-400 text-center">
+            <Lightbulb size={12} aria-hidden="true" className="inline mr-0.5" />
             {mode === 'ai'
-              ? '💡 Durante el estudio podrás cambiar a modo manual si lo prefieres.'
-              : '💡 Durante el estudio podrás cambiar a modo IA si lo prefieres.'
+              ? 'Durante el estudio podrás cambiar a modo manual si lo prefieres.'
+              : 'Durante el estudio podrás cambiar a modo IA si lo prefieres.'
             }
           </p>
         )}
@@ -370,11 +373,11 @@ export default function SessionSetup() {
         </summary>
         <div className="mt-3 flex flex-col gap-3">
           <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
-            <p className="font-semibold text-gray-800 dark:text-foreground mb-1">✍️ Manual</p>
+            <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><PenSquare size={16} aria-hidden="true" className="inline mr-1" />Manual</p>
             <p className="text-gray-600 dark:text-muted">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Brain Dump para consolidar.</p>
           </div>
           <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
-            <p className="font-semibold text-gray-800 dark:text-foreground mb-1">🤖 Asistido por IA</p>
+            <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><Bot size={16} aria-hidden="true" className="inline mr-1" />Asistido por IA</p>
             <p className="text-gray-600 dark:text-muted">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</p>
           </div>
           <p className="text-gray-500 dark:text-muted text-center text-xs">Ambos modos terminan en Brain Dump y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
@@ -440,7 +443,8 @@ export default function SessionSetup() {
             className="w-full max-w-3xl mx-auto flex items-center justify-center gap-2 px-4 py-4 text-base font-bold rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-[background-color,box-shadow] shadow-xl"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
-            {mode === 'ai' ? '▶ Revisar preguntas y empezar' : '▶ Empezar a estudiar'}
+            <Play size={18} aria-hidden="true" />
+            {mode === 'ai' ? 'Revisar preguntas y empezar' : 'Empezar a estudiar'}
             <ChevronRight size={20} aria-hidden="true" />
           </button>
         </div>

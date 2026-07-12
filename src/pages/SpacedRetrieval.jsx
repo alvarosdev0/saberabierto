@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Frown, Meh, ThumbsUp, Sparkles, BookOpen, CheckCircle, PartyPopper } from 'lucide-react';
 import db from '../services/db.js';
 import { calculateNextReview } from '../services/sm2.js';
 import ScoreSelector from '../components/ScoreSelector.jsx';
@@ -60,14 +61,14 @@ function scoreLabel(score) {
   }
 }
 
-// ── Helper: score emoji ────────────────────────────────────────────────────
-function scoreEmoji(score) {
+// ── Helper: score icon component ────────────────────────────────────────────
+function ScoreIcon({ score, size = 16 }) {
   switch (score) {
-    case 0: return '😕';
-    case 1: return '🤔';
-    case 2: return '💪';
-    case 3: return '✨';
-    default: return '';
+    case 0: return <Frown size={size} aria-hidden="true" className="text-red-500" />;
+    case 1: return <Meh size={size} aria-hidden="true" className="text-amber-500" />;
+    case 2: return <ThumbsUp size={size} aria-hidden="true" className="text-purple-500" />;
+    case 3: return <Sparkles size={size} aria-hidden="true" className="text-emerald-500" />;
+    default: return null;
   }
 }
 
@@ -345,7 +346,7 @@ export default function SpacedRetrieval() {
         {/* Empty state — no questionnaires */}
         {dueQueue.length === 0 && !questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <span className="text-5xl mb-4">📚</span>
+            <BookOpen size={48} aria-hidden="true" className="text-gray-300 mb-4" />
             <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
               ¡Todo al día!
             </h2>
@@ -366,7 +367,7 @@ export default function SpacedRetrieval() {
         {/* Empty state — specific questionnaire has no items */}
         {dueQueue.length === 0 && questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <span className="text-5xl mb-4">✅</span>
+            <CheckCircle size={48} aria-hidden="true" className="text-emerald-400 mb-4" />
             <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
               Sin repasos pendientes
             </h2>
@@ -387,7 +388,7 @@ export default function SpacedRetrieval() {
         {/* All done — finished the queue */}
         {currentIndex >= dueQueue.length && dueQueue.length > 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <span className="text-5xl mb-4">🎉</span>
+            <PartyPopper size={48} aria-hidden="true" className="text-emerald-500 mb-4" />
             <h2 className="text-lg font-bold text-emerald-700 mb-2">
               ¡Repaso completado!
             </h2>
@@ -433,7 +434,7 @@ export default function SpacedRetrieval() {
             {latestAttempt && (
               <p className="text-xs text-gray-400 text-center">
                 Último repaso: {formatRelative(latestAttempt.reviewedAt)} ·{' '}
-                {scoreEmoji(latestAttempt.score)} {scoreLabel(latestAttempt.score)}
+                <ScoreIcon score={latestAttempt.score} size={16} />{' '}{scoreLabel(latestAttempt.score)}
                 {latestAttempt.interval > 0 && (
                   <> · Intervalo: {latestAttempt.interval} día{latestAttempt.interval !== 1 ? 's' : ''}</>
                 )}
@@ -566,7 +567,7 @@ function HistoryList({ history }) {
             className="flex items-center gap-3 px-4 py-2.5"
           >
             <span className="text-base flex-shrink-0">
-              {scoreEmoji(attempt.score)}
+              <ScoreIcon score={attempt.score} size={20} />
             </span>
             <div className="flex-1 min-w-0">
               <p className="text-xs font-medium text-gray-700 dark:text-foreground">

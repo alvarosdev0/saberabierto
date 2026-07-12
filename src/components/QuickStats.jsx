@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Pencil, RefreshCw, Zap, CheckCircle, MailOpen } from 'lucide-react';
 import db from '../services/db.js';
 
 /**
@@ -67,10 +68,10 @@ export default function QuickStats() {
   }
 
   const cards = [
-    { label: 'Respondidas', value: stats.totalAnswered, emoji: '✏️' },
-    { label: 'Repasos', value: stats.reviewsDone, emoji: '🔄' },
-    { label: 'Racha', value: `${stats.streak} día${stats.streak !== 1 ? 's' : ''}`, emoji: '🔥' },
-    { label: 'Pendientes', value: stats.dueCount, emoji: stats.dueCount > 0 ? '📬' : '✅' },
+    { label: 'Respondidas', value: stats.totalAnswered, icon: Pencil },
+    { label: 'Repasos', value: stats.reviewsDone, icon: RefreshCw },
+    { label: 'Racha', value: `${stats.streak} día${stats.streak !== 1 ? 's' : ''}`, icon: Zap },
+    { label: 'Pendientes', value: stats.dueCount, icon: stats.dueCount > 0 ? MailOpen : CheckCircle },
   ];
 
   return (
@@ -84,7 +85,7 @@ export default function QuickStats() {
             {card.label}
           </p>
           <p className="text-lg font-bold text-gray-800 dark:text-foreground flex items-center gap-1.5">
-            <span className="text-sm">{card.emoji}</span>
+            <card.icon size={16} aria-hidden="true" />
             {card.value}
           </p>
         </div>

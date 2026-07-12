@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { Moon, Sun } from 'lucide-react';
+import { Moon, Sun, AlertTriangle } from 'lucide-react';
 import { PROVIDER_IDS, PROVIDER_META } from '../services/ai/index.js';
 import db from '../services/db.js';
 
@@ -508,7 +508,7 @@ export default function Settings() {
           {confirmImport && (
             <div className="p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
               <p className="text-sm font-semibold text-red-800 dark:text-red-300 mb-2">
-                ⚠️ ¿Estás seguro?
+                <AlertTriangle size={18} aria-hidden="true" className="inline mr-1 text-red-700" />¿Estás seguro?
               </p>
               <p className="text-xs text-red-700 dark:text-red-400 mb-3">
                 Se reemplazarán todos tus datos actuales con los del archivo{' '}

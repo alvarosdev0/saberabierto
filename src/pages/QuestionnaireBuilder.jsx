@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { PenSquare, Bot, BookOpen, AlertTriangle } from 'lucide-react';
 import db from '../services/db.js';
 import { createProvider } from '../services/ai/index.js';
 
@@ -23,9 +24,9 @@ const lsApiKey = (provider) => `sa:apiKey:${provider}`;
 
 // ── Tab definitions ─────────────────────────────────────────────────────────
 const TABS = [
-  { key: 'manual', label: 'Manual', icon: '✍️' },
-  { key: 'ai', label: 'IA', icon: '🤖' },
-  { key: 'reading', label: 'Lectura', icon: '📖' },
+  { key: 'manual', label: 'Manual', icon: PenSquare },
+  { key: 'ai', label: 'IA', icon: Bot },
+  { key: 'reading', label: 'Lectura', icon: BookOpen },
 ];
 
 export default function QuestionnaireBuilder() {
@@ -487,7 +488,7 @@ export default function QuestionnaireBuilder() {
             `}
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
-            <span className="text-sm">{tab.icon}</span>
+            <tab.icon size={16} aria-hidden="true" />
             <span>{tab.label}</span>
           </button>
         ))}
@@ -640,7 +641,7 @@ export default function QuestionnaireBuilder() {
             {aiConfirming ? (
               <div className="flex flex-col gap-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
                 <div className="flex items-start gap-2">
-                  <span className="text-amber-600 text-lg mt-0.5">⚠️</span>
+                  <AlertTriangle size={18} aria-hidden="true" className="text-amber-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-semibold text-amber-900">
                       ¿Confirmas la generación?
@@ -716,7 +717,7 @@ export default function QuestionnaireBuilder() {
                   </>
                 ) : (
                   <>
-                    <span>🤖</span>
+                    <Bot size={16} aria-hidden="true" />
                     Generar preguntas con IA
                   </>
                 )}
@@ -973,7 +974,7 @@ function ItemList({ items, sections, onDelete }) {
           className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 dark:bg-muted border border-gray-100 dark:border-default group"
         >
           <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full bg-purple-100 text-purple-600 text-xs font-semibold">
-            {item.source === 'ai' ? '🤖' : '✍️'}
+            {item.source === 'ai' ? <Bot size={14} aria-hidden="true" /> : <PenSquare size={14} aria-hidden="true" />}
           </span>
           <div className="flex-1 min-w-0">
             <p className="text-sm text-gray-800 dark:text-foreground">{item.questionText}</p>
