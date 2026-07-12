@@ -38,6 +38,11 @@ export default function Settings() {
   const [darkMode, setDarkMode] = useState(() => {
     return document.documentElement.classList.contains('dark');
   });
+  const [geminiModel, setGeminiModel] = useState(() => {
+    return localStorage.getItem('sa:gemini-model') || 'gemini-3.1-flash-lite';
+  });
+  const [availableModels, setAvailableModels] = useState([]);
+  const [fetchingModels, setFetchingModels] = useState(false);
 
   // Load saved API key for the selected provider
   useEffect(() => {
@@ -208,6 +213,46 @@ export default function Settings() {
     }
   }, []);
 
+  // ── Fetch available Gemini models ─────────────────────────────────────────
+  const handleFetchModels = useCallback(async () => {
+    if (!apiKey.trim()) return;
+    setFetchingModels(true);
+    setAvailableModels([]);
+
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(apiKey.trim())}`;
+      const res = await fetch(url);
+      const data = await res.json();
+
+      if (data.models) {
+        // Filter to flash/lite models (text generation)
+        const flashModels = data.models
+          .filter((m) => {
+            const name = m.name.replace('models/', '');
+            // Only include models that support generateContent
+            const supported = m.supportedGenerationMethods?.includes('generateContent');
+            return supported && (name.includes('flash') || name.includes('lite'));
+          })
+          .map((m) => ({
+            id: m.name.replace('models/', ''),
+            description: m.displayName || m.name.replace('models/', ''),
+          }));
+
+        setAvailableModels(flashModels);
+
+        // Auto-select first model if current isn't available
+        if (flashModels.length > 0 && !flashModels.find((m) => m.id === geminiModel)) {
+          setGeminiModel(flashModels[0].id);
+          localStorage.setItem('sa:gemini-model', flashModels[0].id);
+        }
+      }
+    } catch (err) {
+      console.error('Error fetching models:', err);
+    } finally {
+      setFetchingModels(false);
+    }
+  }, [apiKey, geminiModel]);
+
   // ── Render ──────────────────────────────────────────────────────────────
   const meta = PROVIDER_META[provider] || PROVIDER_META.deepseek;
 
@@ -249,7 +294,7 @@ export default function Settings() {
             ))}
           </select>
           <p className="text-xs text-gray-400">
-            Modelo: {meta.model}
+            Modelo: {provider === 'gemini' ? geminiModel : meta.model}
           </p>
         </div>
 
@@ -312,6 +357,58 @@ export default function Settings() {
           </p>
         </div>
       </section>
+
+      {/* ── Gemini Model Selector ──────────────────────────────────────────── */}
+      {provider === 'gemini' && (
+        <section className="flex flex-col gap-4">
+          <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Modelo Gemini</h2>
+
+          <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
+            <p className="text-xs text-gray-500 dark:text-muted">
+              Elige el modelo Gemini que quieres usar. Los modelos disponibles dependen de tu API key.
+            </p>
+
+            {/* Model selector */}
+            <div className="flex gap-2">
+              <select
+                value={geminiModel}
+                onChange={(e) => {
+                  setGeminiModel(e.target.value);
+                  localStorage.setItem('sa:gemini-model', e.target.value);
+                }}
+                className="flex-1 px-3 py-2.5 text-sm border border-gray-300 dark:border-default rounded-lg bg-white dark:bg-surface focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                style={{ minHeight: '44px' }}
+              >
+                {availableModels.length > 0 ? (
+                  availableModels.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.description}
+                    </option>
+                  ))
+                ) : (
+                  <option value={geminiModel}>{geminiModel}</option>
+                )}
+              </select>
+
+              <button
+                type="button"
+                onClick={handleFetchModels}
+                disabled={fetchingModels || !apiKey.trim()}
+                className="px-4 py-2 text-xs font-medium rounded-lg border border-gray-300 dark:border-default text-gray-600 dark:text-muted hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 transition-colors whitespace-nowrap"
+                style={{ minHeight: '44px' }}
+              >
+                {fetchingModels ? 'Cargando...' : 'Ver modelos disponibles'}
+              </button>
+            </div>
+
+            {/* Model info */}
+            <p className="text-xs text-gray-400">
+              Modelo actual: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{geminiModel}</code>
+              {availableModels.length > 0 && ` · ${availableModels.length} modelos disponibles`}
+            </p>
+          </div>
+        </section>
+      )}
 
       {/* ── Dark Mode ──────────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">

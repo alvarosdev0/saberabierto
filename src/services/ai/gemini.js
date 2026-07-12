@@ -112,13 +112,26 @@ export class GeminiProvider {
    *
    * @private
    */
+  /**
+   * Get the model name to use. Checks localStorage first (user's choice),
+   * falls back to the default CONFIG.model.
+   */
+  #getModel() {
+    if (typeof localStorage !== 'undefined') {
+      const saved = localStorage.getItem('sa:gemini-model');
+      if (saved) return saved;
+    }
+    return CONFIG.model;
+  }
+
   async #makeRequest(markdown, count, language = 'es') {
     const systemPrompt = buildSystemPrompt(language);
     const userPrompt = language === 'en'
       ? `Generate ${count} study questions based on this text:\n\n${markdown}`
       : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}`;
 
-    const url = `${CONFIG.endpoint}/${CONFIG.model}:generateContent`;
+    const model = this.#getModel();
+    const url = `${CONFIG.endpoint}/${model}:generateContent`;
 
     const response = await fetch(url, {
       method: 'POST',

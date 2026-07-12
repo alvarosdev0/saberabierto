@@ -307,11 +307,14 @@ export function normalizeQuestions(parsed, maxCount) {
     items = [parsed];
   }
 
-  // Filter: only objects with text property
+  // Filter: only objects with text or question property
   const questions = items
-    .filter((q) => q && typeof q.text === 'string' && q.text.trim().length > 0)
+    .filter((q) => q && (
+      (typeof q.text === 'string' && q.text.trim().length > 0) ||
+      (typeof q.question === 'string' && q.question.trim().length > 0)
+    ))
     .map((q) => ({
-      text: q.text.trim(),
+      text: (q.text || q.question || '').trim(),
       type: ['keyword', 'methodological', 'combative'].includes(q.type)
         ? q.type
         : 'keyword',
