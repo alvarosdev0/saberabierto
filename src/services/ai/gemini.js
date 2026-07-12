@@ -131,13 +131,12 @@ export class GeminiProvider {
       : `Genera ${count} preguntas de estudio basadas en este texto:\n\n${markdown}`;
 
     const model = this.#getModel();
-    const url = `${CONFIG.endpoint}/${model}:generateContent`;
+    const url = `${CONFIG.endpoint}/${model}:generateContent?key=${encodeURIComponent(this.#apiKey)}`;
 
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-goog-api-key': this.#apiKey,
       },
       body: JSON.stringify({
         systemInstruction: {
