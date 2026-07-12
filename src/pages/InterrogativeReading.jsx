@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Key, FlaskConical, Swords, ChevronDown, ChevronUp, Info, BookOpen } from 'lucide-react';
+import { ChevronDown, ChevronUp, Info, BookOpen } from 'lucide-react';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
 import Timer from '../components/Timer.jsx';
@@ -20,7 +20,6 @@ export default function InterrogativeReading() {
   const [sections, setSections] = useState([]);
   const [markdown, setMarkdown] = useState('');
   const [questions, setQuestions] = useState([]);
-  const [activeType, setActiveType] = useState('keyword');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState(null);
@@ -68,15 +67,14 @@ export default function InterrogativeReading() {
 
   // ── Question CRUD ────────────────────────────────────────────────────────
   const handleAddQuestion = useCallback(
-    async (text, type) => {
+    async (text) => {
       try {
         const id = await db.questions.add({
           sectionId: Number(sectionId),
           text,
-          type,
           answered: false,
         });
-        const newQuestion = { id, sectionId: Number(sectionId), text, type, answered: false };
+        const newQuestion = { id, sectionId: Number(sectionId), text, answered: false };
         setQuestions((prev) => [...prev, newQuestion]);
       } catch (err) {
         console.error('Error adding question:', err);
@@ -146,13 +144,6 @@ export default function InterrogativeReading() {
     html = html.replace(/((?:<li class="ml-4 list-decimal.*?<\/li>\s*)+)/g, '<ol class="mb-2">$1</ol>');
     return html;
   };
-
-  // ── Question type tab definitions ────────────────────────────────────────
-  const tabs = [
-    { key: 'keyword', label: 'Conceptos', icon: Key },
-    { key: 'methodological', label: 'Metodología', icon: FlaskConical },
-    { key: 'combative', label: 'Combate', icon: Swords },
-  ];
 
   // ── Render ───────────────────────────────────────────────────────────────
   if (loading) {
@@ -234,49 +225,21 @@ export default function InterrogativeReading() {
           )}
         </div>
 
-        {/* ── Questions section ──────────────────────────────────────────── */}
+        {/* ── Questions section — single list, no tabs ──────────────────── */}
         <div className="px-4 pb-4">
-          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default overflow-hidden">
-            {/* Type tabs */}
-            <div className="flex border-b border-gray-200 dark:border-default" role="tablist" aria-label="Tipos de pregunta">
-              {tabs.map((tab) => (
-                <button
-                  key={tab.key}
-                  type="button" role="tab"
-                  aria-selected={tab.key === activeType}
-                  onClick={() => setActiveType(tab.key)}
-                  className={`flex-1 flex items-center justify-center gap-1 px-2 py-3 text-xs font-medium transition-colors border-b-2 ${
-                    tab.key === activeType
-                      ? 'border-purple-600 text-purple-700 bg-purple-50 dark:bg-purple-950 dark:text-purple-300'
-                      : 'border-transparent text-gray-500 dark:text-muted hover:text-gray-700'
-                  }`}
-                  style={{ minHeight: '44px' }}
-                >
-                  <tab.icon size={16} aria-hidden="true" />
-                  <span className="hidden sm:inline">{tab.label}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Question content */}
-            <div className="p-3">
-              <p className="text-xs text-gray-500 dark:text-muted mb-3">{getTypeDescription(activeType)}</p>
-
-              {sessionMode === 'ai' && (
-                <p className="text-xs text-purple-600 dark:text-purple-400 mb-3 flex items-center gap-1">
-                  <Info size={12} aria-hidden="true" />
-                  Las preguntas se generaron automáticamente en la configuración. Puedes editarlas o añadir más.
-                </p>
-              )}
-
-              <QuestionList
-                questions={questions}
-                activeType={activeType}
-                onAdd={handleAddQuestion}
-                onToggleAnswered={handleToggleAnswered}
-                onDelete={handleDeleteQuestion}
-              />
-            </div>
+          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-3">
+            {sessionMode === 'ai' && (
+              <p className="text-xs text-purple-600 dark:text-purple-400 mb-3 flex items-center gap-1">
+                <Info size={12} aria-hidden="true" />
+                Preguntas generadas automáticamente. Puedes editarlas o añadir más.
+              </p>
+            )}
+            <QuestionList
+              questions={questions}
+              onAdd={handleAddQuestion}
+              onToggleAnswered={handleToggleAnswered}
+              onDelete={handleDeleteQuestion}
+            />
           </div>
         </div>
       </div>
@@ -296,16 +259,4 @@ export default function InterrogativeReading() {
   );
 }
 
-/** Descriptive hint for each question type. */
-function getTypeDescription(type) {
-  switch (type) {
-    case 'keyword':
-      return 'Captura los términos y conceptos clave como preguntas. ¿Qué significa cada uno?';
-    case 'methodological':
-      return 'Cuestiona la evidencia y el método. ¿Qué datos respaldan cada afirmación?';
-    case 'combative':
-      return 'Enfréntate al texto. ¿El autor tiene razón? ¿Qué objeciones encuentras?';
-    default:
-      return '';
-  }
-}
+

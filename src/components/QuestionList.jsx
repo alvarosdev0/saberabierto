@@ -1,24 +1,16 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback } from 'react';
 
 /**
- * QuestionList — displays and manages study questions for a section.
- *
- * Each question has:
- *   - text: The question content
- *   - type: 'keyword' | 'methodological' | 'combative'
- *   - answered: boolean
- *   - answeredAt: timestamp (set when answered is toggled on)
+ * QuestionList — displays ALL questions in a single list, no type tabs.
  *
  * @param {object} props
- * @param {Array<{id?: number, text: string, type: string, answered: boolean, answeredAt?: Date}>} props.questions
- * @param {string} props.activeType - Currently selected question type filter
- * @param {(text: string, type: string) => void} props.onAdd - Called to add a new question
- * @param {(id: number) => void} props.onToggleAnswered - Called when checkbox is toggled
- * @param {(id: number) => void} props.onDelete - Called to delete a question
+ * @param {Array<{id?: number, text: string, answered: boolean}>} props.questions
+ * @param {(text: string) => void} props.onAdd - Called to add a new question
+ * @param {(id: number) => void} props.onToggleAnswered
+ * @param {(id: number) => void} props.onDelete
  */
 export default function QuestionList({
   questions,
-  activeType,
   onAdd,
   onToggleAnswered,
   onDelete,
@@ -26,22 +18,15 @@ export default function QuestionList({
   const [newText, setNewText] = useState('');
   const inputRef = useRef(null);
 
-  const filtered = questions.filter((q) => q.type === activeType);
-
-  // Focus the input when tab changes
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, [activeType]);
-
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
       const trimmed = newText.trim();
       if (!trimmed) return;
-      onAdd(trimmed, activeType);
+      onAdd(trimmed);
       setNewText('');
     },
-    [newText, activeType, onAdd],
+    [newText, onAdd],
   );
 
   const handleKeyDown = useCallback(
@@ -65,10 +50,11 @@ export default function QuestionList({
             value={newText}
             onChange={(e) => setNewText(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={getPlaceholder(activeType)}
+            placeholder="Escribe una pregunta sobre el texto..."
             className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
             style={{ minHeight: 'var(--touch-target-min)' }}
             aria-label="Nueva pregunta"
+            autoFocus
           />
           <button
             type="submit"
@@ -82,18 +68,17 @@ export default function QuestionList({
       </form>
 
       {/* Question list */}
-      {filtered.length === 0 ? (
+      {questions.length === 0 ? (
         <p className="text-sm text-gray-400 italic text-center py-4">
           Sin preguntas aún. Escribe una pregunta arriba.
         </p>
       ) : (
         <ul className="flex flex-col gap-2">
-          {filtered.map((q) => (
+          {questions.map((q) => (
             <li
               key={q.id || q.text}
               className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 dark:bg-muted border border-gray-100 dark:border-default group"
             >
-              {/* Answer checkbox */}
               <button
                 type="button"
                 onClick={() => onToggleAnswered(q.id)}
@@ -112,7 +97,6 @@ export default function QuestionList({
                 )}
               </button>
 
-              {/* Question text */}
               <span
                 className={`flex-1 text-sm leading-relaxed ${
                   q.answered ? 'text-gray-400 line-through' : 'text-gray-800 dark:text-foreground'
@@ -121,7 +105,6 @@ export default function QuestionList({
                 {q.text}
               </span>
 
-              {/* Delete button */}
               <button
                 type="button"
                 onClick={() => onDelete(q.id)}
@@ -138,25 +121,10 @@ export default function QuestionList({
         </ul>
       )}
 
-      {/* Question count */}
       <p className="text-xs text-gray-400">
-        {filtered.length} pregunta{filtered.length !== 1 ? 's' : ''} ·{' '}
-        {filtered.filter((q) => q.answered).length} respondida{filtered.filter((q) => q.answered).length !== 1 ? 's' : ''}
+        {questions.length} pregunta{questions.length !== 1 ? 's' : ''} ·{' '}
+        {questions.filter((q) => q.answered).length} respondida{questions.filter((q) => q.answered).length !== 1 ? 's' : ''}
       </p>
     </div>
   );
-}
-
-/** Get placeholder text for each question type. */
-function getPlaceholder(type) {
-  switch (type) {
-    case 'keyword':
-      return 'Ej: ¿Qué significa "plasticidad neuronal"?';
-    case 'methodological':
-      return 'Ej: ¿Qué evidencia apoya esta afirmación?';
-    case 'combative':
-      return 'Ej: ¿Tienen razón en este argumento?';
-    default:
-      return 'Escribe tu pregunta...';
-  }
 }
