@@ -21,8 +21,8 @@ export default function QuickStats() {
     async function load() {
       try {
         const [totalAnswered, reviewsDone, dueCount, streak] = await Promise.all([
-          // Total answered questions (answered = true)
-          db.questions.where('answered').equals(1).count(),
+          // Total answered questions (answered = true) — filter in memory, not indexed
+          db.questions.toArray().then((all) => all.filter((q) => q.answered).length),
 
           // Total reviews done
           db.reviewAttempts.count(),

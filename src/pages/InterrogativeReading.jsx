@@ -66,34 +66,6 @@ export default function InterrogativeReading() {
     return () => { cancelled = true; };
   }, [sessionId, sectionId]);
 
-  // ── Inline editing ───────────────────────────────────────────────────────
-  const startEditing = useCallback((q) => {
-    setEditingId(q.id);
-    setEditText(q.text);
-  }, []);
-
-  const saveEdit = useCallback(async () => {
-    if (editingId === null) return;
-    const trimmed = editText.trim();
-    if (!trimmed) return;
-
-    try {
-      await db.questions.update(editingId, { text: trimmed });
-      setQuestions((prev) =>
-        prev.map((q) => (q.id === editingId ? { ...q, text: trimmed } : q)),
-      );
-    } catch (err) {
-      console.error('Error saving edit:', err);
-    }
-    setEditingId(null);
-    setEditText('');
-  }, [editingId, editText]);
-
-  const cancelEdit = useCallback(() => {
-    setEditingId(null);
-    setEditText('');
-  }, []);
-
   // ── Question CRUD ────────────────────────────────────────────────────────
   const handleAddQuestion = useCallback(
     async (text, type) => {
