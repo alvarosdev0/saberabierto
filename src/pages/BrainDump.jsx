@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
-import ModeSwitch from '../components/ModeSwitch.jsx';
+
 import Timer from '../components/Timer.jsx';
 import GapHighlighter from '../components/GapHighlighter.jsx';
 
@@ -215,9 +215,8 @@ export default function BrainDump() {
 
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
-      <h1 className="sr-only">Descarga de Ideas</h1>
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
+      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-200 dark:border-default flex-shrink-0">
         <SectionNavigator
           sections={sections}
           currentSectionId={sectionId}
@@ -226,14 +225,17 @@ export default function BrainDump() {
         <Timer onElapsed={handleTimerElapsed} />
       </header>
 
-      {/* ── Mode switch ─────────────────────────────────────────────────── */}
-      <div className="px-4 py-2 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
-        <ModeSwitch activeMode="brain-dump" />
+      {/* ── Page header ──────────────────────────────────────────────────── */}
+      <div className="px-4 pt-4 pb-2 border-b border-gray-200 dark:border-default bg-white dark:bg-surface">
+        <h1 className="text-xl font-bold text-purple-900 dark:text-purple-300 font-heading">Descarga de Ideas</h1>
+        <p className="text-xs text-gray-500 dark:text-muted mt-1">
+          Escribe todo lo que recuerdes de esta sección sin consultar el texto. Esto consolida el aprendizaje y revela lagunas. Usa el highlight para marcar conceptos que no domines.
+        </p>
       </div>
 
       {/* ── Section title + save indicator ──────────────────────────────── */}
       <div className="px-4 py-2 flex-shrink-0 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-purple-900 font-heading">
+        <h2 className="text-lg font-bold text-purple-900 dark:text-purple-300 font-heading">
           {currentSection?.title || 'Descarga de Ideas'}
         </h2>
         <span
@@ -284,52 +286,31 @@ export default function BrainDump() {
         </details>
       </div>
 
-      {/* ── Bottom actions ─────────────────────────────────────────────── */}
+      {/* ── Bottom action ──────────────────────────────────────────────── */}
       {(() => {
         const idx = sections.findIndex((s) => String(s.id) === String(sectionId));
         const isLast = idx >= sections.length - 1;
 
         return (
-          <div className="flex-shrink-0 px-4 py-3 bg-white dark:bg-surface border-t border-gray-100 dark:border-default">
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() =>
-                  navigate(
-                    `/session/${sessionId}/section/${sectionId}/read`,
-                    { replace: true },
-                  )
+          <div className="flex-shrink-0 px-4 py-3 bg-white dark:bg-surface border-t border-gray-200 dark:border-default">
+            <button
+              type="button"
+              onClick={async () => {
+                try {
+                  await db.sections.update(Number(sectionId), { status: 'completed' });
+                } catch {}
+                if (isLast) {
+                  navigate(`/session/${sessionId}/questionnaire`, { replace: true });
+                } else {
+                  const next = sections[idx + 1];
+                  navigate(`/session/${sessionId}/section/${next.id}/read`, { replace: true });
                 }
-                className="flex-1 px-4 py-3 text-sm font-medium rounded-xl border-2 border-purple-300 text-purple-700 hover:bg-purple-50 transition-colors"
-                style={{ minHeight: 'var(--touch-target-min)' }}
-              >
-                Volver a Lectura
-              </button>
-
-              <button
-                type="button"
-                onClick={async () => {
-                  try {
-                    await db.sections.update(Number(sectionId), {
-                      status: 'completed',
-                    });
-                  } catch {}
-                  if (isLast) {
-                    navigate(`/session/${sessionId}/questionnaire`, { replace: true });
-                  } else {
-                    const next = sections[idx + 1];
-                    navigate(
-                      `/session/${sessionId}/section/${next.id}/read`,
-                      { replace: true },
-                    );
-                  }
-                }}
-                className="flex-1 px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-                style={{ minHeight: 'var(--touch-target-min)' }}
-              >
-                {isLast ? 'Ir al cuestionario' : 'Siguiente sección'}
-              </button>
-            </div>
+              }}
+              className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
+              style={{ minHeight: 'var(--touch-target-min)' }}
+            >
+              {isLast ? 'Ir al cuestionario' : 'Siguiente sección'}
+            </button>
           </div>
         );
       })()}
