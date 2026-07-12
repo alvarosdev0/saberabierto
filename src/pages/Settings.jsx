@@ -586,7 +586,7 @@ export default function Settings() {
         <div className="text-sm text-gray-500 dark:text-muted leading-relaxed">
           <p><strong>SaberAbierto</strong> v1.0.0</p>
           <p className="mt-1">
-            Metodología de estudio con lectura interrogativa, brain dump,
+            Metodología de estudio con lectura interrogativa, descarga de ideas,
             cuestionarios y repaso espaciado (SM-2).
           </p>
           <p className="mt-2">

@@ -374,13 +374,13 @@ export default function SessionSetup() {
         <div className="mt-3 flex flex-col gap-3">
           <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
             <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><PenSquare size={16} aria-hidden="true" className="inline mr-1" />Manual</p>
-            <p className="text-gray-600 dark:text-muted">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Brain Dump para consolidar.</p>
+            <p className="text-gray-600 dark:text-muted">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Descarga de Ideas para consolidar.</p>
           </div>
           <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
             <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><Bot size={16} aria-hidden="true" className="inline mr-1" />Asistido por IA</p>
             <p className="text-gray-600 dark:text-muted">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</p>
           </div>
-          <p className="text-gray-500 dark:text-muted text-center text-xs">Ambos modos terminan en Brain Dump y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
+          <p className="text-gray-500 dark:text-muted text-center text-xs">Ambos modos terminan en Descarga de Ideas y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
         </div>
       </details>
 

@@ -23,7 +23,7 @@ export default function ModeSwitch({ activeMode }) {
     },
     {
       key: 'brain-dump',
-      label: 'Brain Dump',
+      label: 'Descarga de Ideas',
     },
   ];
 

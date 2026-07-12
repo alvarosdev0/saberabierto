@@ -214,7 +214,7 @@ export default function Home() {
           </h2>
           <p className="text-sm text-gray-500 dark:text-muted mb-5">
             Sube un PDF para comenzar una nueva sesión de estudio con lectura
-            interrogativa, brain dump y repaso espaciado.
+            interrogativa, descarga de ideas y repaso espaciado.
           </p>
           <button
             type="button"

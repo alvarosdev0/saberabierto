@@ -98,7 +98,7 @@ export default function BrainDump() {
         }
       } catch (err) {
         if (!cancelled) {
-          console.error('Error loading brain dump:', err);
+          console.error('Error loading descarga de ideas:', err);
           setError('Error al cargar las notas.');
         }
       } finally {
@@ -215,7 +215,7 @@ export default function BrainDump() {
 
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
-      <h1 className="sr-only">Brain Dump</h1>
+      <h1 className="sr-only">Descarga de Ideas</h1>
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
       <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-100 dark:border-default flex-shrink-0">
         <SectionNavigator
@@ -234,7 +234,7 @@ export default function BrainDump() {
       {/* ── Section title + save indicator ──────────────────────────────── */}
       <div className="px-4 py-2 flex-shrink-0 flex items-center justify-between">
         <h2 className="text-lg font-bold text-purple-900 font-heading">
-          {currentSection?.title || 'Brain Dump'}
+          {currentSection?.title || 'Descarga de Ideas'}
         </h2>
         <span
           aria-live="polite"

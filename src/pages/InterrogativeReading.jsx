@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronDown, ChevronUp, Info, BookOpen } from 'lucide-react';
+import { ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
 import Timer from '../components/Timer.jsx';
@@ -10,7 +10,7 @@ import QuestionList from '../components/QuestionList.jsx';
  * InterrogativeReading page — single-column: lee el contenido, formula preguntas.
  *
  * Route: /session/:id/section/:sectionId/read
- * Flujo: contenido + preguntas → Continuar a Brain Dump
+ * Flujo: contenido + preguntas → Continuar a Descarga de Ideas
  */
 export default function InterrogativeReading() {
   const { id: sessionId, sectionId } = useParams();
@@ -99,6 +99,15 @@ export default function InterrogativeReading() {
     [],
   );
 
+  const handleEditQuestion = useCallback(async (id, newText) => {
+    setQuestions((prev) => prev.map((q) => (q.id === id ? { ...q, text: newText } : q)));
+    try {
+      await db.questions.update(id, { text: newText });
+    } catch (err) {
+      console.warn('Error editing question:', err);
+    }
+  }, []);
+
   const handleDeleteQuestion = useCallback(async (id) => {
     setQuestions((prev) => prev.filter((q) => q.id !== id));
     try {
@@ -186,15 +195,12 @@ export default function InterrogativeReading() {
         <Timer onElapsed={handleTimerElapsed} />
       </header>
 
-      {/* ── Explicación ──────────────────────────────────────────────────── */}
-      <div className="px-4 py-3 bg-purple-50 dark:bg-purple-950 border-b border-purple-100 dark:border-purple-900">
-        <div className="flex items-start gap-2 text-xs text-purple-800 dark:text-purple-300 leading-relaxed">
-          <Info size={16} className="mt-0.5 flex-shrink-0" aria-hidden="true" />
-          <div>
-            <p className="font-semibold mb-0.5">Lectura Interrogativa</p>
-            <p>Lee el contenido de esta sección. Formula preguntas de los 3 tipos para asegurar que comprendes el material. El esfuerzo de escribir tus propias preguntas mejora la retención a largo plazo. Al terminar, continúa al Brain Dump.</p>
-          </div>
-        </div>
+      {/* ── Page header ──────────────────────────────────────────────────── */}
+      <div className="px-4 pt-4 pb-2 border-b border-gray-200 dark:border-default bg-white dark:bg-surface">
+        <h1 className="text-xl font-bold text-purple-900 dark:text-purple-300 font-heading">Lectura Interrogativa</h1>
+        <p className="text-xs text-gray-500 dark:text-muted mt-1">
+          Lee el contenido y escribe preguntas. Luego continúa a Descarga de Ideas.
+        </p>
       </div>
 
       {/* ── Scrollable content ──────────────────────────────────────────── */}
@@ -237,7 +243,7 @@ export default function InterrogativeReading() {
             <QuestionList
               questions={questions}
               onAdd={handleAddQuestion}
-              onToggleAnswered={handleToggleAnswered}
+              onEdit={handleEditQuestion}
               onDelete={handleDeleteQuestion}
             />
           </div>
@@ -252,7 +258,7 @@ export default function InterrogativeReading() {
           className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
           style={{ minHeight: '44px' }}
         >
-          Continuar a Brain Dump
+          Continuar a Descarga de Ideas
         </button>
       </div>
     </div>

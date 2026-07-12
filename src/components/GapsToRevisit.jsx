@@ -3,16 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import db from '../services/db.js';
 
 /**
- * GapsToRevisit — list of flagged knowledge gaps from brain dump notes.
+ * GapsToRevisit — list of flagged knowledge gaps from descarga de ideas notes.
  *
  * Per design §HomeDashboard:
  *   List flagged gaps from notes.hasGaps index.
- *   Link to brain dump notes for each gap.
+ *   Link to descarga de ideas notes for each gap.
  *
  * Each gap entry shows:
  *   - The gap text (first 80 chars)
  *   - Source section title
- *   - Link to the brain dump page for that section
+ *   - Link to the descarga de ideas page for that section
  */
 export default function GapsToRevisit() {
   const [gaps, setGaps] = useState([]);

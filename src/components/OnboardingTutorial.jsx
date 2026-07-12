@@ -22,7 +22,7 @@ const STEPS = [
     icon: BookOpen,
     title: 'Lee y haz preguntas',
     description:
-      'El texto se divide en secciones. Para cada sección, responde preguntas clave, metodológicas y desafiantes. Luego haz un brain dump con tus notas.',
+      'El texto se divide en secciones. Para cada sección, responde preguntas clave, metodológicas y desafiantes.       Luego haz un descarga de ideas con tus notas.',
     color: 'bg-emerald-500',
   },
   {
