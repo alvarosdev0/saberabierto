@@ -229,7 +229,7 @@ export default function BrainDump() {
       <div className="px-4 pt-4 pb-2 border-b border-gray-200 dark:border-default bg-white dark:bg-surface">
         <h1 className="text-xl font-bold text-purple-900 dark:text-purple-300 font-heading">Descarga de Ideas</h1>
         <p className="text-xs text-gray-500 dark:text-muted mt-1">
-          Escribe todo lo que recuerdes de esta sección sin consultar el texto. Esto consolida el aprendizaje y revela lagunas. Usa el highlight para marcar conceptos que no domines.
+          Sin mirar el texto de arriba, escribe con tus propias palabras lo que aprendiste en esta sección. Si hay algo que no recuerdas bien, márcalo como laguna seleccionándolo y usando el highlight.
         </p>
       </div>
 
