@@ -236,7 +236,6 @@ export default function InterrogativeReading() {
           <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-3">
             {sessionMode === 'ai' && (
               <p className="text-xs text-purple-600 dark:text-purple-400 mb-3 flex items-center gap-1">
-                <Info size={12} aria-hidden="true" />
                 Preguntas generadas automáticamente. Puedes editarlas o añadir más.
               </p>
             )}
