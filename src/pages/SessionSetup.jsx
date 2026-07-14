@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Brain, Sparkles, ChevronRight, ChevronLeft, Check, Loader2, BookOpen, PenSquare, Bot, Clock, DollarSign, BadgePercent, Lightbulb, Play } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 import { createProvider, PROVIDER_META } from '../services/ai/index.js';
 
@@ -122,6 +123,7 @@ export default function SessionSetup() {
     const language = session?.language || localStorage.getItem('sa:language') || 'es';
     const provider = createProvider(providerId, apiKey);
     let lastErr = null;
+    let totalSaved = 0;
 
     for (let i = 0; i < notes.length; i++) {
       const note = notes[i];
@@ -143,10 +145,11 @@ export default function SessionSetup() {
             await db.questions.add({
               sectionId: note.sectionId,
               text: q.text,
-              type: q.type,
+              type: q.type || 'keyword',
               answered: false,
               answeredAt: null,
             });
+            totalSaved++;
           }
         }
       } catch (err) {
@@ -158,10 +161,11 @@ export default function SessionSetup() {
     }
 
     setGenerating(false);
-    setGenDone(true);
 
-    if (lastErr) {
-      setError(lastErr);
+    if (totalSaved > 0) {
+      setGenDone(true);
+    } else {
+      setError(lastErr || 'No se generaron preguntas. Verifica tu clave API e intenta de nuevo.');
     }
   }, [notes, session?.language]);
 
@@ -185,8 +189,8 @@ export default function SessionSetup() {
     return (
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando sesión…</p>
+          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <Text size="sm" className="text-base-content/50">Cargando sesión…</Text>
         </div>
       </div>
     );
@@ -195,7 +199,7 @@ export default function SessionSetup() {
   if (error) {
     return (
       <div className="p-4 max-w-3xl mx-auto">
-        <div role="alert" className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+        <div role="alert" className="px-4 py-3 bg-danger/10 border border-danger/30 rounded-lg text-sm text-danger">
           <p className="font-medium">Error</p>
           <p>{error}</p>
         </div>
@@ -207,18 +211,18 @@ export default function SessionSetup() {
     <div className="flex flex-col gap-6 p-4 max-w-3xl mx-auto pb-24">
       {/* ── Header ──────────────────────────────────────────────────────── */}
       <div>
-        <h1 className="text-2xl font-bold text-purple-900">Configurar estudio</h1>
-        <p className="text-gray-600 dark:text-muted mt-1">
+        <Heading as="h1" size="2xl">Configurar estudio</Heading>
+        <Text size="sm" className="text-base-content/70 mt-1">
           {session?.subject || 'Sesión de estudio'}
-        </p>
+        </Text>
       </div>
 
       {/* ── Sections list ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold text-gray-700 dark:text-foreground flex items-center gap-2">
+        <Heading as="h2" size="sm" className="text-base-content flex items-center gap-2">
           <BookOpen size={16} aria-hidden="true" />
           Secciones detectadas ({sections.length})
-        </h2>
+        </Heading>
 
         {sections.map((sec, i) => {
           const note = notes.find((n) => n.sectionId === sec.id);
@@ -228,29 +232,29 @@ export default function SessionSetup() {
           return (
             <div
               key={sec.id}
-              className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 flex flex-col gap-2"
+              className="bg-base-100 rounded-xl border border-base-content/10 p-4 flex flex-col gap-2"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <span className="text-xs text-gray-400 font-medium">Sección {i + 1}</span>
-                  <h3 className="font-semibold text-gray-800 dark:text-foreground">{sec.title}</h3>
+                  <Text size="xs" className="text-base-content/40 font-medium">Sección {i + 1}</Text>
+                  <Heading as="h3" size="sm" className="text-base-content">{sec.title}</Heading>
                 </div>
-                <span className="text-xs text-gray-400 whitespace-nowrap">
+                <Text size="xs" className="text-base-content/40 whitespace-nowrap">
                   {chars.toLocaleString()} chars · ~{tokens} tokens
-                </span>
+                </Text>
               </div>
-              <p className="text-xs text-gray-500 dark:text-muted leading-relaxed">
+              <Text size="xs" className="text-base-content/50 leading-relaxed">
                 {sec.title === 'Introducción'
                   ? 'Lee y comprende los fundamentos del tema para construir una base sólida antes de las preguntas.'
                   : 'Analiza los conceptos presentados y prepárate para formular preguntas que refuercen tu comprensión.'}
-              </p>
+              </Text>
               {mode === 'ai' && costs && (
                 <div className="flex items-center gap-2 text-xs">
-                  <span className="text-purple-600 font-medium">
+                  <span className="text-primary font-medium">
                     ~{tokens} tokens
                   </span>
-                  <span className="text-gray-300">·</span>
-                  <span className="text-gray-500">
+                  <span className="text-base-content/20">·</span>
+                  <span className="text-base-content/50">
                     {costs.freeTier
                       ? <><BadgePercent size={12} aria-hidden="true" className="inline mr-0.5" /> Gratis</>
                       : `~$${((tokens / 1_000_000) * (costs.cost / costs.totalTokens || 0.15)).toFixed(6)} USD`
@@ -265,7 +269,7 @@ export default function SessionSetup() {
 
       {/* ── Mode selector ───────────────────────────────────────────────── */}
       <div className="flex flex-col gap-3">
-        <h2 className="text-sm font-semibold text-gray-700 dark:text-foreground">Modo de estudio</h2>
+        <Heading as="h2" size="sm" className="text-base-content">Modo de estudio</Heading>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {/* Manual mode */}
@@ -274,27 +278,27 @@ export default function SessionSetup() {
             onClick={() => { setMode('manual'); setGenDone(false); }}
             className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-[border-color,background-color,box-shadow] ${
               mode === 'manual'
-                ? 'border-purple-500 bg-purple-50 shadow-md'
-                : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
+                ? 'border-primary bg-primary/10 shadow-md'
+                : 'border-base-content/10 bg-base-100 hover:border-base-300'
             }`}
             style={{ minHeight: '44px' }}
           >
             <div className="flex items-center gap-2">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'manual' ? 'bg-purple-600' : 'bg-gray-100'}`}>
-                <Brain size={22} aria-hidden="true" className={mode === 'manual' ? 'text-white' : 'text-gray-500'} />
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'manual' ? 'bg-primary' : 'bg-base-200'}`}>
+                <Brain size={22} aria-hidden="true" className={mode === 'manual' ? 'text-primary-content' : 'text-base-content/50'} />
               </div>
-              <span className={`font-bold ${mode === 'manual' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
+              <span className={`font-bold ${mode === 'manual' ? 'text-primary' : 'text-base-content'}`}>
                 <PenSquare size={18} aria-hidden="true" className="mr-1 inline" />
                 Yo mismo
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
+            <div className="flex flex-col gap-1 text-xs text-base-content/70 leading-relaxed">
               <p><strong>Tú</strong> lees el texto y escribes tus propias preguntas. El acto de formular preguntas refuerza la comprensión y la retención a largo plazo.</p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Mayor retención</span>
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Sin costo</span>
-                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded"><Clock size={12} aria-hidden="true" className="inline mr-0.5" />Más lento</span>
+                <span className="px-2 py-0.5 bg-success/10 text-success rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Mayor retención</span>
+                <span className="px-2 py-0.5 bg-success/10 text-success rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Sin costo</span>
+                <span className="px-2 py-0.5 bg-warning/10 text-warning rounded"><Clock size={12} aria-hidden="true" className="inline mr-0.5" />Más lento</span>
               </div>
             </div>
           </button>
@@ -305,43 +309,43 @@ export default function SessionSetup() {
             onClick={() => { setMode('ai'); setGenDone(false); }}
             className={`text-left rounded-xl border-2 p-4 flex flex-col gap-3 transition-[border-color,background-color,box-shadow] ${
               mode === 'ai'
-                ? 'border-purple-500 bg-purple-50 shadow-md'
-                : 'border-gray-200 dark:border-default bg-white dark:bg-surface hover:border-gray-300'
+                ? 'border-primary bg-primary/10 shadow-md'
+                : 'border-base-content/10 bg-base-100 hover:border-base-300'
             }`}
             style={{ minHeight: '44px' }}
           >
             <div className="flex items-center gap-2">
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'ai' ? 'bg-purple-600' : 'bg-gray-100'}`}>
-                <Sparkles size={22} aria-hidden="true" className={mode === 'ai' ? 'text-white' : 'text-gray-500'} />
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${mode === 'ai' ? 'bg-primary' : 'bg-base-200'}`}>
+                <Sparkles size={22} aria-hidden="true" className={mode === 'ai' ? 'text-primary-content' : 'text-base-content/50'} />
               </div>
-              <span className={`font-bold ${mode === 'ai' ? 'text-purple-900' : 'text-gray-800 dark:text-foreground'}`}>
+              <span className={`font-bold ${mode === 'ai' ? 'text-primary' : 'text-base-content'}`}>
                 <Bot size={18} aria-hidden="true" className="mr-1 inline" />
                 Asistido por IA
               </span>
             </div>
 
-            <div className="flex flex-col gap-1 text-xs text-gray-600 dark:text-muted leading-relaxed">
+            <div className="flex flex-col gap-1 text-xs text-base-content/70 leading-relaxed">
               <p>La IA analiza el texto y genera preguntas balanceadas de los 3 tipos. Luego puedes <strong>editarlas</strong>, descartarlas o mezclarlas con las tuyas.</p>
               <div className="flex flex-wrap gap-2 mt-1">
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Más rápido</span>
-                <span className="px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Editable</span>
-                <span className="px-2 py-0.5 bg-amber-100 text-amber-700 rounded"><DollarSign size={12} aria-hidden="true" className="inline mr-0.5" />Con costo</span>
+                <span className="px-2 py-0.5 bg-success/10 text-success rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Más rápido</span>
+                <span className="px-2 py-0.5 bg-success/10 text-success rounded"><Check size={12} aria-hidden="true" className="inline mr-0.5" />Editable</span>
+                <span className="px-2 py-0.5 bg-warning/10 text-warning rounded"><DollarSign size={12} aria-hidden="true" className="inline mr-0.5" />Con costo</span>
               </div>
 
               {/* Cost summary */}
               {costs && (
-                <div className="mt-2 p-2 bg-white dark:bg-surface rounded-lg border border-gray-100 dark:border-default">
+                <div className="mt-2 p-2 bg-base-100 rounded-lg border border-base-content/10">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-gray-500 dark:text-muted">Tokens totales:</span>
-                    <span className="font-medium text-gray-700 dark:text-foreground">~{costs.totalTokens.toLocaleString()}</span>
+                    <span className="text-base-content/50">Tokens totales:</span>
+                    <span className="font-medium text-base-content">~{costs.totalTokens.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs mt-1">
-                    <span className="text-gray-500 dark:text-muted">Proveedor:</span>
-                    <span className="font-medium text-gray-700 dark:text-foreground">{costs.provider}</span>
+                    <span className="text-base-content/50">Proveedor:</span>
+                    <span className="font-medium text-base-content">{costs.provider}</span>
                   </div>
-                  <div className="flex items-center justify-between text-xs mt-1 pt-1 border-t border-gray-100 dark:border-default">
-                    <span className="text-gray-500 dark:text-muted">Costo estimado:</span>
-                    <span className={`font-bold ${costs.freeTier ? 'text-emerald-600' : 'text-amber-700'}`}>
+                  <div className="flex items-center justify-between text-xs mt-1 pt-1 border-t border-base-content/10">
+                    <span className="text-base-content/50">Costo estimado:</span>
+                    <span className={`font-bold ${costs.freeTier ? 'text-success' : 'text-warning'}`}>
                       {costs.freeTier
                         ? <><BadgePercent size={12} aria-hidden="true" className="inline mr-0.5" /> Gratis (tier free)</>
                         : `~$${costs.cost.toFixed(4)} USD`
@@ -356,31 +360,31 @@ export default function SessionSetup() {
 
         {/* Toggle hint */}
         {mode && (
-          <p className="text-xs text-gray-400 text-center">
+          <Text size="xs" className="text-base-content/40 text-center">
             <Lightbulb size={12} aria-hidden="true" className="inline mr-0.5" />
             {mode === 'ai'
               ? 'Durante el estudio podrás cambiar a modo manual si lo prefieres.'
               : 'Durante el estudio podrás cambiar a modo IA si lo prefieres.'
             }
-          </p>
+          </Text>
         )}
       </div>
 
       {/* ── Extra: Tooltip explaining modes further ──────────────────────── */}
-      <details className="text-xs text-gray-500 dark:text-muted bg-gray-50 dark:bg-muted rounded-xl p-3">
-        <summary className="cursor-pointer font-medium text-gray-700 dark:text-foreground hover:text-purple-700">
+      <details className="text-xs text-base-content/50 bg-base-200 rounded-xl p-3">
+        <summary className="cursor-pointer font-medium text-base-content hover:text-primary">
           ¿Cuál es la diferencia entre ambos modos?
         </summary>
         <div className="mt-3 flex flex-col gap-3">
-          <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
-            <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><PenSquare size={16} aria-hidden="true" className="inline mr-1" />Manual</p>
-            <p className="text-gray-600 dark:text-muted">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Descarga de Ideas para consolidar.</p>
+          <div className="bg-base-100 rounded-lg p-3 border border-base-content/10">
+            <p className="font-semibold text-base-content mb-1"><PenSquare size={16} aria-hidden="true" className="inline mr-1" />Manual</p>
+            <Text size="xs" className="text-base-content/70">Accedes a la Lectura Interrogativa: lees el texto sección por sección y escribes tus propias preguntas de 3 tipos (conceptos, metodología, combate). Requiere más tiempo pero el esfuerzo de formular preguntas mejora la retención. Luego haces un Descarga de Ideas para consolidar.</Text>
           </div>
-          <div className="bg-white dark:bg-surface rounded-lg p-3 border border-gray-100 dark:border-default">
-            <p className="font-semibold text-gray-800 dark:text-foreground mb-1"><Bot size={16} aria-hidden="true" className="inline mr-1" />Asistido por IA</p>
-            <p className="text-gray-600 dark:text-muted">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</p>
+          <div className="bg-base-100 rounded-lg p-3 border border-base-content/10">
+            <p className="font-semibold text-base-content mb-1"><Bot size={16} aria-hidden="true" className="inline mr-1" />Asistido por IA</p>
+            <Text size="xs" className="text-base-content/70">La IA genera preguntas automáticamente para todas las secciones. Tú las revisas, editas o descartas antes de continuar. Si alguna sección te interesa más, puedes cambiarte a modo manual para esa sección en concreto. El costo es mínimo (o gratis con Gemini).</Text>
           </div>
-          <p className="text-gray-500 dark:text-muted text-center text-xs">Ambos modos terminan en Descarga de Ideas y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</p>
+          <Text size="xs" className="text-base-content/50 text-center">Ambos modos terminan en Descarga de Ideas y luego Cuestionario. La única diferencia es cómo se generan las preguntas.</Text>
         </div>
       </details>
 
@@ -390,7 +394,7 @@ export default function SessionSetup() {
           type="button"
           onClick={handleGenerateAll}
           disabled={generating || notes.length === 0}
-          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700 disabled:from-gray-300 disabled:to-gray-300 disabled:cursor-not-allowed transition-[background,box-shadow] shadow-lg"
+          className="w-full flex items-center justify-center gap-2 px-4 py-3 text-sm font-bold rounded-xl bg-gradient-to-r from-primary to-primary-hover text-primary-content hover:opacity-90 disabled:from-base-300 disabled:to-base-300 disabled:cursor-not-allowed transition-[background,box-shadow] shadow-lg"
           style={{ minHeight: 'var(--touch-target-min)' }}
         >
           {generating ? (
@@ -409,14 +413,14 @@ export default function SessionSetup() {
 
       {/* ── Generation progress ──────────────────────────────────────────── */}
       {generating && (
-        <div className="bg-purple-50 border border-purple-200 rounded-xl p-3">
-          <div className="flex items-center justify-between text-xs text-purple-700 mb-2">
+        <div className="bg-primary/10 border border-primary/20 rounded-xl p-3">
+          <div className="flex items-center justify-between text-xs text-primary mb-2">
             <span>Generando preguntas…</span>
             <span>{genProgress.current}/{genProgress.total}</span>
           </div>
-          <div className="w-full h-2 bg-purple-200 rounded-full overflow-hidden">
+          <div className="w-full h-2 bg-primary/20 rounded-full overflow-hidden">
             <div
-              className="h-full bg-purple-600 rounded-full transition-[width] duration-300"
+              className="h-full bg-primary rounded-full transition-[width] duration-300"
               style={{ width: `${(genProgress.current / (genProgress.total || 1)) * 100}%` }}
             />
           </div>
@@ -425,28 +429,28 @@ export default function SessionSetup() {
 
       {/* ── Generation done ──────────────────────────────────────────────── */}
       {genDone && (
-        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-2">
-          <Check size={18} aria-hidden="true" className="text-emerald-600" />
-          <span className="text-sm text-emerald-800 font-medium">
+        <div className="bg-success/10 border border-success/30 rounded-xl p-3 flex items-center gap-2">
+          <Check size={18} aria-hidden="true" className="text-success" />
+          <Text size="sm" className="text-success font-medium">
             Preguntas generadas para todas las secciones. ¡Ya puedes empezar!
-          </span>
+          </Text>
         </div>
       )}
 
       {/* ── Start button ─────────────────────────────────────────────────── */}
       {(mode === 'manual' || genDone) && (
-        <div className="fixed bottom-16 left-0 right-0 p-4 bg-gradient-to-t from-white dark:from-surface via-white dark:via-surface to-transparent">
-          <button
-            type="button"
+        <div className="fixed bottom-16 left-0 right-0 p-4 bg-gradient-to-t from-base-100 via-base-100 to-transparent">
+          <Button
+            color="primary"
+            size="lg"
+            className="w-full max-w-3xl mx-auto"
             onClick={handleStart}
             disabled={sections.length === 0}
-            className="w-full max-w-3xl mx-auto flex items-center justify-center gap-2 px-4 py-4 text-base font-bold rounded-xl bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-[background-color,box-shadow] shadow-xl"
-            style={{ minHeight: 'var(--touch-target-min)' }}
           >
             <Play size={18} aria-hidden="true" />
             {mode === 'ai' ? 'Revisar preguntas y empezar' : 'Empezar a estudiar'}
             <ChevronRight size={20} aria-hidden="true" />
-          </button>
+          </Button>
         </div>
       )}
     </div>

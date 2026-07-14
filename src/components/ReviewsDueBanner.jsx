@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -63,20 +64,20 @@ export default function ReviewsDueBanner() {
 
   return (
     <div
-      className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-center justify-between gap-3"
+      className="bg-warning/10 border border-warning/30 rounded-xl p-4 flex items-center justify-between gap-3"
       role="alert"
     >
       <div className="flex items-center gap-2 min-w-0">
         <span className="text-lg flex-shrink-0">⏰</span>
-        <p className="text-sm text-amber-800">
+        <Text size="sm" className="text-warning">
           <span className="font-semibold">{dueCount}</span>{' '}
           repaso{dueCount !== 1 ? 's pendientes' : ' pendiente'}
-        </p>
+        </Text>
       </div>
       <button
         type="button"
         onClick={() => navigate('/review')}
-        className="flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition-colors shadow-sm"
+        className="flex-shrink-0 px-4 py-2 text-sm font-semibold rounded-lg bg-warning text-warning-content hover:opacity-90 transition-colors shadow-sm"
         style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
       >
         Repasar

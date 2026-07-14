@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Moon, Sun, AlertTriangle } from 'lucide-react';
 import { Button, Heading, Text } from '@ninna-ui/primitives';
-import { Input, Select } from '@ninna-ui/forms';
+import { Input } from '@ninna-ui/forms';
 import { PROVIDER_IDS, PROVIDER_META } from '../services/ai/index.js';
 import db from '../services/db.js';
 
@@ -276,18 +276,24 @@ export default function Settings() {
           <Text size="sm" as="label" htmlFor="provider-select" className="font-medium text-base-content">
             Selecciona el proveedor para generar preguntas
           </Text>
-          <Select
+          <select
             id="provider-select"
             value={provider}
             onChange={handleProviderChange}
-            className="w-full"
+            className="w-full px-4 py-3 border border-base-content/10 rounded-lg bg-base-100 text-base-content text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none appearance-none"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 12px center',
+              paddingRight: '2.5rem',
+            }}
           >
             {PROVIDER_IDS.map((id) => (
               <option key={id} value={id}>
                 {PROVIDER_META[id]?.name || id}
               </option>
             ))}
-          </Select>
+          </select>
           <Text size="xs" className="text-base-content/40">
             Modelo: {provider === 'gemini' ? geminiModel : meta.model}
           </Text>
@@ -360,13 +366,13 @@ export default function Settings() {
 
             {/* Model selector */}
             <div className="flex gap-2">
-              <Select
+              <select
                 value={geminiModel}
                 onChange={(e) => {
                   setGeminiModel(e.target.value);
                   localStorage.setItem('sa:gemini-model', e.target.value);
                 }}
-                className="flex-1"
+                className="flex-1 px-3 py-2.5 text-sm border border-base-content/10 rounded-lg bg-base-100 text-base-content focus:border-primary outline-none"
               >
                 {availableModels.length > 0 ? (
                   availableModels.map((m) => (
@@ -377,7 +383,7 @@ export default function Settings() {
                 ) : (
                   <option value={geminiModel}>{geminiModel}</option>
                 )}
-              </Select>
+              </select>
 
               <Button
                 variant="outline"

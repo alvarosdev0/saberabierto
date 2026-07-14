@@ -67,7 +67,7 @@ export default function Timer({ onElapsed }) {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-muted bg-white/80 dark:bg-surface/80 rounded-full px-3 py-1 shadow-sm border border-gray-100 dark:border-default">
+    <div className="inline-flex items-center gap-1.5 text-sm text-base-content/50 bg-base-100/80 rounded-full px-3 py-1 shadow-sm border border-base-content/10">
       <svg
         className="w-4 h-4"
         fill="none"
@@ -82,7 +82,7 @@ export default function Timer({ onElapsed }) {
           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
         />
       </svg>
-      <span className="font-mono tabular-nums text-gray-700 dark:text-foreground">{display}</span>
+      <span className="font-mono tabular-nums text-base-content">{display}</span>
     </div>
   );
 }

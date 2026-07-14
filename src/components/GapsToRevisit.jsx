@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Heading, Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -94,10 +95,10 @@ export default function GapsToRevisit() {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
-        <div className="h-3 w-24 bg-gray-200 dark:bg-gray-700 rounded mb-3" />
-        <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-        <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-700 rounded" />
+      <div className="bg-base-100 rounded-xl border border-base-content/10 p-4 animate-pulse">
+        <div className="h-3 w-24 bg-base-content/10 rounded mb-3" />
+        <div className="h-4 w-full bg-base-content/10 rounded mb-2" />
+        <div className="h-4 w-3/4 bg-base-content/10 rounded" />
       </div>
     );
   }
@@ -105,11 +106,11 @@ export default function GapsToRevisit() {
   if (gaps.length === 0) return null;
 
   return (
-    <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default divide-y divide-gray-100">
-      <div className="px-4 py-3 bg-gray-50 dark:bg-muted rounded-t-xl">
-        <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide">
+    <div className="bg-base-100 rounded-xl border border-base-content/10 divide-y divide-base-content/10">
+      <div className="px-4 py-3 bg-base-200 rounded-t-xl">
+        <Text size="xs" className="text-base-content/50 font-medium uppercase tracking-wide">
           Lagunas por revisar ({gaps.length})
-        </p>
+        </Text>
       </div>
       {gaps.map((gap, idx) => (
         <button
@@ -120,17 +121,17 @@ export default function GapsToRevisit() {
               navigate(`/session/${gap.sessionId}/section/${gap.sectionId}/brain-dump`);
             }
           }}
-          className="w-full text-left px-4 py-3 hover:bg-purple-50 transition-colors flex items-start gap-3"
+          className="w-full text-left px-4 py-3 hover:bg-primary/10 transition-colors flex items-start gap-3"
           style={{ minHeight: 'var(--touch-target-min)' }}
         >
           <span className="text-sm mt-0.5 flex-shrink-0">🔍</span>
           <div className="min-w-0">
-            <p className="text-sm text-gray-800 dark:text-foreground leading-snug line-clamp-2">
+            <Text size="sm" className="text-base-content leading-snug line-clamp-2">
               {gap.gapText}
-            </p>
-            <p className="text-xs text-gray-400 mt-1 truncate">
+            </Text>
+            <Text size="xs" className="text-base-content/40 mt-1 truncate">
               {gap.sessionSubject} · {gap.sectionTitle}
-            </p>
+            </Text>
           </div>
         </button>
       ))}

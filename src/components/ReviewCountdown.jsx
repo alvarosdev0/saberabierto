@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -62,22 +63,22 @@ export default function ReviewCountdown() {
 
   if (loading) {
     return (
-      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
-        <div className="h-3 w-32 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-        <div className="h-5 w-40 bg-gray-200 dark:bg-gray-700 rounded" />
+      <div className="bg-base-100 rounded-xl border border-base-content/10 p-4 animate-pulse">
+        <div className="h-3 w-32 bg-base-content/10 rounded mb-2" />
+        <div className="h-5 w-40 bg-base-content/10 rounded" />
       </div>
     );
   }
 
   if (!nextReview) {
     return (
-      <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4">
-        <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
+      <div className="bg-base-100 rounded-xl border border-base-content/10 p-4">
+        <Text size="xs" className="text-base-content/50 font-medium uppercase tracking-wide mb-1">
           Próximo repaso
-        </p>
-        <p className="text-sm text-gray-400 italic">
+        </Text>
+        <Text size="sm" className="text-base-content/40 italic">
           No hay repasos programados. Crea un cuestionario para empezar.
-        </p>
+        </Text>
       </div>
     );
   }
@@ -93,33 +94,33 @@ export default function ReviewCountdown() {
 
   if (diffDays < 0) {
     label = `Vencido hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}`;
-    accentClass = 'text-red-600';
+    accentClass = 'text-danger';
   } else if (diffDays === 0) {
     label = 'Hoy';
-    accentClass = 'text-amber-600';
+    accentClass = 'text-warning';
   } else if (diffDays === 1) {
     label = 'Mañana';
-    accentClass = 'text-emerald-600';
+    accentClass = 'text-success';
   } else if (diffDays <= 7) {
     label = `En ${diffDays} días`;
-    accentClass = 'text-emerald-600';
+    accentClass = 'text-success';
   } else if (diffDays <= 30) {
     label = `En ${diffDays} días`;
-    accentClass = 'text-gray-600';
+    accentClass = 'text-base-content/70';
   } else {
     label = nr.toLocaleDateString('es-ES', {
       day: 'numeric',
       month: 'long',
       year: 'numeric',
     });
-    accentClass = 'text-gray-600';
+    accentClass = 'text-base-content/70';
   }
 
   return (
-    <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4">
-      <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
+    <div className="bg-base-100 rounded-xl border border-base-content/10 p-4">
+      <Text size="xs" className="text-base-content/50 font-medium uppercase tracking-wide mb-1">
         Próximo repaso
-      </p>
+      </Text>
       <p className={`text-base font-bold ${accentClass}`}>
         {label}
       </p>

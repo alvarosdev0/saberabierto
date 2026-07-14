@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Frown, Meh, ThumbsUp, Sparkles, BookOpen, CheckCircle, PartyPopper } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 import { calculateNextReview } from '../services/sm2.js';
 import ScoreSelector from '../components/ScoreSelector.jsx';
@@ -64,10 +65,10 @@ function scoreLabel(score) {
 // ── Helper: score icon component ────────────────────────────────────────────
 function ScoreIcon({ score, size = 16 }) {
   switch (score) {
-    case 0: return <Frown size={size} aria-hidden="true" className="text-red-500" />;
-    case 1: return <Meh size={size} aria-hidden="true" className="text-amber-500" />;
-    case 2: return <ThumbsUp size={size} aria-hidden="true" className="text-purple-500" />;
-    case 3: return <Sparkles size={size} aria-hidden="true" className="text-emerald-500" />;
+    case 0: return <Frown size={size} aria-hidden="true" className="text-danger" />;
+    case 1: return <Meh size={size} aria-hidden="true" className="text-warning" />;
+    case 2: return <ThumbsUp size={size} aria-hidden="true" className="text-primary" />;
+    case 3: return <Sparkles size={size} aria-hidden="true" className="text-success" />;
     default: return null;
   }
 }
@@ -276,8 +277,8 @@ export default function SpacedRetrieval() {
     return (
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando repasos...</p>
+          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <Text size="sm" className="text-base-content/50">Cargando repasos...</Text>
         </div>
       </div>
     );
@@ -286,17 +287,17 @@ export default function SpacedRetrieval() {
   if (error) {
     return (
       <div className="p-4">
-        <div role="alert" className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+        <div role="alert" className="px-4 py-3 bg-danger/10 border border-danger/30 rounded-lg text-sm text-danger">
           <p className="font-medium">Error</p>
           <p>{error}</p>
-          <button
-            type="button"
+          <Button
+            variant="soft"
+            color="danger"
             onClick={() => navigate('/')}
-            className="mt-3 px-4 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
-            style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+            className="mt-3"
           >
             Volver al inicio
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -305,15 +306,15 @@ export default function SpacedRetrieval() {
   return (
     <div className="flex flex-col min-h-[calc(100dvh-64px)]">
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <header className="flex-shrink-0 px-4 py-4 bg-white dark:bg-surface border-b border-gray-100 dark:border-default">
-        <h1 className="text-xl font-bold text-purple-900 font-heading">
+      <header className="flex-shrink-0 px-4 py-4 bg-base-100 border-b border-base-content/10">
+        <Heading as="h1" size="xl" className="font-heading">
           Repaso Espaciado
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-muted mt-1">
+        </Heading>
+        <Text size="sm" className="text-base-content/50 mt-1">
           {questionnaireId
             ? 'Repaso enfocado de un cuestionario'
             : 'Cola de repaso de todos los cuestionarios'}
-        </p>
+        </Text>
       </header>
 
       {/* ── Stale subject banner ────────────────────────────────────────── */}
@@ -326,15 +327,15 @@ export default function SpacedRetrieval() {
       {/* ── Progress indicator ──────────────────────────────────────────── */}
       {dueQueue.length > 0 && currentIndex < dueQueue.length && (
         <div className="flex-shrink-0 px-4 pt-3">
-          <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
+          <div className="flex items-center justify-between text-xs text-base-content/40 mb-1">
             <span>
               {currentIndex + 1} de {dueQueue.length}
             </span>
             <span>{Math.round(((currentIndex) / dueQueue.length) * 100)}%</span>
           </div>
-          <div className="w-full h-1.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-base-300 rounded-full overflow-hidden">
             <div
-              className="h-full bg-purple-500 rounded-full transition-[width] duration-300"
+              className="h-full bg-primary rounded-full transition-[width] duration-300"
               style={{ width: `${((currentIndex) / dueQueue.length) * 100}%` }}
             />
           </div>
@@ -346,76 +347,68 @@ export default function SpacedRetrieval() {
         {/* Empty state — no questionnaires */}
         {dueQueue.length === 0 && !questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <BookOpen size={48} aria-hidden="true" className="text-gray-300 mb-4" />
-            <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
+            <BookOpen size={48} aria-hidden="true" className="text-base-content/20 mb-4" />
+            <Heading as="h2" size="lg" className="text-base-content mb-2">
               ¡Todo al día!
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-muted mb-6">
+            </Heading>
+            <Text size="sm" className="text-base-content/50 mb-6">
               No tienes repasos pendientes. Crea cuestionarios desde tus sesiones de estudio para comenzar.
-            </p>
-            <button
-              type="button"
+            </Text>
+            <Button
+              color="primary"
               onClick={() => navigate('/')}
-              className="px-6 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-              style={{ minHeight: 'var(--touch-target-min)' }}
             >
               Ir al inicio
-            </button>
+            </Button>
           </div>
         )}
 
         {/* Empty state — specific questionnaire has no items */}
         {dueQueue.length === 0 && questionnaireId && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <CheckCircle size={48} aria-hidden="true" className="text-emerald-400 mb-4" />
-            <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2">
+            <CheckCircle size={48} aria-hidden="true" className="text-success mb-4" />
+            <Heading as="h2" size="lg" className="text-base-content mb-2">
               Sin repasos pendientes
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-muted mb-6">
+            </Heading>
+            <Text size="sm" className="text-base-content/50 mb-6">
               Todas las preguntas de este cuestionario están al día.
-            </p>
-            <button
-              type="button"
+            </Text>
+            <Button
+              color="primary"
               onClick={() => navigate('/review')}
-              className="px-6 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-              style={{ minHeight: 'var(--touch-target-min)' }}
             >
               Ver todos los repasos
-            </button>
+            </Button>
           </div>
         )}
 
         {/* All done — finished the queue */}
         {currentIndex >= dueQueue.length && dueQueue.length > 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-center">
-            <PartyPopper size={48} aria-hidden="true" className="text-emerald-500 mb-4" />
-            <h2 className="text-lg font-bold text-emerald-700 mb-2">
+            <PartyPopper size={48} aria-hidden="true" className="text-success mb-4" />
+            <Heading as="h2" size="lg" className="text-success mb-2">
               ¡Repaso completado!
-            </h2>
-            <p className="text-sm text-gray-500 dark:text-muted mb-1">
+            </Heading>
+            <Text size="sm" className="text-base-content/50 mb-1">
               Has repasado {dueQueue.length} pregunta{dueQueue.length !== 1 ? 's' : ''}.
-            </p>
-            <p className="text-xs text-gray-400 mb-6">
+            </Text>
+            <Text size="xs" className="text-base-content/40 mb-6">
               Vuelve cuando tengas más repasos pendientes.
-            </p>
+            </Text>
             <div className="flex gap-3">
-              <button
-                type="button"
+              <Button
+                variant="outline"
                 onClick={() => navigate('/')}
-                className="px-5 py-2.5 text-sm font-semibold rounded-xl border border-gray-300 dark:border-default text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 Inicio
-              </button>
+              </Button>
               {questionnaireId && (
-                <button
-                  type="button"
+                <Button
+                  color="primary"
                   onClick={() => navigate('/review')}
-                  className="px-5 py-2.5 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-                  style={{ minHeight: 'var(--touch-target-min)' }}
                 >
                   Todos los repasos
-                </button>
+                </Button>
               )}
             </div>
           </div>
@@ -425,20 +418,20 @@ export default function SpacedRetrieval() {
         {currentItem && currentIndex < dueQueue.length && (
           <div className="flex flex-col gap-4">
             {/* Section hint */}
-            <p className="text-xs text-gray-400 text-center">
+            <Text size="xs" className="text-base-content/40 text-center">
               Sección:{' '}
               <SectionLabel sectionId={currentItem.sectionId} />
-            </p>
+            </Text>
 
             {/* Previous attempt info */}
             {latestAttempt && (
-              <p className="text-xs text-gray-400 text-center">
+              <Text size="xs" className="text-base-content/40 text-center">
                 Último repaso: {formatRelative(latestAttempt.reviewedAt)} ·{' '}
                 <ScoreIcon score={latestAttempt.score} size={16} />{' '}{scoreLabel(latestAttempt.score)}
                 {latestAttempt.interval > 0 && (
                   <> · Intervalo: {latestAttempt.interval} día{latestAttempt.interval !== 1 ? 's' : ''}</>
                 )}
-              </p>
+              </Text>
             )}
 
             {/* Card */}
@@ -446,8 +439,8 @@ export default function SpacedRetrieval() {
               className={`
                 relative w-full rounded-2xl border-2 transition-[border-color,background-color,box-shadow] duration-300
                 ${flipped
-                  ? 'border-emerald-300 bg-emerald-50'
-                  : 'border-purple-200 bg-white dark:bg-surface cursor-pointer hover:border-purple-300 hover:shadow-md'
+                  ? 'border-success/30 bg-success/10'
+                  : 'border-primary/20 bg-base-100 cursor-pointer hover:border-primary/30 hover:shadow-md'
                 }
               `}
               style={{ minHeight: '200px' }}
@@ -455,22 +448,20 @@ export default function SpacedRetrieval() {
               {/* Front: question */}
               {!flipped && (
                 <div className="flex flex-col items-center justify-center p-6 min-h-[200px] gap-4">
-                  <p className="text-lg font-medium text-gray-800 dark:text-foreground text-center leading-relaxed">
+                  <Text size="lg" className="text-base-content text-center leading-relaxed">
                     {currentItem.questionText}
-                  </p>
-                  <button
-                    type="button"
+                  </Text>
+                  <Button
+                    color="primary"
                     onClick={handleFlip}
-                    className="px-5 py-2.5 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-                    style={{ minHeight: 'var(--touch-target-min)' }}
                   >
                     Mostrar respuesta
-                  </button>
+                  </Button>
                   {latestAttempt && (
-                    <p className="text-[11px] text-gray-400">
+                    <Text size="xs" className="text-base-content/40">
                       Repasado {latestAttempt.repetitions || 0} vez
                       {latestAttempt.repetitions !== 1 ? 'ces' : ''}
-                    </p>
+                    </Text>
                   )}
                 </div>
               )}
@@ -478,16 +469,16 @@ export default function SpacedRetrieval() {
               {/* Back: question + score selector */}
               {flipped && (
                 <div className="flex flex-col p-6 gap-4">
-                  <p className="text-lg font-medium text-gray-800 dark:text-foreground text-center leading-relaxed">
+                  <Text size="lg" className="text-base-content text-center leading-relaxed">
                     {currentItem.questionText}
-                  </p>
+                  </Text>
                   <ScoreSelector
                     onSelect={handleScore}
                     disabled={scoring}
                   />
                   {scoring && (
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-                      <div className="w-4 h-4 border-2 border-gray-300 border-t-purple-600 rounded-full animate-spin" />
+                    <div className="flex items-center justify-center gap-2 text-sm text-base-content/50">
+                      <div className="w-4 h-4 border-2 border-base-300 border-t-primary rounded-full animate-spin" />
                       Guardando...
                     </div>
                   )}
@@ -503,7 +494,7 @@ export default function SpacedRetrieval() {
                   setShowHistory((s) => !s);
                   if (!showHistory && currentItem) loadHistory(currentItem.id);
                 }}
-                className="text-xs text-purple-600 hover:text-purple-800 self-center font-medium"
+                className="text-xs text-primary hover:opacity-80 self-center font-medium"
                 style={{ minHeight: 'var(--touch-target-min)' }}
               >
                 {showHistory ? 'Ocultar historial' : 'Ver historial de repasos'}
@@ -533,7 +524,7 @@ function SectionLabel({ sectionId }) {
     return () => { cancelled = true; };
   }, [sectionId]);
 
-  return <span className="text-gray-600 font-medium">{title}</span>;
+  return <span className="text-base-content/70 font-medium">{title}</span>;
 }
 
 // ── HistoryList ─────────────────────────────────────────────────────────────
@@ -547,20 +538,20 @@ function SectionLabel({ sectionId }) {
 function HistoryList({ history }) {
   if (history.length === 0) {
     return (
-      <p className="text-xs text-gray-400 italic text-center py-2">
+      <Text size="xs" className="text-base-content/40 italic text-center py-2">
         Sin historial — este será el primer repaso.
-      </p>
+      </Text>
     );
   }
 
   return (
-    <div className="bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl overflow-hidden">
-      <div className="px-4 py-2 bg-gray-50 dark:bg-muted border-b border-gray-100 dark:border-default">
-        <p className="text-xs font-semibold text-gray-600 dark:text-muted">
+    <div className="bg-base-100 border border-base-content/10 rounded-xl overflow-hidden">
+      <div className="px-4 py-2 bg-base-200 border-b border-base-content/10">
+        <Text size="xs" className="font-semibold text-base-content/70">
           Historial ({history.length} repaso{history.length !== 1 ? 's' : ''})
-        </p>
+        </Text>
       </div>
-      <ul className="divide-y divide-gray-100">
+      <ul className="divide-y divide-base-content/10">
         {history.map((attempt, idx) => (
           <li
             key={attempt.id || idx}
@@ -570,10 +561,10 @@ function HistoryList({ history }) {
               <ScoreIcon score={attempt.score} size={20} />
             </span>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-medium text-gray-700 dark:text-foreground">
+              <Text size="xs" className="font-medium text-base-content">
                 {scoreLabel(attempt.score)}
-              </p>
-              <p className="text-[11px] text-gray-400">
+              </Text>
+              <Text size="xs" className="text-base-content/40">
                 {formatRelative(attempt.reviewedAt)}
                 {attempt.interval > 0 && (
                   <> · Próximo en {attempt.interval} día{attempt.interval !== 1 ? 's' : ''}</>
@@ -581,11 +572,11 @@ function HistoryList({ history }) {
                 {attempt.repetitions > 0 && (
                   <> · {attempt.repetitions} repeticion{attempt.repetitions !== 1 ? 'es' : ''}</>
                 )}
-              </p>
+              </Text>
             </div>
             {/* Interval badge */}
             {attempt.interval > 0 && (
-              <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full bg-purple-100 text-purple-700">
+              <span className="flex-shrink-0 px-2 py-0.5 text-[10px] font-medium rounded-full bg-primary/10 text-primary">
                 +{attempt.interval}d
               </span>
             )}

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Frown, Meh, ThumbsUp, Sparkles } from 'lucide-react';
+import { Text } from '@ninna-ui/primitives';
 
 /**
  * ScoreSelector — 4-button SM-2 recall quality selector.
@@ -26,9 +27,9 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
 
   return (
     <div className="flex flex-col gap-2" role="radiogroup" aria-label="Calidad de recuerdo">
-      <p className="text-xs font-medium text-gray-500 text-center mb-1">
+      <Text size="xs" className="text-base-content/50 text-center mb-1">
         ¿Qué tan bien recordaste?
-      </p>
+      </Text>
       <div className="grid grid-cols-2 gap-2">
         {/* Score 0 — Olvidé */}
         <button
@@ -37,7 +38,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(0)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-red-200 bg-red-50 text-red-700 hover:bg-red-100 active:bg-red-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-danger/30 bg-danger/10 text-danger hover:bg-danger/20 active:bg-danger/30 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <Frown size={22} aria-hidden="true" />
@@ -52,7 +53,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(1)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 active:bg-amber-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-warning/30 bg-warning/10 text-warning hover:bg-warning/20 active:bg-warning/30 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <Meh size={22} aria-hidden="true" />
@@ -67,7 +68,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(2)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100 active:bg-purple-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-primary/30 bg-primary/10 text-primary hover:bg-primary/20 active:bg-primary/30 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <ThumbsUp size={22} aria-hidden="true" />
@@ -82,7 +83,7 @@ export default function ScoreSelector({ onSelect, disabled = false }) {
           aria-checked={false}
           disabled={disabled}
           onClick={() => handleSelect(3)}
-          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 active:bg-emerald-200 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
+          className="flex flex-col items-center justify-center gap-1 px-3 py-3 rounded-xl border-2 border-success/30 bg-success/10 text-success hover:bg-success/20 active:bg-success/30 disabled:opacity-40 disabled:cursor-not-allowed transition-[border-color,background-color,box-shadow] duration-150"
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
           <Sparkles size={22} aria-hidden="true" />

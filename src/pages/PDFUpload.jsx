@@ -1,6 +1,8 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Languages } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
+import { Select } from '@ninna-ui/forms';
 import FileDropzone from '../components/FileDropzone.jsx';
 import ThumbnailGrid from '../components/ThumbnailGrid.jsx';
 import ExtractionProgress from '../components/ExtractionProgress.jsx';
@@ -283,25 +285,24 @@ export default function PDFUpload() {
     <div className="flex flex-col gap-6 p-4 max-w-3xl mx-auto">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-purple-900">Subir PDF</h1>
-        <p className="text-gray-600 dark:text-muted mt-1">
+        <Heading as="h1" size="2xl">Subir PDF</Heading>
+        <Text size="sm" className="text-base-content/70 mt-1">
           Selecciona un archivo PDF y elige las páginas que quieres estudiar
-        </p>
+        </Text>
       </div>
 
       {/* Language selector — always visible */}
       <div className="flex items-center gap-2">
-        <Languages size={18} className="text-gray-400" />
-        <select
+        <Languages size={18} className="text-base-content/40" />
+        <Select
           value={language}
           onChange={handleLanguageChange}
-          className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
-          style={{ minHeight: '44px' }}
+          className="flex-1"
           aria-label="Idioma de las preguntas"
         >
           <option value="es">Español — preguntas en español</option>
           <option value="en">English — questions in English</option>
-        </select>
+        </Select>
       </div>
 
       {/* FileDropzone — always visible in idle/loaded/extracting */}
@@ -326,21 +327,20 @@ export default function PDFUpload() {
                   if (e.key === 'Enter') handleRangeInputApply();
                 }}
                 placeholder='Rango de páginas, ej. "23-45"'
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+                className="flex-1 px-3 py-2 border border-base-300 rounded-md text-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                 style={{ minHeight: '44px' }}
                 aria-label="Rango de páginas"
               />
-              <button
-                type="button"
+              <Button
+                variant="soft"
+                color="primary"
                 onClick={handleRangeInputApply}
-                className="px-4 py-2 text-sm font-medium rounded-md bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors"
-                style={{ minWidth: '44px', minHeight: '44px' }}
               >
                 Aplicar
-              </button>
+              </Button>
             </div>
             {rangeError && (
-              <p className="text-xs text-red-600">{rangeError}</p>
+              <Text size="xs" className="text-danger">{rangeError}</Text>
             )}
           </div>
 
@@ -355,22 +355,16 @@ export default function PDFUpload() {
           />
 
           {/* Extract button */}
-          <button
-            type="button"
+          <Button
+            color="primary"
+            size="lg"
             onClick={handleExtract}
             disabled={selectedPages.size === 0}
-            className={`
-              w-full py-3 rounded-xl font-bold text-lg transition-colors duration-150
-              ${selectedPages.size > 0
-                ? 'bg-purple-600 text-white hover:bg-purple-700 shadow-md'
-                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }
-            `}
-            style={{ minHeight: '44px' }}
+            className="w-full"
           >
             Extraer texto{' '}
             {selectedPages.size > 0 && `(${selectedPages.size} páginas)`}
-          </button>
+          </Button>
         </>
       )}
 
@@ -389,22 +383,22 @@ export default function PDFUpload() {
           {scannedPages.length > 0 && (
             <div
               role="alert"
-              className="px-4 py-3 bg-amber-50 border border-amber-200 rounded-lg text-sm text-amber-800"
+              className="px-4 py-3 bg-warning/10 border border-warning/30 rounded-lg text-sm text-warning"
             >
               <p className="font-medium mb-1">Páginas sin texto extraíble:</p>
               <p>
                 {scannedPages.map((n) => `La página ${n} no contiene texto extraíble`).join('. ')}
                 .
               </p>
-              <p className="mt-1 text-xs text-amber-600">
+              <Text size="xs" className="text-warning/70 mt-1">
                 Estas páginas parecen ser imágenes escaneadas. No se pudo extraer texto de ellas.
-              </p>
+              </Text>
             </div>
           )}
 
           {/* Extracted file info */}
           {extractionFile && (
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-muted">
+            <div className="flex items-center gap-2 text-sm text-base-content/50">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>

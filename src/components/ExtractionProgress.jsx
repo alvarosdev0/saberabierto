@@ -25,13 +25,13 @@ export default function ExtractionProgress({ progress, wordCount }) {
   const percent = total > 0 ? Math.round((current / total) * 100) : 0;
 
   return (
-    <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface rounded-lg border border-gray-200 dark:border-default">
+    <div className="flex flex-col gap-3 p-4 bg-base-100 rounded-lg border border-base-content/10">
       {/* Stage label + percentage */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           {isDone ? (
             <svg
-              className="w-5 h-5 text-green-500"
+              className="w-5 h-5 text-success"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -45,7 +45,7 @@ export default function ExtractionProgress({ progress, wordCount }) {
             </svg>
           ) : (
             <svg
-              className="w-5 h-5 text-purple-500 animate-spin"
+              className="w-5 h-5 text-primary animate-spin"
               fill="none"
               viewBox="0 0 24 24"
             >
@@ -64,23 +64,23 @@ export default function ExtractionProgress({ progress, wordCount }) {
               />
             </svg>
           )}
-          <span className="font-medium text-gray-700 dark:text-foreground">
+          <span className="font-medium text-base-content">
             {stageLabels[stage] || stage}
           </span>
         </div>
 
         {!isDone && (
-          <span className="text-sm text-gray-500 dark:text-muted">
+          <span className="text-sm text-base-content/50">
             {current} / {total}
           </span>
         )}
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+      <div className="w-full h-2 bg-base-300 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-[width] duration-300 ease-out ${
-            isDone ? 'bg-green-500' : 'bg-purple-500'
+            isDone ? 'bg-success' : 'bg-primary'
           }`}
           style={{ width: `${isDone ? 100 : percent}%` }}
           role="progressbar"
@@ -93,7 +93,7 @@ export default function ExtractionProgress({ progress, wordCount }) {
 
       {/* Word count on completion */}
       {isDone && wordCount != null && (
-        <p className="text-sm text-gray-600 dark:text-muted">
+        <p className="text-sm text-base-content/70">
           {wordCount.toLocaleString()} palabras extraídas
         </p>
       )}

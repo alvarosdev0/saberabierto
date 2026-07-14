@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
 
@@ -187,8 +188,8 @@ export default function BrainDump() {
     return (
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 text-sm">Cargando notas…</p>
+          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <Text size="sm" className="text-base-content/50">Cargando notas…</Text>
         </div>
       </div>
     );
@@ -197,17 +198,17 @@ export default function BrainDump() {
   if (error) {
     return (
       <div className="p-4">
-        <div role="alert" className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800">
+        <div role="alert" className="px-4 py-3 bg-danger/10 border border-danger/30 rounded-lg text-sm text-danger">
           <p className="font-medium">Error</p>
           <p>{error}</p>
-          <button
-            type="button"
+          <Button
+            variant="soft"
+            color="danger"
             onClick={() => navigate('/')}
-            className="mt-3 px-4 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
-            style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+            className="mt-3"
           >
             Volver al inicio
-          </button>
+          </Button>
         </div>
       </div>
     );
@@ -216,7 +217,7 @@ export default function BrainDump() {
   return (
     <div className="flex flex-col h-[calc(100dvh-64px)]">
       {/* ── Top bar ─────────────────────────────────────────────────────── */}
-      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-white dark:bg-surface border-b border-gray-200 dark:border-default flex-shrink-0">
+      <header className="flex items-center justify-between gap-2 px-4 py-3 bg-base-100 border-b border-base-content/10 flex-shrink-0">
         <SectionNavigator
           sections={sections}
           currentSectionId={sectionId}
@@ -226,22 +227,22 @@ export default function BrainDump() {
       </header>
 
       {/* ── Page header ──────────────────────────────────────────────────── */}
-      <div className="px-4 pt-4 pb-2 border-b border-gray-200 dark:border-default bg-white dark:bg-surface">
-        <h1 className="text-xl font-bold text-purple-900 dark:text-purple-300 font-heading">Descarga de Ideas</h1>
-        <p className="text-xs text-gray-500 dark:text-muted mt-1">
+      <div className="px-4 pt-4 pb-2 border-b border-base-content/10 bg-base-100">
+        <Heading as="h1" size="xl" className="font-heading">Descarga de Ideas</Heading>
+        <Text size="xs" className="text-base-content/50 mt-1">
           Escribe con tus propias palabras lo que recuerdas de la lectura. Si hay algo que no dominas bien, márcalo como laguna con el highlight y lo repasarás después.
-        </p>
+        </Text>
       </div>
 
       {/* ── Section title + save indicator ──────────────────────────────── */}
       <div className="px-4 py-2 flex-shrink-0 flex items-center justify-between">
-        <h2 className="text-lg font-bold text-purple-900 dark:text-purple-300 font-heading">
+        <Heading as="h2" size="lg" className="font-heading">
           {currentSection?.title || 'Descarga de Ideas'}
-        </h2>
+        </Heading>
         <span
           aria-live="polite"
           className={`text-xs transition-opacity duration-300 ${
-            saved ? 'opacity-100 text-emerald-600' : 'opacity-0'
+            saved ? 'opacity-100 text-success' : 'opacity-0'
           }`}
         >
           Guardado ✓
@@ -262,7 +263,7 @@ export default function BrainDump() {
             ref={textareaRef}
             value={text}
             onChange={handleTextChange}
-            className="flex-1 w-full p-4 rounded-lg border border-gray-200 dark:border-default bg-white font-sans text-sm text-gray-800 dark:text-foreground leading-relaxed resize-none focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
+            className="flex-1 w-full p-4 rounded-lg border border-base-content/10 bg-base-100 font-sans text-sm text-base-content leading-relaxed resize-none focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
             style={{ minHeight: '200px' }}
             placeholder={getPlaceholder()}
             aria-label="Área de notas"
@@ -270,17 +271,17 @@ export default function BrainDump() {
         </div>
 
         {/* Outline marker tips */}
-        <details className="mt-3 text-xs text-gray-400">
-          <summary className="cursor-pointer hover:text-gray-600">
+        <details className="mt-3 text-xs text-base-content/40">
+          <summary className="cursor-pointer hover:text-base-content/70">
             Marcadores de esquema
           </summary>
           <p className="mt-1 pl-4">
-            Usa <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">I.</code>,{' '}
-            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">II.</code>,{' '}
-            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">A.</code>,{' '}
-            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">B.</code>,{' '}
-            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">i.</code>,{' '}
-            <code className="bg-gray-100 dark:bg-gray-700 px-1 rounded">ii.</code>{' '}
+            Usa <code className="bg-base-300 px-1 rounded">I.</code>,{' '}
+            <code className="bg-base-300 px-1 rounded">II.</code>,{' '}
+            <code className="bg-base-300 px-1 rounded">A.</code>,{' '}
+            <code className="bg-base-300 px-1 rounded">B.</code>,{' '}
+            <code className="bg-base-300 px-1 rounded">i.</code>,{' '}
+            <code className="bg-base-300 px-1 rounded">ii.</code>{' '}
             para estructurar tus notas con un esquema.
           </p>
         </details>
@@ -292,9 +293,11 @@ export default function BrainDump() {
         const isLast = idx >= sections.length - 1;
 
         return (
-          <div className="flex-shrink-0 px-4 py-3 bg-white dark:bg-surface border-t border-gray-200 dark:border-default">
-            <button
-              type="button"
+          <div className="flex-shrink-0 px-4 py-3 bg-base-100 border-t border-base-content/10">
+            <Button
+              color="primary"
+              size="lg"
+              className="w-full"
               onClick={async () => {
                 try {
                   await db.sections.update(Number(sectionId), { status: 'completed' });
@@ -306,11 +309,9 @@ export default function BrainDump() {
                   navigate(`/session/${sessionId}/section/${next.id}/read`, { replace: true });
                 }
               }}
-              className="w-full px-4 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-              style={{ minHeight: 'var(--touch-target-min)' }}
             >
               {isLast ? 'Ir al cuestionario' : 'Siguiente sección'}
-            </button>
+            </Button>
           </div>
         );
       })()}

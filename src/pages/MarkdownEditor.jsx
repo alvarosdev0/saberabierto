@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
 import MarkdownEditorComponent from '../components/MarkdownEditor.jsx';
 import db from '../services/db.js';
 import { splitMarkdownIntoSections, extractSubjectFromMarkdown } from '../lib/split-markdown.js';
@@ -210,8 +211,8 @@ export default function MarkdownEditor() {
     return (
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-500 dark:text-muted text-sm">Cargando contenido...</p>
+          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <Text size="sm" className="text-base-content/50">Cargando contenido...</Text>
         </div>
       </div>
     );
@@ -220,15 +221,15 @@ export default function MarkdownEditor() {
   if (accepted) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4 p-4">
-        <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center">
-          <svg className="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center">
+          <svg className="w-8 h-8 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 dark:text-foreground">¡Sesión creada!</h2>
-        <p className="text-gray-600 dark:text-muted text-center max-w-md">
+        <Heading as="h2" size="xl">¡Sesión creada!</Heading>
+        <Text size="sm" className="text-base-content/70 text-center max-w-md">
           Tu sesión de estudio está lista. Redirigiendo a la primera sección...
-        </p>
+        </Text>
       </div>
     );
   }
@@ -237,11 +238,11 @@ export default function MarkdownEditor() {
     return (
       <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin" />
-          <p className="text-gray-600 dark:text-muted text-sm">Creando sesión de estudio...</p>
-          <p className="text-xs text-gray-400">
+          <div className="w-8 h-8 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
+          <Text size="sm" className="text-base-content/70">Creando sesión de estudio...</Text>
+          <Text size="xs" className="text-base-content/40">
             Dividiendo {splitMarkdownIntoSections(markdown).length} secciones
-          </p>
+          </Text>
         </div>
       </div>
     );
@@ -251,13 +252,13 @@ export default function MarkdownEditor() {
     <div className="flex flex-col gap-6 p-4 max-w-3xl mx-auto">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-purple-900">Revisar contenido</h1>
-        <p className="text-gray-600 dark:text-muted mt-1">
+        <Heading as="h1" size="2xl">Revisar contenido</Heading>
+        <Text size="sm" className="text-base-content/70 mt-1">
           Revisa y edita el texto extraído antes de crear tu sesión de estudio.{' '}
           Corrige errores de formato y elimina el contenido irrelevante.
-        </p>
+        </Text>
         {filename && (
-          <div className="flex items-center gap-2 mt-2 text-sm text-gray-500 dark:text-muted">
+          <div className="flex items-center gap-2 mt-2 text-sm text-base-content/50">
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -268,14 +269,14 @@ export default function MarkdownEditor() {
 
       {/* Session info — pre-creation summary */}
       {isNewSession && markdown && (
-        <div className="px-4 py-3 bg-purple-50 border border-purple-200 rounded-lg text-sm text-purple-800">
-          <p className="font-medium mb-1">Se creará una nueva sesión de estudio</p>
-          <p className="text-purple-700">
+        <div className="px-4 py-3 bg-primary/10 border border-primary/20 rounded-lg text-sm text-primary">
+          <Text size="sm" className="font-medium mb-1">Se creará una nueva sesión de estudio</Text>
+          <Text size="sm" className="text-primary/80">
             Al confirmar, el texto se dividirá en{' '}
             <strong>{splitMarkdownIntoSections(markdown).length} secciones</strong>{' '}
             usando los encabezados como títulos. Podrás estudiar cada sección con
             preguntas y notas.
-          </p>
+          </Text>
         </div>
       )}
 
@@ -283,24 +284,24 @@ export default function MarkdownEditor() {
       {error && (
         <div
           role="alert"
-          className="px-4 py-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-800"
+          className="px-4 py-3 bg-danger/10 border border-danger/30 rounded-lg text-sm text-danger"
         >
-          <p className="font-medium mb-1">Error</p>
+          <Text size="sm" className="font-medium mb-1">Error</Text>
           <p>{error}</p>
-          <button
-            type="button"
+          <Button
+            variant="soft"
+            color="danger"
             onClick={() => navigate('/upload')}
-            className="mt-3 px-4 py-2 text-sm font-medium bg-red-100 text-red-800 rounded-md hover:bg-red-200 transition-colors"
-            style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
+            className="mt-3"
           >
             Ir a Subir PDF
-          </button>
+          </Button>
         </div>
       )}
 
       {/* Section info */}
       {sectionId && sectionId !== '0' && (
-        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-muted bg-gray-50 dark:bg-muted px-3 py-2 rounded-lg">
+        <div className="flex items-center gap-2 text-sm text-base-content/50 bg-base-200 px-3 py-2 rounded-lg">
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>

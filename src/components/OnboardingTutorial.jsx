@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BookOpen, Upload, RefreshCw, Sparkles, ChevronRight, ChevronLeft, X, Check } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
 
 const LS_TUTORIAL_DONE = 'sa:tutorial:done';
 
@@ -9,7 +10,7 @@ const STEPS = [
     title: 'Bienvenido a SaberAbierto',
     description:
       'Tu herramienta de estudio personal. Aprende con la metodología Dot Dager: extrae texto de PDFs, genera preguntas, y repasa con el algoritmo SM-2.',
-    color: 'bg-purple-500',
+    color: 'bg-primary',
   },
   {
     icon: Upload,
@@ -23,14 +24,14 @@ const STEPS = [
     title: 'Lee y haz preguntas',
     description:
       'El texto se divide en secciones. Para cada sección, responde preguntas clave, metodológicas y desafiantes.       Luego haz un descarga de ideas con tus notas.',
-    color: 'bg-emerald-500',
+    color: 'bg-success',
   },
   {
     icon: RefreshCw,
     title: 'Repaso espaciado',
     description:
       'Crea cuestionarios y el algoritmo SM-2 programa repasos automáticos. Marca tu nivel de recuerdo (0-3) y el sistema optimiza cuándo repasar cada pregunta.',
-    color: 'bg-amber-500',
+    color: 'bg-warning',
   },
   {
     icon: Sparkles,
@@ -77,12 +78,12 @@ export default function OnboardingTutorial() {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-      <div className="relative bg-white dark:bg-surface rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+      <div className="relative bg-base-100 rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
         {/* Close button */}
         <button
           type="button"
           onClick={finish}
-          className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors"
+          className="absolute top-3 right-3 z-10 p-1.5 rounded-full text-base-content/40 hover:text-base-content/70 hover:bg-base-200 transition-colors"
           style={{ minWidth: '44px', minHeight: '44px' }}
           aria-label="Cerrar tutorial"
         >
@@ -107,20 +108,20 @@ export default function OnboardingTutorial() {
                 key={i}
                 className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   i === step
-                    ? 'bg-purple-600 w-6'
+                    ? 'bg-primary w-6'
                     : i < step
-                      ? 'bg-purple-300'
-                      : 'bg-gray-300'
+                      ? 'bg-primary/30'
+                      : 'bg-base-300'
                 }`}
               />
             ))}
           </div>
 
           {/* Title */}
-          <h2 className="text-xl font-bold text-gray-800 dark:text-foreground mb-2">{current.title}</h2>
+          <Heading as="h2" size="lg" className="text-base-content mb-2">{current.title}</Heading>
 
           {/* Description */}
-          <p className="text-sm text-gray-600 dark:text-muted leading-relaxed">{current.description}</p>
+          <Text size="sm" className="text-base-content/70 leading-relaxed">{current.description}</Text>
         </div>
 
         {/* Actions */}
@@ -130,7 +131,7 @@ export default function OnboardingTutorial() {
             <button
               type="button"
               onClick={finish}
-              className="px-4 py-2 text-sm text-gray-500 dark:text-muted hover:text-gray-700 dark:hover:text-foreground transition-colors"
+              className="px-4 py-2 text-sm text-base-content/50 hover:text-base-content transition-colors"
               style={{ minHeight: '44px' }}
             >
               Saltar
@@ -139,7 +140,7 @@ export default function OnboardingTutorial() {
             <button
               type="button"
               onClick={() => goTo(step - 1)}
-              className="flex items-center gap-1 px-4 py-2 text-sm text-gray-600 dark:text-muted hover:text-gray-800 dark:hover:text-foreground transition-colors"
+              className="flex items-center gap-1 px-4 py-2 text-sm text-base-content/70 hover:text-base-content transition-colors"
               style={{ minHeight: '44px' }}
             >
               <ChevronLeft size={18} />
@@ -149,25 +150,21 @@ export default function OnboardingTutorial() {
 
           {/* Next / Finish */}
           {isLast ? (
-            <button
-              type="button"
+            <Button
+              color="primary"
               onClick={finish}
-              className="flex items-center gap-2 px-5 py-2.5 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 transition-colors shadow-md"
-              style={{ minHeight: '44px' }}
             >
               <Check size={18} />
               ¡Empezar!
-            </button>
+            </Button>
           ) : (
-            <button
-              type="button"
+            <Button
+              color="primary"
               onClick={() => goTo(step + 1)}
-              className="flex items-center gap-1 px-5 py-2.5 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 transition-colors shadow-md"
-              style={{ minHeight: '44px' }}
             >
               Siguiente
               <ChevronRight size={18} />
-            </button>
+            </Button>
           )}
         </div>
       </div>

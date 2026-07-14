@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -78,26 +79,26 @@ export default function StaleSubjectBanner({ sessionId }) {
 
   return (
     <div
-      className="flex items-center justify-between gap-3 px-4 py-3 bg-amber-50 border border-amber-200 rounded-xl"
+      className="flex items-center justify-between gap-3 px-4 py-3 bg-warning/10 border border-warning/30 rounded-xl"
       role="alert"
     >
       <div className="flex items-center gap-2">
         <span className="text-lg">⏰</span>
         <div>
-          <p className="text-sm font-semibold text-amber-800">
+          <Text size="sm" className="font-semibold text-warning">
             Más de 3 meses sin repasar
-          </p>
-          <p className="text-xs text-amber-600 mt-0.5">
+          </Text>
+          <Text size="xs" className="text-warning/70 mt-0.5">
             {session?.subject
               ? `No has estudiado "${session.subject}" en los últimos 90 días.`
               : 'No has estudiado este tema en los últimos 90 días.'}
-          </p>
+          </Text>
         </div>
       </div>
       <button
         type="button"
         onClick={handleReviewNotes}
-        className="flex-shrink-0 px-3 py-2 text-xs font-semibold rounded-lg bg-amber-600 text-white hover:bg-amber-700 transition-colors"
+        className="flex-shrink-0 px-3 py-2 text-xs font-semibold rounded-lg bg-warning text-warning-content hover:opacity-90 transition-colors"
         style={{ minHeight: 'var(--touch-target-min)' }}
       >
         Repasar notas

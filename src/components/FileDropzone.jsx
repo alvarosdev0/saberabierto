@@ -1,4 +1,5 @@
 import { useRef, useState, useCallback } from 'react';
+import { Text } from '@ninna-ui/primitives';
 
 /**
  * Drag & drop zone for PDF files with a fallback file picker.
@@ -101,10 +102,10 @@ export default function FileDropzone({ onFileSelected }) {
           border-2 border-dashed rounded-xl cursor-pointer
           transition-[border-color,background-color,transform] duration-150 text-center
           ${dragOver
-            ? 'border-purple-400 bg-purple-50 scale-[1.02]'
+            ? 'border-primary bg-primary/10 scale-[1.02]'
             : selectedFile
-              ? 'border-green-300 bg-green-50'
-              : 'border-gray-300 bg-gray-50 dark:bg-muted hover:border-purple-300 hover:bg-purple-50/50'
+              ? 'border-success/30 bg-success/10'
+              : 'border-base-300 bg-base-200 hover:border-primary/30 hover:bg-primary/10'
           }
         `}
         style={{ minHeight: '160px' }}
@@ -122,7 +123,7 @@ export default function FileDropzone({ onFileSelected }) {
           <>
             {/* File accepted state */}
             <svg
-              className="w-10 h-10 text-green-500"
+              className="w-10 h-10 text-success"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -136,18 +137,18 @@ export default function FileDropzone({ onFileSelected }) {
               />
             </svg>
             <div>
-              <p className="font-semibold text-gray-800 dark:text-foreground">{selectedFile.name}</p>
-              <p className="text-sm text-gray-500 dark:text-muted">{formatSize(selectedFile.size)}</p>
+              <Text size="sm" className="font-semibold text-base-content">{selectedFile.name}</Text>
+              <Text size="sm" className="text-base-content/50">{formatSize(selectedFile.size)}</Text>
             </div>
-            <p className="text-xs text-gray-400">
+            <Text size="xs" className="text-base-content/40">
               Haz clic o arrastra otro archivo para cambiar
-            </p>
+            </Text>
           </>
         ) : (
           <>
             {/* Empty state */}
             <svg
-              className="w-10 h-10 text-gray-400"
+              className="w-10 h-10 text-base-content/30"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -161,10 +162,10 @@ export default function FileDropzone({ onFileSelected }) {
               />
             </svg>
             <div>
-              <p className="font-semibold text-gray-700 dark:text-foreground">
+              <Text size="sm" className="font-semibold text-base-content">
                 Arrastra un PDF aquí
-              </p>
-              <p className="text-sm text-gray-500 dark:text-muted">o haz clic para seleccionar</p>
+              </Text>
+              <Text size="sm" className="text-base-content/50">o haz clic para seleccionar</Text>
             </div>
           </>
         )}
@@ -174,7 +175,7 @@ export default function FileDropzone({ onFileSelected }) {
       {error && (
         <div
           role="alert"
-          className="px-4 py-2 bg-red-50 border border-red-200 rounded-md text-sm text-red-700 flex items-center gap-2"
+          className="px-4 py-2 bg-danger/10 border border-danger/30 rounded-md text-sm text-danger flex items-center gap-2"
         >
           <svg
             className="w-4 h-4 shrink-0"
@@ -194,7 +195,7 @@ export default function FileDropzone({ onFileSelected }) {
           <button
             type="button"
             onClick={() => setError(null)}
-            className="ml-auto text-red-400 hover:text-red-600"
+            className="ml-auto text-danger/60 hover:text-danger"
             style={{ minWidth: '44px', minHeight: '44px' }}
             aria-label="Cerrar error"
           >

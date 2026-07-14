@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
+import { Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -76,8 +77,8 @@ export default function QuestionnaireBuilder() {
   return (
     <div className="flex items-center justify-center min-h-[50vh]" aria-live="polite">
       <div className="flex flex-col items-center gap-3">
-        <Loader2 size={24} className="animate-spin text-purple-600" aria-hidden="true" />
-        <p className="text-gray-500 text-sm">Preparando cuestionario...</p>
+        <Loader2 size={24} className="animate-spin text-primary" aria-hidden="true" />
+        <Text size="sm" className="text-base-content/50">Preparando cuestionario...</Text>
       </div>
     </div>
   );

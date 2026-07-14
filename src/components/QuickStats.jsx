@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Pencil, RefreshCw, Zap, CheckCircle, MailOpen } from 'lucide-react';
+import { Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 
 /**
@@ -52,9 +53,9 @@ export default function QuickStats() {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
-            <div className="h-3 w-16 bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-            <div className="h-6 w-10 bg-gray-200 dark:bg-gray-700 rounded" />
+          <div key={i} className="bg-base-100 rounded-xl border border-base-content/10 p-4 animate-pulse">
+            <div className="h-3 w-16 bg-base-content/10 rounded mb-2" />
+            <div className="h-6 w-10 bg-base-content/10 rounded" />
           </div>
         ))}
       </div>
@@ -63,7 +64,7 @@ export default function QuickStats() {
 
   if (!stats) {
     return (
-      <p className="text-xs text-gray-400 italic">No hay estadísticas aún.</p>
+      <Text size="xs" className="text-base-content/40 italic">No hay estadísticas aún.</Text>
     );
   }
 
@@ -79,12 +80,12 @@ export default function QuickStats() {
       {cards.map((card) => (
         <div
           key={card.label}
-          className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-3 transition-shadow hover:shadow-sm"
+          className="bg-base-100 rounded-xl border border-base-content/10 p-3 transition-shadow hover:shadow-sm"
         >
-          <p className="text-[11px] text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
+          <Text size="xs" className="text-base-content/50 font-medium uppercase tracking-wide mb-1">
             {card.label}
-          </p>
-          <p className="text-lg font-bold text-gray-800 dark:text-foreground flex items-center gap-1.5">
+          </Text>
+          <p className="text-lg font-bold text-base-content flex items-center gap-1.5">
             <card.icon size={16} aria-hidden="true" />
             {card.value}
           </p>

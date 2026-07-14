@@ -55,7 +55,7 @@ export default function SectionNavigator({
         type="button"
         onClick={handlePrevious}
         disabled={isFirst}
-        className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-default bg-white dark:bg-surface text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex items-center justify-center w-10 h-10 rounded-lg border border-base-content/10 bg-base-100 text-base-content hover:bg-base-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         aria-label="Sección anterior"
       >
@@ -65,7 +65,7 @@ export default function SectionNavigator({
       </button>
 
       {/* Progress indicator */}
-      <span className="text-sm font-medium text-gray-600 dark:text-muted tabular-nums min-w-[3rem] text-center">
+      <span className="text-sm font-medium text-base-content/70 tabular-nums min-w-[3rem] text-center">
         {current}/{total}
       </span>
 
@@ -74,7 +74,7 @@ export default function SectionNavigator({
         type="button"
         onClick={handleNext}
         disabled={isLast}
-        className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 dark:border-default bg-white dark:bg-surface text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-muted disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+        className="flex items-center justify-center w-10 h-10 rounded-lg border border-base-content/10 bg-base-100 text-base-content hover:bg-base-200 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
         style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         aria-label="Sección siguiente"
       >

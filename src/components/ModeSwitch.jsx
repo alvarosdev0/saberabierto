@@ -37,7 +37,7 @@ export default function ModeSwitch({ activeMode }) {
 
   return (
     <div
-      className="flex rounded-lg bg-gray-100 p-1"
+      className="flex rounded-lg bg-base-200 p-1"
       role="tablist"
       aria-label="Modo de estudio"
     >
@@ -53,8 +53,8 @@ export default function ModeSwitch({ activeMode }) {
             className={`
               flex-1 px-3 py-2 text-sm font-medium rounded-md transition-colors
               ${isActive
-                ? 'bg-white text-purple-700 shadow-sm'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-base-100 text-primary shadow-sm'
+                : 'text-base-content/50 hover:text-base-content'
               }
             `}
             style={{ minHeight: 'var(--touch-target-min)' }}

@@ -1,8 +1,10 @@
+import { Heading, Text } from '@ninna-ui/primitives';
+
 export default function ReviewSession() {
   return (
     <div className="p-4">
-      <h1 className="text-2xl font-bold">Sesión de Repaso</h1>
-      <p className="text-gray-600 dark:text-muted mt-2">Tarjetas de repaso — próximamente</p>
+      <Heading as="h1" size="2xl">Sesión de Repaso</Heading>
+      <Text size="sm" className="text-base-content/70 mt-2">Tarjetas de repaso — próximamente</Text>
     </div>
   );
 }
