@@ -80,12 +80,12 @@ export default function Layout() {
       </main>
 
       {/* Bottom navigation — fixed, always visible */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-[#1E293B]/95 backdrop-blur-sm border-t border-gray-200 dark:border-gray-700 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)] flex justify-around py-2 safe-area-bottom" role="navigation">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-base-100/95 backdrop-blur-sm border-t border-base-content/10 shadow-[0_-2px_10px_rgba(0,0,0,0.08)] dark:shadow-[0_-2px_10px_rgba(0,0,0,0.3)] flex justify-around py-2 safe-area-bottom" role="navigation">
         <NavLink
           to="/"
           end
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-base-content/50'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -95,7 +95,7 @@ export default function Layout() {
         <NavLink
           to="/upload"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-base-content/50'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -105,7 +105,7 @@ export default function Layout() {
         <NavLink
           to="/review"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-base-content/50'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >
@@ -115,7 +115,7 @@ export default function Layout() {
         <NavLink
           to="/settings"
           className={({ isActive }) =>
-            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-gray-500 dark:text-muted'}`
+            `flex flex-col items-center text-xs px-2 py-1 ${isActive ? 'text-primary' : 'text-base-content/50'}`
           }
           style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
         >

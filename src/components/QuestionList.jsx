@@ -1,5 +1,7 @@
 import { useState, useRef, useCallback } from 'react';
 import { Key, FlaskConical, Swords, Pencil, Check, X } from 'lucide-react';
+import { Button } from '@ninna-ui/primitives';
+import { Input } from '@ninna-ui/forms';
 
 const TYPES = [
   { key: 'keyword', label: 'Concepto', icon: Key, description: 'Captura términos y definiciones clave del texto' },
@@ -75,26 +77,25 @@ export default function QuestionList({
       {/* Add question form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div className="flex gap-2">
-          <input
+          <Input
             ref={inputRef}
             type="text"
             value={newText}
             onChange={(e) => setNewText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Escribe una pregunta sobre el texto..."
-            className="flex-1 px-3 py-2 text-sm border border-gray-200 dark:border-default rounded-lg bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
-            style={{ minHeight: 'var(--touch-target-min)' }}
+            className="flex-1"
             aria-label="Nueva pregunta"
             autoFocus
           />
-          <button
+          <Button
             type="submit"
+            color="primary"
+            size="sm"
             disabled={!newText.trim()}
-            className="px-4 py-2 text-sm font-medium rounded-lg bg-purple-600 text-white hover:bg-purple-700 disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed transition-colors"
-            style={{ minHeight: 'var(--touch-target-min)', minWidth: 'var(--touch-target-min)' }}
           >
             Añadir
-          </button>
+          </Button>
         </div>
 
         {/* Type selector chips */}

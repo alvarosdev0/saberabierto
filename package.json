@@ -12,6 +12,13 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@ninna-ui/data-display": "0.6.0",
+    "@ninna-ui/feedback": "0.6.0",
+    "@ninna-ui/forms": "0.6.0",
+    "@ninna-ui/layout": "0.6.0",
+    "@ninna-ui/navigation": "0.6.0",
+    "@ninna-ui/overlays": "0.6.0",
+    "@ninna-ui/primitives": "0.6.0",
     "dexie": "^4.0.11",
     "lucide-react": "1.23.0",
     "pdfjs-dist": "6.1.200",

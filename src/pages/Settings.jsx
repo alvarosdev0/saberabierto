@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Moon, Sun, AlertTriangle } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
+import { Input, Select } from '@ninna-ui/forms';
 import { PROVIDER_IDS, PROVIDER_META } from '../services/ai/index.js';
 import db from '../services/db.js';
 
@@ -260,52 +262,45 @@ export default function Settings() {
     <div className="flex flex-col gap-8 p-4 max-w-2xl mx-auto">
       {/* Page header */}
       <div>
-        <h1 className="text-2xl font-bold text-purple-900">Ajustes</h1>
-        <p className="text-gray-600 dark:text-muted mt-1">
+        <Heading as="h1" size="2xl" className="text-purple-900">Ajustes</Heading>
+        <Text size="sm" className="text-base-content/50 mt-1">
           Configura tu proveedor de IA y gestiona tus datos de estudio
-        </p>
+        </Text>
       </div>
 
       {/* ── Provider Selection ──────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Proveedor de IA</h2>
+        <Heading as="h2" size="lg" className="text-base-content">Proveedor de IA</Heading>
 
         <div className="flex flex-col gap-2">
-          <label htmlFor="provider-select" className="text-sm font-medium text-gray-700 dark:text-foreground">
+          <Text size="sm" as="label" htmlFor="provider-select" className="font-medium text-base-content">
             Selecciona el proveedor para generar preguntas
-          </label>
-          <select
+          </Text>
+          <Select
             id="provider-select"
             value={provider}
             onChange={handleProviderChange}
-            className="w-full px-4 py-3 border border-gray-300 dark:border-default rounded-lg text-sm bg-white focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none appearance-none"
-            style={{
-              minHeight: '44px',
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E")`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'right 12px center',
-              paddingRight: '2.5rem',
-            }}
+            className="w-full"
           >
             {PROVIDER_IDS.map((id) => (
               <option key={id} value={id}>
                 {PROVIDER_META[id]?.name || id}
               </option>
             ))}
-          </select>
-          <p className="text-xs text-gray-400">
+          </Select>
+          <Text size="xs" className="text-base-content/40">
             Modelo: {provider === 'gemini' ? geminiModel : meta.model}
-          </p>
+          </Text>
         </div>
 
         {/* API Key Input */}
         <div className="flex flex-col gap-2">
-          <label htmlFor="api-key-input" className="text-sm font-medium text-gray-700 dark:text-foreground">
+          <Text size="sm" as="label" htmlFor="api-key-input" className="font-medium text-base-content">
             Clave API de {meta.name}
-          </label>
+          </Text>
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <input
+              <Input
                 id="api-key-input"
                 type={showKey ? 'text' : 'password'}
                 value={apiKey}
@@ -314,14 +309,13 @@ export default function Settings() {
                   setKeySaved(false);
                 }}
                 placeholder={`Ingresa tu clave API de ${meta.name}...`}
-                className="w-full px-4 py-3 pr-12 border border-gray-300 dark:border-default rounded-lg text-sm focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none font-mono"
-                style={{ minHeight: '44px' }}
+                className="w-full font-mono pr-12"
                 autoComplete="off"
               />
               <button
                 type="button"
                 onClick={() => setShowKey((s) => !s)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-base-content/40 hover:text-base-content/60 transition-colors"
                 style={{ minWidth: '44px', minHeight: '44px' }}
                 aria-label={showKey ? 'Ocultar clave' : 'Mostrar clave'}
                 title={showKey ? 'Ocultar clave' : 'Mostrar clave'}
@@ -338,46 +332,41 @@ export default function Settings() {
                 )}
               </button>
             </div>
-            <button
-              type="button"
+            <Button
+              color={keySaved ? 'success' : 'primary'}
+              variant={keySaved ? 'soft' : undefined}
               onClick={handleSaveKey}
-              className={`px-6 py-3 rounded-lg text-sm font-semibold transition-colors duration-150 ${
-                keySaved
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-purple-600 text-white hover:bg-purple-700 shadow-sm'
-              }`}
-              style={{ minWidth: '44px', minHeight: '44px' }}
+              className="whitespace-nowrap"
             >
               {keySaved ? '✓ Guardada' : 'Guardar'}
-            </button>
+            </Button>
           </div>
-          <p className="text-xs text-gray-400">
+          <Text size="xs" className="text-base-content/40">
             Tu clave se almacena solo en este dispositivo (localStorage).
             Nunca se envía a nuestros servidores.
-          </p>
+          </Text>
         </div>
       </section>
 
       {/* ── Gemini Model Selector ──────────────────────────────────────────── */}
       {provider === 'gemini' && (
         <section className="flex flex-col gap-4">
-          <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Modelo Gemini</h2>
+          <Heading as="h2" size="lg" className="text-base-content">Modelo Gemini</Heading>
 
-          <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
-            <p className="text-xs text-gray-500 dark:text-muted">
+          <div className="flex flex-col gap-3 p-4 bg-base-100 border border-base-content/10 rounded-xl">
+            <Text size="xs" className="text-base-content/50">
               Elige el modelo Gemini que quieres usar. Los modelos disponibles dependen de tu API key.
-            </p>
+            </Text>
 
             {/* Model selector */}
             <div className="flex gap-2">
-              <select
+              <Select
                 value={geminiModel}
                 onChange={(e) => {
                   setGeminiModel(e.target.value);
                   localStorage.setItem('sa:gemini-model', e.target.value);
                 }}
-                className="flex-1 px-3 py-2.5 text-sm border border-gray-300 dark:border-default rounded-lg bg-white dark:bg-surface focus:border-purple-400 focus:ring-2 focus:ring-purple-200 outline-none"
-                style={{ minHeight: '44px' }}
+                className="flex-1"
               >
                 {availableModels.length > 0 ? (
                   availableModels.map((m) => (
@@ -388,37 +377,36 @@ export default function Settings() {
                 ) : (
                   <option value={geminiModel}>{geminiModel}</option>
                 )}
-              </select>
+              </Select>
 
-              <button
-                type="button"
+              <Button
+                variant="outline"
                 onClick={handleFetchModels}
                 disabled={fetchingModels || !apiKey.trim()}
-                className="px-4 py-2 text-xs font-medium rounded-lg border border-gray-300 dark:border-default text-gray-600 dark:text-muted hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-50 transition-colors whitespace-nowrap"
-                style={{ minHeight: '44px' }}
+                className="whitespace-nowrap"
               >
                 {fetchingModels ? 'Cargando...' : 'Ver modelos disponibles'}
-              </button>
+              </Button>
             </div>
 
             {/* Model info */}
-            <p className="text-xs text-gray-400">
-              Modelo actual: <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">{geminiModel}</code>
+            <Text size="xs" className="text-base-content/40">
+              Modelo actual: <code className="bg-base-content/10 px-1 rounded">{geminiModel}</code>
               {availableModels.length > 0 && ` · ${availableModels.length} modelos disponibles`}
-            </p>
+            </Text>
           </div>
         </section>
       )}
 
       {/* ── Dark Mode ──────────────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-bold text-gray-800">Apariencia</h2>
-        <div className="flex items-center justify-between p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
+        <Heading as="h2" size="lg" className="text-base-content">Apariencia</Heading>
+        <div className="flex items-center justify-between p-4 bg-base-100 border border-base-content/10 rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Modo oscuro</h3>
-            <p className="text-xs text-gray-500 dark:text-muted mt-1">
+            <Heading as="h3" size="sm" className="text-base-content">Modo oscuro</Heading>
+            <Text size="xs" className="text-base-content/50 mt-1">
               Cambia entre tema claro y oscuro
-            </p>
+            </Text>
           </div>
           <button
             type="button"
@@ -449,32 +437,30 @@ export default function Settings() {
 
       {/* ── Data Management ──────────────────────────────────────────────── */}
       <section className="flex flex-col gap-4">
-        <h2 className="text-lg font-bold text-gray-800">Gestión de datos</h2>
+        <Heading as="h2" size="lg" className="text-base-content">Gestión de datos</Heading>
 
         {/* Export */}
-        <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
+        <div className="flex flex-col gap-3 p-4 bg-base-100 border border-base-content/10 rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Exportar datos</h3>
-            <p className="text-xs text-gray-500 dark:text-muted mt-1">
+            <Heading as="h3" size="sm" className="text-base-content">Exportar datos</Heading>
+            <Text size="xs" className="text-base-content/50 mt-1">
               Descarga todas tus sesiones, preguntas, repasos y configuraciones en un archivo JSON.
-            </p>
+            </Text>
           </div>
-          <button
-            type="button"
+          <Button
+            variant="outline"
             onClick={handleExport}
-            className="self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-            style={{ minHeight: '44px', minWidth: '44px' }}
+            className="self-start"
           >
-            <span className="flex items-center gap-2">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Exportar datos
-            </span>
-          </button>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Exportar datos
+          </Button>
           {exportStatus && (
-            <p
-              className={`text-xs px-3 py-2 rounded-md ${
+            <Text
+              size="xs"
+              className={`px-3 py-2 rounded-md ${
                 exportStatus.type === 'success'
                   ? 'bg-green-50 text-green-700'
                   : 'bg-red-50 text-red-700'
@@ -482,18 +468,18 @@ export default function Settings() {
               role="status"
             >
               {exportStatus.message}
-            </p>
+            </Text>
           )}
         </div>
 
         {/* Import */}
-        <div className="flex flex-col gap-3 p-4 bg-white dark:bg-surface border border-gray-200 dark:border-default rounded-xl">
+        <div className="flex flex-col gap-3 p-4 bg-base-100 border border-base-content/10 rounded-xl">
           <div>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-foreground">Importar datos</h3>
-            <p className="text-xs text-gray-500 dark:text-muted mt-1">
+            <Heading as="h3" size="sm" className="text-base-content">Importar datos</Heading>
+            <Text size="xs" className="text-base-content/50 mt-1">
               Restaura tus datos desde un archivo JSON exportado previamente.
               <strong className="text-amber-700"> Los datos actuales serán reemplazados.</strong>
-            </p>
+            </Text>
           </div>
           <input
             ref={fileInputRef}
@@ -507,67 +493,59 @@ export default function Settings() {
           {/* Confirmation dialog */}
           {confirmImport && (
             <div className="p-3 bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-800 rounded-lg">
-              <p className="text-sm font-semibold text-red-800 dark:text-red-300 mb-2">
+              <Text size="sm" className="font-semibold text-red-800 dark:text-red-300 mb-2">
                 <AlertTriangle size={18} aria-hidden="true" className="inline mr-1 text-red-700" />¿Estás seguro?
-              </p>
-              <p className="text-xs text-red-700 dark:text-red-400 mb-3">
+              </Text>
+              <Text size="xs" className="text-red-700 dark:text-red-400 mb-3">
                 Se reemplazarán todos tus datos actuales con los del archivo{' '}
                 <strong>{confirmImport.fileName}</strong> ({confirmImport.totalRecords} registros).
                 Esta acción no se puede deshacer.
-              </p>
+              </Text>
               <div className="flex gap-2">
-                <button
-                  type="button"
+                <Button
+                  variant="outline"
                   onClick={() => setConfirmImport(null)}
-                  className="flex-1 px-3 py-2 text-xs font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
-                  style={{ minHeight: '44px' }}
+                  className="flex-1"
                 >
                   Cancelar
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  color="danger"
                   onClick={handleConfirmImport}
-                  className="flex-1 px-3 py-2 text-xs font-medium rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
-                  style={{ minHeight: '44px' }}
+                  className="flex-1"
                 >
                   Sí, reemplazar datos
-                </button>
+                </Button>
               </div>
             </div>
           )}
 
           {!confirmImport && (
-            <button
-              type="button"
+            <Button
+              variant="outline"
               onClick={handleImportClick}
               disabled={importing}
-              className={`self-start px-5 py-2.5 text-sm font-medium rounded-lg border border-gray-300 dark:border-default transition-colors ${
-                importing
-                  ? 'text-gray-400 bg-gray-100 cursor-not-allowed'
-                  : 'text-gray-700 dark:text-foreground hover:bg-gray-50 dark:hover:bg-gray-700'
-              }`}
-              style={{ minHeight: '44px', minWidth: '44px' }}
+              className="self-start"
             >
-              <span className="flex items-center gap-2">
-                {importing ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin" />
-                    Importando…
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                    </svg>
-                    Importar datos
-                  </>
-                )}
-              </span>
-            </button>
+              {importing ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-base-content/30 border-t-base-content rounded-full animate-spin" />
+                  Importando…
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                  </svg>
+                  Importar datos
+                </>
+              )}
+            </Button>
           )}
           {importStatus && (
-            <p
-              className={`text-xs px-3 py-2 rounded-md ${
+            <Text
+              size="xs"
+              className={`px-3 py-2 rounded-md ${
                 importStatus.type === 'success'
                   ? 'bg-green-50 text-green-700'
                   : 'bg-red-50 text-red-700'
@@ -575,15 +553,15 @@ export default function Settings() {
               role="status"
             >
               {importStatus.message}
-            </p>
+            </Text>
           )}
         </div>
       </section>
 
       {/* ── App Info ──────────────────────────────────────────────────────── */}
-      <section className="flex flex-col gap-2 pt-4 border-t border-gray-200 dark:border-default">
-        <h2 className="text-lg font-bold text-gray-800 dark:text-foreground">Acerca de</h2>
-        <div className="text-sm text-gray-500 dark:text-muted leading-relaxed">
+      <section className="flex flex-col gap-2 pt-4 border-t border-base-content/10">
+        <Heading as="h2" size="lg" className="text-base-content">Acerca de</Heading>
+        <div className="text-sm text-base-content/50 leading-relaxed">
           <p><strong>SaberAbierto</strong> v1.0.0</p>
           <p className="mt-1">
             Metodología de estudio con lectura interrogativa, descarga de ideas,

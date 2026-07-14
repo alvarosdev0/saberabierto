@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, BookOpen } from 'lucide-react';
+import { Button, Heading, Text } from '@ninna-ui/primitives';
+import { Progress } from '@ninna-ui/feedback';
+import { Card } from '@ninna-ui/data-display';
 import db from '../services/db.js';
 import QuickStats from '../components/QuickStats.jsx';
 import ReviewCountdown from '../components/ReviewCountdown.jsx';
@@ -138,12 +141,12 @@ export default function Home() {
     <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto pb-24">
       {/* ── Header ────────────────────────────────────────────────────── */}
       <header className="pt-2">
-        <h1 className="text-2xl font-bold text-purple-900 font-heading">
+        <Heading as="h1" size="2xl" className="text-purple-900 font-heading">
           SaberAbierto
-        </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        </Heading>
+        <Text size="sm" className="text-base-content/50 mt-1">
           Tu espacio de estudio con repaso espaciado
-        </p>
+        </Text>
       </header>
 
       {/* ── Reviews Due Banner ────────────────────────────────────────── */}
@@ -151,95 +154,91 @@ export default function Home() {
 
       {/* ── Active Session Card ───────────────────────────────────────── */}
       {!sessionLoading && activeSession && (
-        <section className="bg-white dark:bg-surface rounded-2xl border border-purple-200 dark:border-default p-5 shadow-sm">
-          <div className="flex items-start justify-between gap-3 mb-3">
-            <div className="min-w-0">
-              <p className="text-xs text-purple-500 font-medium uppercase tracking-wide mb-1">
-                Sesión activa
-              </p>
-              <h2 className="text-lg font-bold text-purple-900 font-heading truncate">
-                {activeSession.subject}
-              </h2>
-              <p className="text-xs text-gray-400 mt-0.5">
-                Iniciada el {formatDate(activeSession.createdAt)}
-              </p>
+        <Card>
+          <Card.Header>
+            <div className="flex items-start justify-between gap-3">
+              <div className="min-w-0">
+                <Text size="xs" className="text-purple-500 font-medium uppercase tracking-wide">
+                  Sesión activa
+                </Text>
+                <Heading as="h2" size="lg" className="text-purple-900 font-heading truncate">
+                  {activeSession.subject}
+                </Heading>
+                <Text size="xs" className="text-base-content/40 mt-0.5">
+                  Iniciada el {formatDate(activeSession.createdAt)}
+                </Text>
+              </div>
+              {/* Badge: completion */}
+              {totalCount > 0 && (
+                <span className="flex-shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">
+                  {completedCount}/{totalCount}
+                </span>
+              )}
             </div>
-            {/* Badge: completion */}
+          </Card.Header>
+
+          <Card.Body>
+            {/* Progress bar */}
             {totalCount > 0 && (
-              <span className="flex-shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">
-                {completedCount}/{totalCount}
-              </span>
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-xs text-base-content/40 mb-1">
+                  <span>Progreso</span>
+                  <span>{progressPct}%</span>
+                </div>
+                <Progress color="primary" value={progressPct} />
+              </div>
             )}
-          </div>
 
-          {/* Progress bar */}
-          {totalCount > 0 && (
-            <div className="mb-4">
-              <div className="flex items-center justify-between text-xs text-gray-400 mb-1">
-                <span>Progreso</span>
-                <span>{progressPct}%</span>
-              </div>
-              <div className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-purple-500 rounded-full transition-[width] duration-500"
-                  style={{ width: `${progressPct}%` }}
-                />
-              </div>
-            </div>
-          )}
-
-          {/* Continue button */}
-          <button
-            type="button"
-            onClick={handleContinue}
-            className="w-full py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm flex items-center justify-center gap-2"
-            style={{ minHeight: 'var(--touch-target-min)' }}
-          >
-            <Play size={18} aria-hidden="true" />
-            <span>
+            {/* Continue button */}
+            <Button
+              color="primary"
+              className="w-full"
+              onClick={handleContinue}
+            >
+              <Play size={18} aria-hidden="true" />
               {sessionSections.some((s) => s.status === 'pending')
                 ? 'Continuar'
                 : 'Ir al cuestionario'}
-            </span>
-          </button>
-        </section>
+            </Button>
+          </Card.Body>
+        </Card>
       )}
 
       {/* Empty state — no active session */}
       {!sessionLoading && !activeSession && (
-        <section className="bg-white dark:bg-surface rounded-2xl border border-gray-200 dark:border-default p-6 text-center shadow-sm">
-          <BookOpen size={40} aria-hidden="true" className="text-gray-300 mb-3" />
-          <h2 className="text-lg font-bold text-gray-700 dark:text-foreground mb-2 font-heading">
-            Sin sesión activa
-          </h2>
-          <p className="text-sm text-gray-500 dark:text-muted mb-5">
-            Sube un PDF para comenzar una nueva sesión de estudio con lectura
-            interrogativa, descarga de ideas y repaso espaciado.
-          </p>
-          <button
-            type="button"
-            onClick={handleNewSession}
-            className="px-6 py-3 text-sm font-semibold rounded-xl bg-purple-600 text-white hover:bg-purple-700 transition-colors shadow-sm"
-            style={{ minHeight: 'var(--touch-target-min)' }}
-          >
-            Nueva sesión
-          </button>
-        </section>
+        <Card className="text-center">
+          <Card.Body>
+            <BookOpen size={40} aria-hidden="true" className="text-base-content/20 mx-auto mb-3" />
+            <Heading as="h2" size="lg" className="text-base-content mb-2 font-heading">
+              Sin sesión activa
+            </Heading>
+            <Text size="sm" className="text-base-content/50 mb-5">
+              Sube un PDF para comenzar una nueva sesión de estudio con lectura
+              interrogativa, descarga de ideas y repaso espaciado.
+            </Text>
+            <Button
+              color="primary"
+              onClick={handleNewSession}
+            >
+              Nueva sesión
+            </Button>
+          </Card.Body>
+        </Card>
       )}
 
       {/* ── Quick Stats ────────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
+        <Heading as="h2" size="sm" className="text-base-content/50 uppercase tracking-wide mb-3">
           Estadísticas
-        </h2>
+        </Heading>
         <QuickStats />
       </section>
 
       {/* ── Next Review Countdown ──────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
+        <Heading as="h2" size="sm" className="text-base-content/50 uppercase tracking-wide mb-3">
           Repasos
-        </h2>
+        </Heading>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <ReviewCountdown />
           <button
@@ -260,50 +259,50 @@ export default function Home() {
 
       {/* ── Gaps to Revisit ────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
+        <Heading as="h2" size="sm" className="text-base-content/50 uppercase tracking-wide mb-3">
           Lagunas de conocimiento
-        </h2>
+        </Heading>
         <GapsToRevisit />
       </section>
 
       {/* ── Session History ────────────────────────────────────────────── */}
       <section>
-        <h2 className="text-sm font-semibold text-gray-500 dark:text-muted uppercase tracking-wide mb-3">
+        <Heading as="h2" size="sm" className="text-base-content/50 uppercase tracking-wide mb-3">
           Historial de sesiones
-        </h2>
+        </Heading>
 
         {historyLoading && (
-          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 animate-pulse">
-            <div className="h-4 w-full bg-gray-200 dark:bg-gray-700 rounded mb-2" />
-            <div className="h-4 w-3/4 bg-gray-200 dark:bg-gray-700 rounded" />
+          <div className="bg-base-100 rounded-xl border border-base-content/10 p-4 animate-pulse">
+            <div className="h-4 w-full bg-base-content/10 rounded mb-2" />
+            <div className="h-4 w-3/4 bg-base-content/10 rounded" />
           </div>
         )}
 
         {!historyLoading && pastSessions.length === 0 && (
-          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-center">
-            <p className="text-sm text-gray-400 italic">
+          <div className="bg-base-100 rounded-xl border border-base-content/10 p-4 text-center">
+            <Text size="sm" className="text-base-content/30 italic">
               No hay sesiones anteriores. ¡Comienza tu primera sesión!
-            </p>
+            </Text>
           </div>
         )}
 
         {!historyLoading && pastSessions.length > 0 && (
-          <div className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default divide-y divide-gray-100">
+          <div className="bg-base-100 rounded-xl border border-base-content/10 divide-y divide-base-content/10">
             {pastSessions.map((session) => (
               <div
                 key={session.id}
                 className="flex items-center justify-between px-4 py-3"
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium text-gray-800 dark:text-foreground truncate">
+                  <Text size="sm" className="font-medium text-base-content truncate">
                     {session.subject}
-                  </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  </Text>
+                  <Text size="xs" className="text-base-content/40 mt-0.5">
                     {formatDate(session.createdAt)}
                     {session.updatedAt !== session.createdAt && (
                       <> · Actualizada {formatDate(session.updatedAt)}</>
                     )}
-                  </p>
+                  </Text>
                 </div>
                 <span
                   className={`flex-shrink-0 px-2 py-0.5 text-[11px] font-medium rounded-full ${statusColor(session.status)}`}
