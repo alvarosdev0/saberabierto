@@ -24,7 +24,7 @@ export default function InterrogativeReading() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentSection, setCurrentSection] = useState(null);
-  const [showMarkdown, setShowMarkdown] = useState(true);
+  const [showMarkdown, setShowMarkdown] = useState(false);
   const [sessionMode, setSessionMode] = useState('');
 
   // ── Load section data + session mode ─────────────────────────────────────
