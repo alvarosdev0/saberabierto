@@ -294,15 +294,15 @@ export default function PDFUpload() {
       {/* Language selector — always visible */}
       <div className="flex items-center gap-2">
         <Languages size={18} className="text-base-content/40" />
-        <Select
+        <select
           value={language}
           onChange={handleLanguageChange}
-          className="flex-1"
+          className="flex-1 px-3 py-2 text-sm border border-base-content/10 rounded-lg bg-base-100 text-base-content focus:border-primary outline-none"
           aria-label="Idioma de las preguntas"
         >
           <option value="es">Español — preguntas en español</option>
           <option value="en">English — questions in English</option>
-        </Select>
+        </select>
       </div>
 
       {/* FileDropzone — always visible in idle/loaded/extracting */}

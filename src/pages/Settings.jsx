@@ -227,20 +227,16 @@ export default function Settings() {
       const data = await res.json();
 
       if (data.models) {
-        // Filter to flash/lite models (text generation)
-        const flashModels = data.models
-          .filter((m) => {
-            const name = m.name.replace('models/', '');
-            // Only include models that support generateContent
-            const supported = m.supportedGenerationMethods?.includes('generateContent');
-            return supported && (name.includes('flash') || name.includes('lite'));
-          })
+        // All models that support generateContent
+        const genModels = data.models
+          .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
           .map((m) => ({
             id: m.name.replace('models/', ''),
             description: m.displayName || m.name.replace('models/', ''),
-          }));
+          }))
+          .sort((a, b) => a.id.localeCompare(b.id));
 
-        setAvailableModels(flashModels);
+        setAvailableModels(genModels);
 
         // Auto-select first model if current isn't available
         if (flashModels.length > 0 && !flashModels.find((m) => m.id === geminiModel)) {
