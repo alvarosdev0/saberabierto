@@ -54,10 +54,10 @@ export default function ThumbnailGrid({
     });
   }, [loadedPages, onNeedRender]);
 
-  // Reset rendered set when pages change (new PDF loaded)
+  // Reset rendered set when page count changes (new PDF loaded)
   useEffect(() => {
     renderedRef.current.clear();
-  }, [pages]);
+  }, [pages.length]);
 
   // --- Range selection ---
   const handlePageTap = useCallback(
