@@ -166,26 +166,7 @@ export default function QuestionList({
         {questions.length} pregunta{questions.length !== 1 ? 's' : ''}
       </p>
 
-      {/* FAQ: Qué significa cada tipo */}
-      <details className="mt-2">
-        <summary className="text-sm font-medium text-primary cursor-pointer hover:text-primary-hover transition-colors">
-          ¿Qué significa cada tipo de pregunta?
-        </summary>
-        <div className="flex flex-col gap-3 mt-3 p-4 bg-base-200 rounded-xl text-sm">
-          {TYPES.map((t) => {
-            const Icon = t.icon;
-            return (
-              <div key={t.key} className="flex items-start gap-3">
-                <Icon size={18} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
-                <div>
-                  <p className="font-semibold text-base-content">{t.label}</p>
-                  <p className="text-base-content/70 mt-0.5">{t.description}</p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </details>
+
     </div>
   );
 }

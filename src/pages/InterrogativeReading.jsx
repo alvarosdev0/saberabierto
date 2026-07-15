@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ChevronDown, ChevronUp, BookOpen } from 'lucide-react';
+import { ChevronDown, ChevronUp, BookOpen, Key, FlaskConical, Swords } from 'lucide-react';
 import { Button, Heading, Text } from '@ninna-ui/primitives';
 import db from '../services/db.js';
 import SectionNavigator from '../components/SectionNavigator.jsx';
@@ -230,6 +230,38 @@ export default function InterrogativeReading() {
               <div className="prose prose-sm max-w-none font-sans text-base-content leading-relaxed" dangerouslySetInnerHTML={{ __html: renderMarkdown(markdown) }} />
             </div>
           )}
+        </div>
+
+        {/* ── FAQ: tipos de pregunta ──────────────────────────────────────── */}
+        <div className="px-4 pb-2">
+          <details>
+            <summary className="text-xs font-medium text-primary cursor-pointer hover:text-primary-hover transition-colors">
+              ¿Qué tipos de preguntas puedo escribir?
+            </summary>
+            <div className="flex flex-col gap-3 mt-3 p-4 bg-base-200 rounded-xl text-sm">
+              <div className="flex items-start gap-3">
+                <Key size={18} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold text-base-content">Concepto</p>
+                  <p className="text-base-content/70 mt-0.5">Captura términos y definiciones clave del texto.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <FlaskConical size={18} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold text-base-content">Metodología</p>
+                  <p className="text-base-content/70 mt-0.5">Cuestiona la evidencia, los pasos y los procesos.</p>
+                </div>
+              </div>
+              <div className="flex items-start gap-3">
+                <Swords size={18} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold text-base-content">Combate</p>
+                  <p className="text-base-content/70 mt-0.5">Desafía las ideas del autor, busca objeciones.</p>
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
 
         {/* ── Questions section — single list, no tabs ──────────────────── */}
