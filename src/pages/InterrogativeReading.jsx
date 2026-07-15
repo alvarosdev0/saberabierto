@@ -50,7 +50,7 @@ export default function InterrogativeReading() {
 
         const note = await db.notes.where('sectionId').equals(Number(sectionId)).first();
         if (cancelled) return;
-        setMarkdown(note?.text || '');
+        setMarkdown(note?.content || note?.text || '');
 
         const existing = await db.questions.where('sectionId').equals(Number(sectionId)).toArray();
         if (cancelled) return;
