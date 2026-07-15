@@ -215,21 +215,13 @@ export default function Settings() {
     }
   }, []);
 
-  // ── Text-capable Gemini models (generación de preguntas) ─────────────────
+  // ── Gemini models que funcionan con tu API key (testeados) ─────────────
+  // Los modelos 2.5+ ya no estan disponibles para usuarios nuevos.
   const TEXT_MODELS = [
-    { id: 'gemini-3.5-flash', description: 'Gemini 3.5 Flash' },
-    { id: 'gemini-3.1-flash-lite', description: 'Gemini 3.1 Flash Lite' },
-    { id: 'gemini-3.1-flash-lite-preview', description: 'Gemini 3.1 Flash Lite Preview' },
-    { id: 'gemini-3-flash-preview', description: 'Gemini 3 Flash Preview' },
-    { id: 'gemini-3-pro-preview', description: 'Gemini 3 Pro Preview' },
-    { id: 'gemini-2.5-flash', description: 'Gemini 2.5 Flash' },
-    { id: 'gemini-2.5-flash-lite', description: 'Gemini 2.5 Flash Lite' },
-    { id: 'gemini-2.5-pro', description: 'Gemini 2.5 Pro' },
-    { id: 'gemini-2.0-flash', description: 'Gemini 2.0 Flash' },
+    { id: 'gemini-3.1-flash-lite', description: 'Gemini 3.1 Flash Lite ✅' },
+    { id: 'gemini-3-flash-preview', description: 'Gemini 3 Flash Preview ✅' },
+    { id: 'gemini-2.0-flash', description: 'Gemini 2.0 Flash (puede tener cuota agotada)' },
     { id: 'gemini-2.0-flash-lite', description: 'Gemini 2.0 Flash Lite' },
-    { id: 'gemini-flash-latest', description: 'Gemini Flash (Latest)' },
-    { id: 'gemini-flash-lite-latest', description: 'Gemini Flash Lite (Latest)' },
-    { id: 'gemini-pro-latest', description: 'Gemini Pro (Latest)' },
     { id: 'gemini-omni-flash-preview', description: 'Gemini Omni Flash Preview' },
   ];
 

@@ -159,12 +159,15 @@ export default function MarkdownEditor() {
           sectionIds.push(id);
         }
 
-        // 4. Create notes for each section (empty — user writes in Brain Dump)
+        // 4. Create notes for each section
+        // text: empty — user writes in Brain Dump
+        // content: original markdown — used for AI question generation
         const now = new Date();
         for (let i = 0; i < sectionEntries.length; i++) {
           await db.notes.add({
             sectionId: sectionIds[i],
             text: '',
+            content: sectionEntries[i].content,
             gaps: [],
             hasGaps: false,
             status: 'draft',

@@ -54,7 +54,7 @@ export default function SessionSetup() {
         const nts = [];
         for (const sec of secs) {
           const note = await db.notes.where('sectionId').equals(sec.id).first();
-          if (note) nts.push({ sectionId: sec.id, text: note.text || '' });
+          if (note) nts.push({ sectionId: sec.id, text: note.content || note.text || '' });
         }
         if (!cancelled) setNotes(nts);
       } catch (err) {
