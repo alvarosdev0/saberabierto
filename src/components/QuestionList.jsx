@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
 import { Key, FlaskConical, Swords, Pencil, Check, X } from 'lucide-react';
-import { Button } from '@ninna-ui/primitives';
-import { Input } from '@ninna-ui/forms';
 
 const TYPES = [
   { key: 'keyword', label: 'Concepto', icon: Key, description: 'Captura términos y definiciones clave del texto' },
@@ -28,6 +26,7 @@ export default function QuestionList({
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
   const [selectedType, setSelectedType] = useState('keyword');
+  const [showFaq, setShowFaq] = useState(false);
   const inputRef = useRef(null);
 
   const handleSubmit = useCallback(
@@ -77,25 +76,25 @@ export default function QuestionList({
       {/* Add question form */}
       <form onSubmit={handleSubmit} className="flex flex-col gap-2">
         <div className="flex gap-2">
-          <Input
+          <input
             ref={inputRef}
             type="text"
             value={newText}
             onChange={(e) => setNewText(e.target.value)}
             onKeyDown={handleKeyDown}
             placeholder="Escribe una pregunta sobre el texto..."
-            className="flex-1"
+            className="flex-1 px-3 py-2 text-sm border border-base-content/10 rounded-lg bg-base-100 text-base-content focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
             aria-label="Nueva pregunta"
             autoFocus
           />
-          <Button
+          <button
             type="submit"
-            color="primary"
-            size="sm"
             disabled={!newText.trim()}
+            className="px-4 py-2 text-sm font-medium rounded-lg bg-primary text-primary-content hover:bg-primary-hover disabled:bg-base-200 disabled:text-base-content/40 disabled:cursor-not-allowed transition-colors"
+            style={{ minHeight: '44px' }}
           >
             Añadir
-          </Button>
+          </button>
         </div>
 
         {/* Type selector chips */}
@@ -112,8 +111,8 @@ export default function QuestionList({
                 onClick={() => setSelectedType(t.key)}
                 className={`flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
                   isActive
-                    ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-                    : 'bg-gray-100 text-gray-500 dark:bg-gray-800 dark:text-muted hover:bg-gray-200'
+                    ? 'bg-primary/10 text-primary'
+                    : 'bg-base-200 text-base-content/50 hover:bg-base-300'
                 }`}
                 style={{ minHeight: '36px' }}
                 title={t.description}
@@ -124,14 +123,11 @@ export default function QuestionList({
             );
           })}
         </div>
-        <p className="text-xs text-gray-500 dark:text-muted -mt-1">
-          {TYPES.find((t) => t.key === selectedType)?.description}
-        </p>
       </form>
 
       {/* Question list */}
       {questions.length === 0 ? (
-        <p className="text-sm text-gray-400 italic text-center py-4">
+        <p className="text-sm text-base-content/40 italic text-center py-4">
           Sin preguntas aún. Escribe una pregunta arriba.
         </p>
       ) : (
@@ -141,7 +137,7 @@ export default function QuestionList({
             return (
               <li
                 key={q.id || q.text}
-                className="flex items-start gap-2 p-3 rounded-lg bg-gray-50 dark:bg-muted border border-gray-100 dark:border-default group"
+                className="flex items-start gap-2 p-3 rounded-lg bg-base-200 border border-base-content/10 group"
               >
                 {editingId === q.id ? (
                   /* Inline edit mode */
@@ -149,15 +145,15 @@ export default function QuestionList({
                     <textarea
                       value={editText}
                       onChange={(e) => setEditText(e.target.value)}
-                      className="w-full p-2 text-sm border border-purple-300 rounded-md focus:border-purple-500 focus:ring-2 focus:ring-purple-200 outline-none resize-none bg-white"
+                      className="w-full p-2 text-sm border border-primary/30 rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none resize-none bg-base-100 text-base-content"
                       rows={2}
                       style={{ minHeight: '44px' }}
                     />
                     <div className="flex justify-end gap-2">
-                      <button type="button" onClick={cancelEdit} className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors" style={{ minHeight: '36px' }}>
+                      <button type="button" onClick={cancelEdit} className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg border border-base-content/10 text-base-content/70 hover:bg-base-200 transition-colors" style={{ minHeight: '36px' }}>
                         <X size={14} /> Cancelar
                       </button>
-                      <button type="button" onClick={saveEdit} className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-purple-600 text-white hover:bg-purple-700 transition-colors" style={{ minHeight: '36px' }}>
+                      <button type="button" onClick={saveEdit} className="flex items-center gap-1 px-3 py-1.5 text-xs font-medium rounded-lg bg-primary text-primary-content hover:bg-primary-hover transition-colors" style={{ minHeight: '36px' }}>
                         <Check size={14} /> Guardar
                       </button>
                     </div>
@@ -166,23 +162,23 @@ export default function QuestionList({
                   <>
                     <div className="flex-1 flex flex-col gap-1">
                       <span
-                        className="text-sm leading-relaxed text-gray-800 dark:text-foreground cursor-pointer hover:text-purple-700"
+                        className="text-sm leading-relaxed text-base-content cursor-pointer hover:text-primary"
                         onClick={() => startEditing(q)}
                       >
                         {q.text}
                       </span>
                       {q.type && (
-                        <span className="flex items-center gap-1 text-xs text-gray-400">
+                        <span className="flex items-center gap-1 text-xs text-base-content/50">
                           <TypeBadgeIcon size={10} aria-hidden="true" />
                           {TYPES.find((t) => t.key === q.type)?.label || q.type}
                         </span>
                       )}
                     </div>
                     <div className="flex gap-1 flex-shrink-0">
-                      <button type="button" onClick={() => startEditing(q)} className="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-purple-500 hover:bg-purple-50 opacity-0 group-hover:opacity-100 transition-opacity" style={{ minHeight: '24px', minWidth: '24px' }} aria-label="Editar pregunta">
+                      <button type="button" onClick={() => startEditing(q)} className="w-6 h-6 flex items-center justify-center rounded text-base-content/30 hover:text-primary hover:bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" style={{ minHeight: '24px', minWidth: '24px' }} aria-label="Editar pregunta">
                         <Pencil size={14} />
                       </button>
-                      <button type="button" onClick={() => onDelete(q.id)} className="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-red-500 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity" style={{ minHeight: '24px', minWidth: '24px' }} aria-label="Eliminar pregunta">
+                      <button type="button" onClick={() => onDelete(q.id)} className="w-6 h-6 flex items-center justify-center rounded text-base-content/30 hover:text-accent hover:bg-accent/10 opacity-0 group-hover:opacity-100 transition-opacity" style={{ minHeight: '24px', minWidth: '24px' }} aria-label="Eliminar pregunta">
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                       </button>
                     </div>
@@ -194,9 +190,35 @@ export default function QuestionList({
         </ul>
       )}
 
-      <p className="text-xs text-gray-400">
+      <p className="text-xs text-base-content/40">
         {questions.length} pregunta{questions.length !== 1 ? 's' : ''}
       </p>
+
+      {/* FAQ: Qué significa cada tipo */}
+      <details className="text-xs text-base-content/50 mt-2">
+        <summary
+          className="cursor-pointer hover:text-primary transition-colors"
+          onClick={(e) => { e.preventDefault(); setShowFaq(!showFaq); }}
+        >
+          ¿Qué significa cada tipo de pregunta?
+        </summary>
+        {showFaq && (
+          <div className="flex flex-col gap-2 mt-2 p-3 bg-base-200 rounded-lg">
+            {TYPES.map((t) => {
+              const Icon = t.icon;
+              return (
+                <div key={t.key} className="flex items-start gap-2">
+                  <Icon size={14} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
+                  <div>
+                    <span className="font-medium text-base-content">{t.label}:</span>{' '}
+                    <span className="text-base-content/70">{t.description}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </details>
     </div>
   );
 }

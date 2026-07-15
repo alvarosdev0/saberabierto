@@ -6,7 +6,6 @@ import { Select } from '@ninna-ui/forms';
 import FileDropzone from '../components/FileDropzone.jsx';
 import ThumbnailGrid from '../components/ThumbnailGrid.jsx';
 import ExtractionProgress from '../components/ExtractionProgress.jsx';
-import MarkdownEditor from '../components/MarkdownEditor.jsx';
 import { loadPDF, getThumbnail, extractTextFromPages, cleanup } from '../services/pdf.js';
 import { extractedTextToMarkdown } from '../lib/markdown-converter.js';
 import db from '../services/db.js';
@@ -230,33 +229,28 @@ export default function PDFUpload() {
       setMarkdown(md);
       setWordCount(text.trim().split(/\s+/).length);
 
-      // Update progress to done
-      setProgress({ current: totalPages, total: totalPages, stage: 'done' });
-
       // Free PDF memory
       cleanup(pdfDoc);
       setPdfDoc(null);
 
-      // Transition to review after a brief delay
-      setTimeout(() => setStage('review'), 500);
+      // Navigate directly to MarkdownEditor page for review + session creation
+      setTimeout(() => {
+        navigate('/session/new/section/0/review-md', {
+          state: {
+            markdown: md,
+            filename: extractionFile?.name || 'documento.pdf',
+            language,
+          },
+          replace: true,
+        });
+      }, 300);
     } catch (err) {
       console.error('Extraction error:', err);
       setStage('loaded');
     }
-  }, [pdfDoc, selectedPages, contentHash, pages.length]);
+  }, [pdfDoc, selectedPages, contentHash, pages.length, extractionFile, navigate, language]);
 
-  // --- Step 4: Accept / Regenerate ---
-  const handleAccept = useCallback((md) => {
-    // Navigate to MarkdownEditor page for session creation
-    navigate('/session/new/section/0/review-md', {
-      state: {
-        markdown: md,
-        filename: extractionFile?.name || 'documento.pdf',
-        language,
-      },
-      replace: true,
-    });
-  }, [navigate, extractionFile, language]);
+  // --- Step 4: Regenerate (no more inline review needed) ---
 
   const handleRegenerate = useCallback(() => {
     // Clean up and go back to idle
@@ -376,47 +370,7 @@ export default function PDFUpload() {
         />
       )}
 
-      {/* Stage: review — show Markdown editor */}
-      {stage === 'review' && (
-        <>
-          {/* Scanned page warnings */}
-          {scannedPages.length > 0 && (
-            <div
-              role="alert"
-              className="px-4 py-3 bg-warning/10 border border-warning/30 rounded-lg text-sm text-warning"
-            >
-              <p className="font-medium mb-1">Páginas sin texto extraíble:</p>
-              <p>
-                {scannedPages.map((n) => `La página ${n} no contiene texto extraíble`).join('. ')}
-                .
-              </p>
-              <Text size="xs" className="text-warning/70 mt-1">
-                Estas páginas parecen ser imágenes escaneadas. No se pudo extraer texto de ellas.
-              </Text>
-            </div>
-          )}
 
-          {/* Extracted file info */}
-          {extractionFile && (
-            <div className="flex items-center gap-2 text-sm text-base-content/50">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              <span>{extractionFile.name}</span>
-              <span>·</span>
-              <span>{wordCount.toLocaleString()} palabras</span>
-            </div>
-          )}
-
-          {/* Markdown editor */}
-          <MarkdownEditor
-            markdown={markdown}
-            onChange={setMarkdown}
-            onAccept={handleAccept}
-            onRegenerate={handleRegenerate}
-          />
-        </>
-      )}
     </div>
   );
 }
