@@ -281,7 +281,7 @@ export default function Settings() {
     <div className="flex flex-col gap-8 p-4 max-w-2xl mx-auto">
       {/* Page header */}
       <div>
-        <Heading as="h1" size="2xl" className="text-purple-900">Ajustes</Heading>
+        <Heading as="h1" size="2xl" className="text-primary">Ajustes</Heading>
         <Text size="sm" className="text-base-content/50 mt-1">
           Configura tu proveedor de IA y gestiona tus datos de estudio
         </Text>
@@ -444,7 +444,7 @@ export default function Settings() {
               setDarkMode(isDark);
             }}
             className={`relative w-14 h-7 rounded-full transition-colors ${
-              darkMode ? 'bg-purple-600' : 'bg-gray-300'
+              darkMode ? 'bg-primary' : 'bg-gray-300'
             }`}
             style={{ minHeight: 'auto', minWidth: 'auto' }}
             aria-label="Alternar modo oscuro"
@@ -456,7 +456,7 @@ export default function Settings() {
                 darkMode ? 'translate-x-7' : ''
               }`}
             >
-              {darkMode ? <Moon size={12} className="text-purple-600" /> : <Sun size={12} className="text-amber-500" />}
+              {darkMode ? <Moon size={12} className="text-primary" /> : <Sun size={12} className="text-amber-500" />}
             </span>
           </button>
         </div>

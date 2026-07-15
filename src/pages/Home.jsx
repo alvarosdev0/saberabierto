@@ -44,7 +44,7 @@ function statusLabel(status) {
 function statusColor(status) {
   switch (status) {
     case 'active': return 'bg-emerald-100 text-emerald-700';
-    case 'completed': return 'bg-purple-100 text-purple-700';
+        case 'completed': return 'bg-primary/10 text-primary';
     case 'abandoned': return 'bg-gray-100 text-gray-500';
     default: return 'bg-gray-100 text-gray-500';
   }
@@ -141,7 +141,7 @@ export default function Home() {
     <div className="flex flex-col gap-6 p-4 max-w-2xl mx-auto pb-24">
       {/* ── Header ────────────────────────────────────────────────────── */}
       <header className="pt-2">
-        <Heading as="h1" size="2xl" className="text-purple-900 font-heading">
+        <Heading as="h1" size="2xl" className="text-primary font-heading">
           SaberAbierto
         </Heading>
         <Text size="sm" className="text-base-content/50 mt-1">
@@ -158,10 +158,10 @@ export default function Home() {
           <Card.Header>
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <Text size="xs" className="text-purple-500 font-medium uppercase tracking-wide">
+                <Text size="xs" className="text-primary font-medium uppercase tracking-wide">
                   Sesión activa
                 </Text>
-                <Heading as="h2" size="lg" className="text-purple-900 font-heading truncate">
+                <Heading as="h2" size="lg" className="text-primary font-heading truncate">
                   {activeSession.subject}
                 </Heading>
                 <Text size="xs" className="text-base-content/40 mt-0.5">
@@ -170,7 +170,7 @@ export default function Home() {
               </div>
               {/* Badge: completion */}
               {totalCount > 0 && (
-                <span className="flex-shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-700">
+                <span className="flex-shrink-0 px-2.5 py-1 text-xs font-semibold rounded-full bg-primary/10 text-primary">
                   {completedCount}/{totalCount}
                 </span>
               )}
@@ -244,13 +244,13 @@ export default function Home() {
           <button
             type="button"
             onClick={() => navigate('/review')}
-            className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-left hover:border-purple-200 hover:shadow-sm transition-[border-color,box-shadow]"
+            className="bg-white dark:bg-surface rounded-xl border border-gray-200 dark:border-default p-4 text-left hover:border-primary/30 hover:shadow-sm transition-[border-color,box-shadow]"
             style={{ minHeight: 'var(--touch-target-min)' }}
           >
             <p className="text-xs text-gray-500 dark:text-muted font-medium uppercase tracking-wide mb-1">
               Repaso espaciado
             </p>
-            <p className="text-sm font-semibold text-purple-600">
+              <p className="text-sm font-semibold text-primary">
               Ir a repasar →
             </p>
           </button>
