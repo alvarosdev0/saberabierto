@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Moon, Sun, AlertTriangle } from 'lucide-react';
 import { Button, Heading, Text } from '@ninna-ui/primitives';
-import { Input } from '@ninna-ui/forms';
+
 import { PROVIDER_IDS, PROVIDER_META } from '../services/ai/index.js';
 import db from '../services/db.js';
 
@@ -325,16 +325,18 @@ export default function Settings() {
           </Text>
           <div className="flex gap-2">
             <div className="relative flex-1">
-              <Input
+              <input
                 id="api-key-input"
                 type={showKey ? 'text' : 'password'}
                 value={apiKey}
                 onChange={(e) => {
                   setApiKey(e.target.value);
-                  setKeySaved(false);
+                  localStorage.setItem(lsApiKey(provider), e.target.value.trim());
+                  setKeySaved(true);
+                  setTimeout(() => setKeySaved(false), 2000);
                 }}
                 placeholder={`Ingresa tu clave API de ${meta.name}...`}
-                className="w-full font-mono pr-12"
+                className="w-full px-4 py-3 pr-12 border border-base-content/10 rounded-lg bg-base-100 text-base-content text-sm font-mono focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none"
                 autoComplete="off"
               />
               <button
