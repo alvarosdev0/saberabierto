@@ -215,6 +215,24 @@ export default function Settings() {
     }
   }, []);
 
+  // ── Text-capable Gemini models (generación de preguntas) ─────────────────
+  const TEXT_MODELS = [
+    { id: 'gemini-3.5-flash', description: 'Gemini 3.5 Flash' },
+    { id: 'gemini-3.1-flash-lite', description: 'Gemini 3.1 Flash Lite' },
+    { id: 'gemini-3.1-flash-lite-preview', description: 'Gemini 3.1 Flash Lite Preview' },
+    { id: 'gemini-3-flash-preview', description: 'Gemini 3 Flash Preview' },
+    { id: 'gemini-3-pro-preview', description: 'Gemini 3 Pro Preview' },
+    { id: 'gemini-2.5-flash', description: 'Gemini 2.5 Flash' },
+    { id: 'gemini-2.5-flash-lite', description: 'Gemini 2.5 Flash Lite' },
+    { id: 'gemini-2.5-pro', description: 'Gemini 2.5 Pro' },
+    { id: 'gemini-2.0-flash', description: 'Gemini 2.0 Flash' },
+    { id: 'gemini-2.0-flash-lite', description: 'Gemini 2.0 Flash Lite' },
+    { id: 'gemini-flash-latest', description: 'Gemini Flash (Latest)' },
+    { id: 'gemini-flash-lite-latest', description: 'Gemini Flash Lite (Latest)' },
+    { id: 'gemini-pro-latest', description: 'Gemini Pro (Latest)' },
+    { id: 'gemini-omni-flash-preview', description: 'Gemini Omni Flash Preview' },
+  ];
+
   // ── Fetch available Gemini models ─────────────────────────────────────────
   const handleFetchModels = useCallback(async () => {
     if (!apiKey.trim()) return;
@@ -227,29 +245,42 @@ export default function Settings() {
       const data = await res.json();
 
       if (data.models) {
-        // All models that support generateContent
         const genModels = data.models
-          .filter((m) => m.supportedGenerationMethods?.includes('generateContent'))
+          .filter((m) => {
+            if (!m.supportedGenerationMethods?.includes('generateContent')) return false;
+            const name = m.name.replace('models/', '');
+            // Exclude specialized models: image, tts, robotics, computer-use, deep-research, lyria
+            if (/image|tts|robotics|computer.use|deep.research|lyria|antigravity|clip|nano.banana/.test(name)) return false;
+            return true;
+          })
           .map((m) => ({
             id: m.name.replace('models/', ''),
             description: m.displayName || m.name.replace('models/', ''),
           }))
           .sort((a, b) => a.id.localeCompare(b.id));
 
-        setAvailableModels(genModels);
-
-        // Auto-select first model if current isn't available
-        if (flashModels.length > 0 && !flashModels.find((m) => m.id === geminiModel)) {
-          setGeminiModel(flashModels[0].id);
-          localStorage.setItem('sa:gemini-model', flashModels[0].id);
+        setAvailableModels(genModels.length > 0 ? genModels : TEXT_MODELS);
+        if (genModels.length > 0 && !genModels.find((m) => m.id === geminiModel)) {
+          setGeminiModel(genModels[0].id);
+          localStorage.setItem('sa:gemini-model', genModels[0].id);
         }
+      } else {
+        setAvailableModels(TEXT_MODELS);
       }
     } catch (err) {
-      console.error('Error fetching models:', err);
+      console.error('Error fetching models, using fallback list:', err);
+      setAvailableModels(TEXT_MODELS);
     } finally {
       setFetchingModels(false);
     }
   }, [apiKey, geminiModel]);
+
+  // Show text models by default so the dropdown isn't empty
+  useEffect(() => {
+    if (provider === 'gemini' && availableModels.length === 0) {
+      setAvailableModels(TEXT_MODELS);
+    }
+  }, [provider, availableModels.length]);
 
   // ── Render ──────────────────────────────────────────────────────────────
   const meta = PROVIDER_META[provider] || PROVIDER_META.deepseek;
