@@ -25,8 +25,6 @@ export default function QuestionList({
   const [newText, setNewText] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editText, setEditText] = useState('');
-  const [selectedType, setSelectedType] = useState('keyword');
-  const [showFaq, setShowFaq] = useState(false);
   const inputRef = useRef(null);
 
   const handleSubmit = useCallback(
@@ -34,11 +32,11 @@ export default function QuestionList({
       e.preventDefault();
       const trimmed = newText.trim();
       if (!trimmed) return;
-      onAdd(trimmed, selectedType);
+      onAdd(trimmed, 'keyword');
       setNewText('');
       inputRef.current?.focus();
     },
-    [newText, selectedType, onAdd],
+    [newText, onAdd],
   );
 
   const handleKeyDown = useCallback(
@@ -69,7 +67,7 @@ export default function QuestionList({
     setEditText('');
   }, []);
 
-  const TypeIcon = TYPES.find((t) => t.key === selectedType)?.icon || Key;
+
 
   return (
     <div className="flex flex-col gap-3">
@@ -97,32 +95,6 @@ export default function QuestionList({
           </button>
         </div>
 
-        {/* Type selector chips */}
-        <div className="flex gap-1.5" role="radiogroup" aria-label="Tipo de pregunta">
-          {TYPES.map((t) => {
-            const Icon = t.icon;
-            const isActive = selectedType === t.key;
-            return (
-              <button
-                key={t.key}
-                type="button"
-                role="radio"
-                aria-checked={isActive}
-                onClick={() => setSelectedType(t.key)}
-                className={`flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-md transition-colors ${
-                  isActive
-                    ? 'bg-primary/10 text-primary'
-                    : 'bg-base-200 text-base-content/50 hover:bg-base-300'
-                }`}
-                style={{ minHeight: '36px' }}
-                title={t.description}
-              >
-                <Icon size={12} aria-hidden="true" />
-                {t.label}
-              </button>
-            );
-          })}
-        </div>
       </form>
 
       {/* Question list */}
@@ -195,29 +167,24 @@ export default function QuestionList({
       </p>
 
       {/* FAQ: Qué significa cada tipo */}
-      <details className="text-xs text-base-content/50 mt-2">
-        <summary
-          className="cursor-pointer hover:text-primary transition-colors"
-          onClick={(e) => { e.preventDefault(); setShowFaq(!showFaq); }}
-        >
+      <details className="mt-2">
+        <summary className="text-sm font-medium text-primary cursor-pointer hover:text-primary-hover transition-colors">
           ¿Qué significa cada tipo de pregunta?
         </summary>
-        {showFaq && (
-          <div className="flex flex-col gap-2 mt-2 p-3 bg-base-200 rounded-lg">
-            {TYPES.map((t) => {
-              const Icon = t.icon;
-              return (
-                <div key={t.key} className="flex items-start gap-2">
-                  <Icon size={14} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
-                  <div>
-                    <span className="font-medium text-base-content">{t.label}:</span>{' '}
-                    <span className="text-base-content/70">{t.description}</span>
-                  </div>
+        <div className="flex flex-col gap-3 mt-3 p-4 bg-base-200 rounded-xl text-sm">
+          {TYPES.map((t) => {
+            const Icon = t.icon;
+            return (
+              <div key={t.key} className="flex items-start gap-3">
+                <Icon size={18} className="mt-0.5 flex-shrink-0 text-primary" aria-hidden="true" />
+                <div>
+                  <p className="font-semibold text-base-content">{t.label}</p>
+                  <p className="text-base-content/70 mt-0.5">{t.description}</p>
                 </div>
-              );
-            })}
-          </div>
-        )}
+              </div>
+            );
+          })}
+        </div>
       </details>
     </div>
   );
